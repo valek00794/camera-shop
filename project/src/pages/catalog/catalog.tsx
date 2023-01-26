@@ -1,11 +1,15 @@
+/* eslint-disable no-console */
 import Banner from '../../components/banner/banner';
 import FilterForm from '../../components/filter-form/filter-form';
 import SortForm from '../../components/sort-form/sort-form';
 import ProductCard from '../../components/product-card/product-card';
 import PaginationList from '../../components/pagination-list/pagination-list';
 import BreadcrumbsList from '../../components/breadcrumbs-list/breadcrumbs-list';
+import { useAppSelector } from '../../hooks';
+import { getCameras } from '../../store/app-data/selectors';
 
 function Catalog(): JSX.Element {
+  const cameras = useAppSelector(getCameras);
 
   return (
     <main>
@@ -26,7 +30,7 @@ function Catalog(): JSX.Element {
                   <SortForm />
                 </div>
                 <div className="cards catalog__cards">
-                  <ProductCard />
+                  {cameras.map((camera) => <ProductCard key={camera.id} camera={camera} />)}
                 </div>
               </div>
               <PaginationList />

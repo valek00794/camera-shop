@@ -1,5 +1,5 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
-import { AppRoute } from '../../const';
+import { AppRoute } from '../../consts';
 import Catalog from '../../pages/catalog/catalog';
 import Footer from '../footer/footer';
 import Header from '../header/header';
