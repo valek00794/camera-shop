@@ -11,8 +11,8 @@ function ProductCard(proops: ProductCardProps): JSX.Element {
     <div className="product-card">
       <div className="product-card__img">
         <picture>
-          <source type="image/webp" srcSet={`${proops.camera.previewImgWebp}, ${proops.camera.previewImgWebp2x}, 2x`} />
-          <img src="img/content/img1.jpg" srcSet={`${proops.camera.previewImg2x}, 2x`}width="280" height="240" alt="Ретрокамера «Das Auge IV»" />
+          <source type="image/webp" srcSet={`/${proops.camera.previewImgWebp}, /${proops.camera.previewImgWebp2x}, 2x`} />
+          <img src={`/${proops.camera.previewImg}`} srcSet={`/${proops.camera.previewImg2x}, 2x`}width="280" height="240" alt="Ретрокамера «Das Auge IV»" />
         </picture>
       </div>
       <div className="product-card__info">

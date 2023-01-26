@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import Banner from '../../components/banner/banner';
 import FilterForm from '../../components/filter-form/filter-form';
 import SortForm from '../../components/sort-form/sort-form';
@@ -6,10 +5,13 @@ import ProductCard from '../../components/product-card/product-card';
 import PaginationList from '../../components/pagination-list/pagination-list';
 import BreadcrumbsList from '../../components/breadcrumbs-list/breadcrumbs-list';
 import { useAppSelector } from '../../hooks';
-import { getCameras } from '../../store/app-data/selectors';
+import { getCamerasByPage } from '../../store/app-data/selectors';
+import { useParams } from 'react-router-dom';
 
 function Catalog(): JSX.Element {
-  const cameras = useAppSelector(getCameras);
+  const {page} = useParams();
+  const paramPageToNumber = Number(page);
+  const sliceCameras = useAppSelector(getCamerasByPage(paramPageToNumber));
 
   return (
     <main>
@@ -30,7 +32,7 @@ function Catalog(): JSX.Element {
                   <SortForm />
                 </div>
                 <div className="cards catalog__cards">
-                  {cameras.map((camera) => <ProductCard key={camera.id} camera={camera} />)}
+                  {sliceCameras.map((camera) => <ProductCard key={camera.id} camera={camera} />)}
                 </div>
               </div>
               <PaginationList />
