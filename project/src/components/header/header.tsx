@@ -6,14 +6,14 @@ function Header(): JSX.Element {
     <>
       <header className="header" id="header">
         <div className="container">
-          <Link className="header__logo" to="/catalog" aria-label="Переход на главную">
+          <Link className="header__logo" to="/" aria-label="Переход на главную">
             <svg width="100" height="36" aria-hidden="true">
               <use xlinkHref="#icon-logo"></use>
             </svg>
           </Link>
           <nav className="main-nav header__main-nav">
             <ul className="main-nav__list">
-              <li className="main-nav__item"><NavLink className="main-nav__link" to="/catalog">Каталог</NavLink>
+              <li className="main-nav__item"><NavLink className="main-nav__link" to="/catalog/page_1">Каталог</NavLink>
               </li>
               <li className="main-nav__item"><NavLink className="main-nav__link" to="#">Гарантии</NavLink>
               </li>
