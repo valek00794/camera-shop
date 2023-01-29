@@ -1,13 +1,28 @@
 import { Link } from 'react-router-dom';
 import { Camera } from '../../types/camera';
+import classnames from 'classnames';
+import { useAppSelector } from '../../hooks';
+import { getSimilarCameras } from '../../store/app-data/selectors';
+import { SimilarCardVisibleSetttings } from '../../consts';
 
 type SimilarCardProps = {
   camera: Camera;
+  firstVisibleSimilarElement: number;
 }
 
 function SimilarCard(proops: SimilarCardProps): JSX.Element {
+  const smilarCameras = useAppSelector(getSimilarCameras);
+
+  const visibleSmilarCamerasIDs = Array.from({ length: SimilarCardVisibleSetttings.VisibleCount }, (_, index) => smilarCameras[index + proops.firstVisibleSimilarElement].id);
+
+  const getVisibleClassname = () =>
+    classnames(
+      'product-card ',
+      { 'is-active': visibleSmilarCamerasIDs.includes(proops.camera.id) }
+    );
+
   return (
-    <div className="product-card is-active">
+    <div className={getVisibleClassname()}>
       <div className="product-card__img">
         <picture>
           <source type="image/webp" srcSet={`/${proops.camera.previewImgWebp}, /${proops.camera.previewImgWebp2x}, 2x`} />

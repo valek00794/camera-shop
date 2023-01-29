@@ -113,10 +113,10 @@ function Camera(): JSX.Element {
           <div className="page-content__section">
             <section className="product-similar">
               <div className="container">
+                <h2 className="title title--h3">Похожие товары</h2>
                 {
                   similarCameras &&
                   <div className="product-similar__slider">
-                    <h2 className="title title--h3">Похожие товары</h2>
                     <SimilarList />
                   </div>
                 }
