@@ -1,15 +1,12 @@
 import { Link } from 'react-router-dom';
-import { stars } from '../../consts';
 import { Camera } from '../../types/camera';
+import Stars from '../stars/stars';
 
 type ProductCardProps = {
   camera: Camera;
 }
 
 function ProductCard(proops: ProductCardProps): JSX.Element {
-
-  const getFullStar = (star : number) => star <= proops.camera.rating ? '#icon-full-star' : '#icon-star';
-
   return (
     <div className="product-card">
       <div className="product-card__img">
@@ -21,11 +18,7 @@ function ProductCard(proops: ProductCardProps): JSX.Element {
       <div className="product-card__info">
         <div className="rate product-card__rate">
           {
-            stars.map((star) => (
-              <svg key={star} width="17" height="16" aria-hidden="true">
-                <use xlinkHref={getFullStar(star)}></use>
-              </svg>
-            ))
+            <Stars camera={proops.camera}/>
           }
           <p className="visually-hidden">Рейтинг: {proops.camera.rating}</p>
           <p className="rate__count"><span className="visually-hidden">Всего оценок:</span>{proops.camera.reviewCount}</p>

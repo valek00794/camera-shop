@@ -4,6 +4,7 @@ import classnames from 'classnames';
 import { useAppSelector } from '../../hooks';
 import { getSimilarCameras } from '../../store/app-data/selectors';
 import { SimilarCardVisibleSetttings } from '../../consts';
+import Stars from '../stars/stars';
 
 type SimilarCardProps = {
   camera: Camera;
@@ -31,21 +32,9 @@ function SimilarCard(proops: SimilarCardProps): JSX.Element {
       </div>
       <div className="product-card__info">
         <div className="rate product-card__rate">
-          <svg width="17" height="16" aria-hidden="true">
-            <use xlinkHref="#icon-full-star"></use>
-          </svg>
-          <svg width="17" height="16" aria-hidden="true">
-            <use xlinkHref="#icon-full-star"></use>
-          </svg>
-          <svg width="17" height="16" aria-hidden="true">
-            <use xlinkHref="#icon-full-star"></use>
-          </svg>
-          <svg width="17" height="16" aria-hidden="true">
-            <use xlinkHref="#icon-full-star"></use>
-          </svg>
-          <svg width="17" height="16" aria-hidden="true">
-            <use xlinkHref="#icon-star"></use>
-          </svg>
+          {
+            <Stars camera={proops.camera} />
+          }
           <p className="visually-hidden">Рейтинг: {proops.camera.rating}</p>
           <p className="rate__count"><span className="visually-hidden">Всего оценок:</span>{proops.camera.reviewCount}</p>
         </div>
@@ -56,7 +45,7 @@ function SimilarCard(proops: SimilarCardProps): JSX.Element {
       <div className="product-card__buttons">
         <button className="btn btn--purple product-card__btn" type="button">Купить
         </button>
-        <Link className="btn btn--transparent" to="#">Подробнее
+        <Link className="btn btn--transparent" to={`/catalog/${proops.camera.id}/description`}>Подробнее
         </Link>
       </div>
     </div>

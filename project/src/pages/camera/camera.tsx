@@ -3,10 +3,10 @@ import { Link, useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { fetchCameraInfoAction, fetchCameraReviewsAction, fetchSimilarCamerasAction } from '../../store/api-actions';
 import { getCameraInfo, getSimilarCameras } from '../../store/app-data/selectors';
-import { stars } from '../../consts';
 import classnames from 'classnames';
 import BreadcrumbsList from '../../components/breadcrumbs-list/breadcrumbs-list';
 import SimilarList from '../../components/similar/similar-list';
+import Stars from '../../components/stars/stars';
 
 enum TabsAbout {
   Specifications = 'specifications',
@@ -31,8 +31,6 @@ function Camera(): JSX.Element {
       isMounted = false;
     };
   }, [dispatch, id]);
-
-  const getFullStar = (star: number) => cameraInfo && star <= cameraInfo.rating ? '#icon-full-star' : '#icon-star';
 
   const getProductTabsClassName = (aboutTabs: string) => classnames(
     'tabs__element',
@@ -62,11 +60,7 @@ function Camera(): JSX.Element {
                   <h1 className="title title--h3">{cameraInfo?.name}</h1>
                   <div className="rate product__rate">
                     {
-                      stars.map((star) => (
-                        <svg key={star} width="17" height="16" aria-hidden="true">
-                          <use xlinkHref={getFullStar(star)}></use>
-                        </svg>
-                      ))
+                      <Stars camera={cameraInfo}/>
                     }
                     <p className="visually-hidden">Рейтинг: {cameraInfo?.rating}</p>
                     <p className="rate__count"><span className="visually-hidden">Всего оценок:</span>{cameraInfo?.reviewCount}</p>
