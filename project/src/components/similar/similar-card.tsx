@@ -42,7 +42,7 @@ function SimilarCard(proops: SimilarCardProps): JSX.Element {
       <div className="product-card__info">
         <div className="rate product-card__rate">
           {
-            <Stars camera={proops.camera} />
+            <Stars rating={proops.camera.rating} />
           }
           <p className="visually-hidden">Рейтинг: {proops.camera.rating}</p>
           <p className="rate__count"><span className="visually-hidden">Всего оценок:</span>{proops.camera.reviewCount}</p>

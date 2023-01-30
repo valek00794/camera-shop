@@ -3,8 +3,9 @@ import classnames from 'classnames';
 import { useAppSelector } from '../../hooks';
 import { getCamerasAmount } from '../../store/app-data/selectors';
 import { CAMERAS_AMOUNT_SHOW_BY_PAGE } from '../../consts';
+import { scrollUp } from '../../utils';
 
-const scrollToOptions: ScrollToOptions | undefined = {
+const scrollToOptions: ScrollToOptions = {
   top: 348,
   behavior: 'smooth'
 };
@@ -22,7 +23,6 @@ function PaginationList(): JSX.Element {
       { 'pagination__link--active': paramPageToNumber === pageNumber }
     );
 
-  const scrollUp = () => window.scrollTo(scrollToOptions);
   const isBtnBackVisible = paramPageToNumber > 1 ;
   const isBtnNextVisible = paramPageToNumber < pageCount ;
 
@@ -32,7 +32,7 @@ function PaginationList(): JSX.Element {
         {
           isBtnBackVisible &&
           <li
-            onClick={scrollUp}
+            onClick={() => scrollUp(scrollToOptions)}
             className="pagination__item"
           >
             <Link
@@ -46,7 +46,7 @@ function PaginationList(): JSX.Element {
           pages.map((pageNumber) =>
             (
               <li
-                onClick={scrollUp}
+                onClick={() => scrollUp(scrollToOptions)}
                 key={pageNumber}
                 className="pagination__item"
               >
@@ -62,7 +62,7 @@ function PaginationList(): JSX.Element {
         {
           isBtnNextVisible &&
           <li
-            onClick={scrollUp}
+            onClick={() => scrollUp(scrollToOptions)}
             className="pagination__item"
           >
             <Link

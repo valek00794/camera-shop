@@ -17,3 +17,7 @@ export const getCamerasByPage = (currentPage: number) => createSelector(
   (cameras) =>
     cameras.slice(CAMERAS_AMOUNT_SHOW_BY_PAGE * currentPage - CAMERAS_AMOUNT_SHOW_BY_PAGE, CAMERAS_AMOUNT_SHOW_BY_PAGE * currentPage));
 
+export const getSortCameraReviews = () => createSelector(
+  getCameraReviews,
+  (reviews) =>
+    reviews.slice().sort((reviewA, reviewB) => Date.parse(reviewB.createAt) - Date.parse(reviewA.createAt)));

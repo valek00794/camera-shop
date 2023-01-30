@@ -26,3 +26,8 @@ export enum SimilarListVisibleSetttings {
   FirstElement = 0,
   VisibleCount = 3,
 }
+
+export enum ReviewListSetttings {
+  VisibleCount = 3,
+}
+
