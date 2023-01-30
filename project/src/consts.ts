@@ -22,7 +22,7 @@ export enum NameSpace {
 
 export const CAMERAS_AMOUNT_SHOW_BY_PAGE = 9 as const;
 
-export enum SimilarCardVisibleSetttings {
+export enum SimilarListVisibleSetttings {
   FirstElement = 0,
   VisibleCount = 3,
 }

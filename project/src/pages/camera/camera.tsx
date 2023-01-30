@@ -60,7 +60,7 @@ function Camera(): JSX.Element {
                   <h1 className="title title--h3">{cameraInfo?.name}</h1>
                   <div className="rate product__rate">
                     {
-                      <Stars camera={cameraInfo}/>
+                      <Stars camera={cameraInfo} />
                     }
                     <p className="visually-hidden">Рейтинг: {cameraInfo?.rating}</p>
                     <p className="rate__count"><span className="visually-hidden">Всего оценок:</span>{cameraInfo?.reviewCount}</p>
@@ -104,19 +104,19 @@ function Camera(): JSX.Element {
               </div>
             </section>
           </div>
-          <div className="page-content__section">
-            <section className="product-similar">
-              <div className="container">
-                <h2 className="title title--h3">Похожие товары</h2>
-                {
-                  similarCameras &&
+          {
+            similarCameras.length !== 0 &&
+            <div className="page-content__section">
+              <section className="product-similar">
+                <div className="container">
+                  <h2 className="title title--h3">Похожие товары</h2>
                   <div className="product-similar__slider">
                     <SimilarList />
                   </div>
-                }
-              </div>
-            </section>
-          </div>
+                </div>
+              </section>
+            </div>
+          }
           <div className="page-content__section">
             <section className="review-block">
               <div className="container">
