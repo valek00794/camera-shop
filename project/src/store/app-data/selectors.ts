@@ -11,6 +11,7 @@ export const getPromo = (state: State): Promo | null => state[NameSpace.Data].pr
 export const getCameraInfo = (state: State): Camera | null => state[NameSpace.Data].camera;
 export const getCameraReviews = (state: State): Review[] => state[NameSpace.Data].reviews;
 export const getSimilarCameras = (state: State): Camera[] => state[NameSpace.Data].similarCameras;
+export const getReviewSubmitSuccessful = (state: State): boolean => state[NameSpace.Data].isReviewSubmitSuccessful;
 
 export const getCamerasByPage = (currentPage: number) => createSelector(
   getCameras,
@@ -21,3 +22,5 @@ export const getSortCameraReviews = () => createSelector(
   getCameraReviews,
   (reviews) =>
     reviews.slice().sort((reviewA, reviewB) => Date.parse(reviewB.createAt) - Date.parse(reviewA.createAt)));
+
+

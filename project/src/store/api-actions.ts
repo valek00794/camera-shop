@@ -6,7 +6,7 @@ import {APIRoute} from '../consts';
 import {AppDispatch, State} from '../types/state.js';
 import { Camera } from '../types/camera';
 import { Promo } from '../types/promo';
-import { Review } from '../types/review';
+import { Review, ReviewPost } from '../types/review';
 
 export const fetchCamerasAction = createAsyncThunk<Camera[], undefined, {
   dispatch: AppDispatch;
@@ -64,6 +64,24 @@ export const fetchSimilarCamerasAction = createAsyncThunk<Camera[], string | und
   'data/fetchSimilarCameras',
   async (id, {extra: api}) => {
     const {data} = await api.get<Camera[]>(id ? `${APIRoute.Cameras}/${id}${APIRoute.Similar}` : '');
+    return data;
+  },
+);
+
+export const fetchPostReviewAction = createAsyncThunk<Review, ReviewPost, {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}>(
+  'data/addReview',
+  async ({...postData}, {extra: api}) => {
+
+    const adapedPostData = {
+      ...postData,
+      rating: Number(postData.rating),
+    };
+
+    const {data} = await api.post<Review>(APIRoute.Reviews, {...adapedPostData});
     return data;
   },
 );

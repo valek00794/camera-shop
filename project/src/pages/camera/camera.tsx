@@ -10,6 +10,7 @@ import Stars from '../../components/stars/stars';
 import ReviewList from '../../components/review/review-list';
 import { scrollUp } from '../../utils';
 import { ReviewListSetttings } from '../../consts';
+import ReviewAdd from '../../components/review/review-add';
 
 enum TabsAbout {
   Specifications = 'specifications',
@@ -27,6 +28,7 @@ function Camera(): JSX.Element {
   const cameraInfo = useAppSelector(getCameraInfo);
   const similarCameras = useAppSelector(getSimilarCameras);
   const visibleReviewsCountState = useState(ReviewListSetttings.VisibleCount);
+  const activeReviewAddState = useState(false);
   const [, setVisibleReviewsCount] = visibleReviewsCountState;
 
   useEffect(() => {
@@ -128,17 +130,21 @@ function Camera(): JSX.Element {
           <div className="page-content__section">
             <section className="review-block">
               <div className="container">
-                <ReviewList visibleReviewsCountState={visibleReviewsCountState}/>
+                <ReviewList
+                  visibleReviewsCountState={visibleReviewsCountState}
+                  activeReviewAddState={activeReviewAddState}
+                />
               </div>
             </section>
           </div>
         </div>
+        <button className="up-btn" onClick={() => scrollUp(scrollToOptions)}>
+          <svg width="12" height="18" aria-hidden="true">
+            <use xlinkHref="#icon-arrow2"></use>
+          </svg>
+        </button>
       </main>
-      <button className="up-btn" onClick={() => scrollUp(scrollToOptions)}>
-        <svg width="12" height="18" aria-hidden="true">
-          <use xlinkHref="#icon-arrow2"></use>
-        </svg>
-      </button>
+      <ReviewAdd activeReviewAddState={activeReviewAddState} />
     </>
   );
 }

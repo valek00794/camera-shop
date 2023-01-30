@@ -7,6 +7,7 @@ import {
   fetchCameraInfoAction,
   fetchCameraReviewsAction,
   fetchSimilarCamerasAction,
+  fetchPostReviewAction,
 } from '../api-actions';
 
 export const initialState: AppData = {
@@ -16,6 +17,7 @@ export const initialState: AppData = {
   camera: null,
   reviews: [],
   similarCameras: [],
+  isReviewSubmitSuccessful: false,
 };
 
 export const appData = createSlice({
@@ -42,6 +44,13 @@ export const appData = createSlice({
       })
       .addCase(fetchSimilarCamerasAction.fulfilled, (state, action) => {
         state.similarCameras = action.payload;
+      })
+      .addCase(fetchPostReviewAction.fulfilled, (state, action) => {
+        state.isReviewSubmitSuccessful = true;
+        state.reviews.push(action.payload);
+      })
+      .addCase(fetchPostReviewAction.rejected, (state) => {
+        state.isReviewSubmitSuccessful = false;
       });
   }
 });

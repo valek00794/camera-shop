@@ -1298,7 +1298,6 @@ button,
   font-size: 14px;
   line-height: 18px;
   color: #ed6041;
-  opacity: 0;
   -webkit-transition: opacity 0.3s ease;
   -o-transition: opacity 0.3s ease;
   transition: opacity 0.3s ease;
@@ -2309,7 +2308,6 @@ button,
   font-size: 14px;
   line-height: 18px;
   color: #ed6041;
-  opacity: 0;
 }
 
 .rate__group:not(:checked) > label {
