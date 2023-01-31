@@ -25,5 +25,5 @@ root.render(
         <App />
       </Provider>
     </HistoryRouter>
-  </React.StrictMode>,
+  </React.StrictMode>
 );

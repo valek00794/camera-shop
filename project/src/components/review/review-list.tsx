@@ -33,13 +33,12 @@ function ReviewList(props: ReviewListProps): JSX.Element {
         }
       </ul>
       {
-        cameraSortReviews.length >= visibleReviewsCount &&
+        cameraSortReviews.length > visibleReviewsCount &&
         <div className="review-block__buttons">
           <button
             className="btn btn--purple"
             type="button"
             onClick={handleShowMoreReviews}
-            disabled={cameraSortReviews.length <= visibleReviewsCount}
           >Показать больше отзывов
           </button>
         </div>
