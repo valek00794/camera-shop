@@ -6,6 +6,7 @@ import { Review } from '../../types/review';
 import { State } from '../../types/state';
 
 export const getCameras = (state: State): Camera[] => state[NameSpace.Data].cameras;
+export const getCamerasIds = (state: State): string[] => state[NameSpace.Data].cameras.map((el) => el.id.toString());
 export const getCamerasAmount = (state: State): number => state[NameSpace.Data].cameras.length;
 export const getPromo = (state: State): Promo | null => state[NameSpace.Data].promo;
 export const getCameraInfo = (state: State): Camera | null => state[NameSpace.Data].camera;

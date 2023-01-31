@@ -2,7 +2,8 @@ export enum AppRoute {
   Default = '/',
   DefaultCatalog = '/catalog',
   Catalog = '/catalog/page_:page',
-  Camera = '/catalog/:id/:about',
+  Camera = '/catalog/:id',
+  DefaultCamera = '/catalog/:id/:about',
   Error = '*',
 }
 

@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { fetchCameraInfoAction, fetchCameraReviewsAction, fetchSimilarCamerasAction } from '../../store/api-actions';
-import { getCameraInfo, getSimilarCameras } from '../../store/app-data/selectors';
+import { getCameraInfo, getCamerasIds, getSimilarCameras } from '../../store/app-data/selectors';
 import classnames from 'classnames';
 import BreadcrumbsList from '../../components/breadcrumbs-list/breadcrumbs-list';
 import SimilarList from '../../components/similar/similar-list';
@@ -11,11 +11,9 @@ import ReviewList from '../../components/review/review-list';
 import { scrollUp } from '../../utils';
 import { ReviewListSetttings } from '../../consts';
 import ReviewAdd from '../../components/review/review-add';
+import NotFound from '../../components/not-found/not-found';
 
-enum TabsAbout {
-  Specifications = 'specifications',
-  Description = 'description',
-}
+const aboutCameraTabsTitle = ['specifications', 'description'];
 
 const scrollToOptions: ScrollToOptions = {
   top: 0,
@@ -27,13 +25,18 @@ function Camera(): JSX.Element {
   const { id, about } = useParams();
   const cameraInfo = useAppSelector(getCameraInfo);
   const similarCameras = useAppSelector(getSimilarCameras);
+  const availableCamerasIDs = useAppSelector(getCamerasIds);
   const visibleReviewsCountState = useState(ReviewListSetttings.VisibleCount);
   const activeReviewAddState = useState(false);
   const [, setVisibleReviewsCount] = visibleReviewsCountState;
+  const [specificationsTab, descriptionTab] = aboutCameraTabsTitle;
+
+  const isCameraIdFound = id && !availableCamerasIDs.includes(id);
+  const isAboutTitleFound = about && !aboutCameraTabsTitle.includes(about);
 
   useEffect(() => {
     let isMounted = true;
-    if (isMounted) {
+    if (isMounted && !isCameraIdFound) {
       dispatch(fetchCameraInfoAction(id));
       dispatch(fetchCameraReviewsAction(id));
       dispatch(fetchSimilarCamerasAction(id));
@@ -43,16 +46,20 @@ function Camera(): JSX.Element {
     return () => {
       isMounted = false;
     };
-  }, [dispatch, id, setVisibleReviewsCount]);
+  }, [dispatch, id, isCameraIdFound, setVisibleReviewsCount]);
 
-  const getProductTabsClassName = (aboutTabs: string) => classnames(
+  if (isCameraIdFound || isAboutTitleFound) {
+    return <NotFound />;
+  }
+
+  const getProductTabsClassName = (aboutTabsTitle: string) => classnames(
     'tabs__element',
-    { 'is-active': about === aboutTabs }
+    { 'is-active': about === aboutTabsTitle }
   );
 
-  const getProductTabsControlClassName = (aboutTabs: string) => classnames(
+  const getProductTabsControlClassName = (aboutTabsTitle: string) => classnames(
     'tabs__control',
-    { 'is-active': about === aboutTabs }
+    { 'is-active': about === aboutTabsTitle }
   );
 
   return (
@@ -86,11 +93,27 @@ function Camera(): JSX.Element {
                   </button>
                   <div className="tabs product__tabs">
                     <div className="tabs__controls product__tabs-controls">
-                      <Link to={id ? `/catalog/${id}/${TabsAbout.Specifications}` : '/'}><button className={getProductTabsControlClassName(TabsAbout.Specifications)} type="button">Характеристики</button></Link>
-                      <Link to={id ? `/catalog/${id}/${TabsAbout.Description}` : '/'}><button className={getProductTabsControlClassName(TabsAbout.Description)} type="button">Описание</button></Link>
+                      <Link
+                        to={id ? `/catalog/${id}/${specificationsTab}` : '/'}
+                      >
+                        <button
+                          className={getProductTabsControlClassName(specificationsTab)}
+                          type="button"
+                        >Характеристики
+                        </button>
+                      </Link>
+                      <Link
+                        to={id ? `/catalog/${id}/${descriptionTab}` : '/'}
+                      >
+                        <button
+                          className={getProductTabsControlClassName(descriptionTab)}
+                          type="button"
+                        >Описание
+                        </button>
+                      </Link>
                     </div>
                     <div className="tabs__content">
-                      <div className={getProductTabsClassName(TabsAbout.Specifications)}>
+                      <div className={getProductTabsClassName(specificationsTab)}>
                         <ul className="product__tabs-list">
                           <li className="item-list"><span className="item-list__title">Артикул:</span>
                             <p className="item-list__text">{cameraInfo?.vendorCode}</p>
@@ -106,7 +129,7 @@ function Camera(): JSX.Element {
                           </li>
                         </ul>
                       </div>
-                      <div className={getProductTabsClassName(TabsAbout.Description)}>
+                      <div className={getProductTabsClassName(descriptionTab)}>
                         <div className="product__tabs-text">
                           <p>{cameraInfo?.description}</p>
                         </div>

@@ -5,13 +5,23 @@ import ProductCard from '../../components/product-card/product-card';
 import PaginationList from '../../components/pagination-list/pagination-list';
 import BreadcrumbsList from '../../components/breadcrumbs-list/breadcrumbs-list';
 import { useAppSelector } from '../../hooks';
-import { getCamerasByPage } from '../../store/app-data/selectors';
+import { getCamerasAmount, getCamerasByPage } from '../../store/app-data/selectors';
 import { useParams } from 'react-router-dom';
+import NotFound from '../../components/not-found/not-found';
+import { CAMERAS_AMOUNT_SHOW_BY_PAGE } from '../../consts';
 
 function Catalog(): JSX.Element {
-  const {page} = useParams();
+  const { page } = useParams();
   const paramPageToNumber = Number(page);
   const sliceCameras = useAppSelector(getCamerasByPage(paramPageToNumber));
+
+  const camerasAmount = useAppSelector(getCamerasAmount);
+  const pageCount = Math.ceil(camerasAmount / CAMERAS_AMOUNT_SHOW_BY_PAGE);
+  const pages = Array.from({ length: pageCount }, (_, index) => index + 1);
+
+  if (paramPageToNumber && !pages.includes(paramPageToNumber)) {
+    return <NotFound />;
+  }
 
   return (
     <main>
@@ -35,7 +45,10 @@ function Catalog(): JSX.Element {
                   {sliceCameras.map((camera) => <ProductCard key={camera.id} camera={camera} />)}
                 </div>
               </div>
-              <PaginationList />
+              <PaginationList
+                pageCount={pageCount}
+                pages={pages}
+              />
             </div>
           </div>
         </section>
