@@ -15,7 +15,13 @@ function App(): JSX.Element {
           <Route path={AppRoute.Default} element={<Navigate to='/catalog/page_1' />} />
           <Route path={AppRoute.DefaultCatalog} element={<Navigate to='/catalog/page_1' />} />
           <Route path={AppRoute.Catalog} element={<Catalog />} />
-          <Route path={AppRoute.Camera} element={<Navigate to={`${location.pathname}/description` }/>} />
+          <Route path={AppRoute.Camera} element={
+            <Navigate to={
+              location.pathname[location.pathname.length - 1] === '/' ? `${location.pathname}description` : `${location.pathname}/description`
+            }
+            />
+          }
+          />
           <Route path={AppRoute.DefaultCamera} element={<Camera />} />
           <Route path={AppRoute.Error} element={<NotFound />} />
         </Route>
