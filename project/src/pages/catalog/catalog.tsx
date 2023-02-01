@@ -9,6 +9,7 @@ import { getCamerasAmount, getCamerasByPage } from '../../store/app-data/selecto
 import { useParams } from 'react-router-dom';
 import NotFound from '../../components/not-found/not-found';
 import { CAMERAS_AMOUNT_SHOW_BY_PAGE } from '../../consts';
+import { Helmet } from 'react-helmet-async';
 
 function Catalog(): JSX.Element {
   const { page } = useParams();
@@ -24,36 +25,41 @@ function Catalog(): JSX.Element {
   }
 
   return (
-    <main>
-      <Banner />
-      <div className="page-content">
-        <BreadcrumbsList />
-        <section className="catalog">
-          <div className="container">
-            <h1 className="title title--h2">Каталог фото- и видеотехники</h1>
-            <div className="page-content__columns">
-              <div className="catalog__aside">
-                <div className="catalog-filter">
-                  <FilterForm />
+    <>
+      <Helmet>
+        <title>{page ? `Каталог фото- и видеотехники - страница ${page}` : ''}</title>
+      </Helmet>
+      <main>
+        <Banner />
+        <div className="page-content">
+          <BreadcrumbsList />
+          <section className="catalog">
+            <div className="container">
+              <h1 className="title title--h2">Каталог фото- и видеотехники</h1>
+              <div className="page-content__columns">
+                <div className="catalog__aside">
+                  <div className="catalog-filter">
+                    <FilterForm />
+                  </div>
                 </div>
+                <div className="catalog__content">
+                  <div className="catalog-sort">
+                    <SortForm />
+                  </div>
+                  <div className="cards catalog__cards">
+                    {sliceCameras.map((camera) => <ProductCard key={camera.id} camera={camera} />)}
+                  </div>
+                </div>
+                <PaginationList
+                  pageCount={pageCount}
+                  pages={pages}
+                />
               </div>
-              <div className="catalog__content">
-                <div className="catalog-sort">
-                  <SortForm />
-                </div>
-                <div className="cards catalog__cards">
-                  {sliceCameras.map((camera) => <ProductCard key={camera.id} camera={camera} />)}
-                </div>
-              </div>
-              <PaginationList
-                pageCount={pageCount}
-                pages={pages}
-              />
             </div>
-          </div>
-        </section>
-      </div>
-    </main>
+          </section>
+        </div>
+      </main>
+    </>
   );
 }
 

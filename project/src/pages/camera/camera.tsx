@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks';
@@ -12,8 +13,12 @@ import { scrollUp } from '../../utils';
 import { ReviewListSetttings } from '../../consts';
 import ReviewAdd from '../../components/review/review-add';
 import NotFound from '../../components/not-found/not-found';
+import { Helmet } from 'react-helmet-async';
 
-const aboutCameraTabsTitle = ['specifications', 'description'];
+const aboutCameraTabsTitle = {
+  specifications: 'Характеристики',
+  description: 'Описание',
+};
 
 const scrollToOptions: ScrollToOptions = {
   top: 0,
@@ -29,10 +34,10 @@ function Camera(): JSX.Element {
   const visibleReviewsCountState = useState(ReviewListSetttings.VisibleCount);
   const activeReviewAddState = useState(false);
   const [, setVisibleReviewsCount] = visibleReviewsCountState;
-  const [specificationsTab, descriptionTab] = aboutCameraTabsTitle;
+  const [specificationsTab, descriptionTab] = Object.keys(aboutCameraTabsTitle);
 
   const isCameraIdFound = id && !availableCamerasIDs.includes(id);
-  const isAboutTitleFound = about && !aboutCameraTabsTitle.includes(about);
+  const isAboutTitleFound = about as keyof typeof aboutCameraTabsTitle in aboutCameraTabsTitle;
 
   useEffect(() => {
     let isMounted = true;
@@ -48,7 +53,7 @@ function Camera(): JSX.Element {
     };
   }, [dispatch, id, isCameraIdFound, setVisibleReviewsCount]);
 
-  if (isCameraIdFound || isAboutTitleFound) {
+  if (isCameraIdFound || !isAboutTitleFound) {
     return <NotFound />;
   }
 
@@ -64,6 +69,9 @@ function Camera(): JSX.Element {
 
   return (
     <>
+      <Helmet>
+        <title>{cameraInfo && about ? `${aboutCameraTabsTitle[about as keyof typeof aboutCameraTabsTitle]} товара - ${cameraInfo?.category} ${cameraInfo?.name}` : ''}</title>
+      </Helmet>
       <main>
         <div className="page-content">
           <BreadcrumbsList />
@@ -73,7 +81,7 @@ function Camera(): JSX.Element {
                 <div className="product__img">
                   <picture>
                     <source type="image/webp" srcSet={cameraInfo ? `/${cameraInfo.previewImgWebp}, /${cameraInfo.previewImgWebp2x}, 2x` : ''} />
-                    <img src={cameraInfo ? `/${cameraInfo.previewImg}` : ''} srcSet={cameraInfo ? `/${cameraInfo.previewImg2x}, 2x` : ''} width="560" height="480" alt="Ретрокамера Das Auge IV" />
+                    <img src={cameraInfo ? `/${cameraInfo.previewImg}` : ''} srcSet={cameraInfo ? `/${cameraInfo.previewImg2x}, 2x` : ''} width="560" height="480" alt={cameraInfo?.name} />
                   </picture>
                 </div>
                 <div className="product__content">

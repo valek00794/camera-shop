@@ -8,6 +8,7 @@ import { fetchCamerasAction, fetchPromoAction } from './store/api-actions';
 import { Provider } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.min.css';
+import { HelmetProvider } from 'react-helmet-async';
 
 store.dispatch(fetchCamerasAction());
 store.dispatch(fetchPromoAction());
@@ -19,11 +20,13 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <React.StrictMode>
-    <HistoryRouter history={browserHistory}>
-      <Provider store={store}>
-        <ToastContainer />
-        <App />
-      </Provider>
-    </HistoryRouter>
+    <HelmetProvider>
+      <HistoryRouter history={browserHistory}>
+        <Provider store={store}>
+          <ToastContainer />
+          <App />
+        </Provider>
+      </HistoryRouter>
+    </HelmetProvider>
   </React.StrictMode>
 );
