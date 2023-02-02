@@ -32,3 +32,7 @@ export enum ReviewListSetttings {
   VisibleCount = 3,
 }
 
+export enum CameraNameIncludes {
+  SearchString = 'Ретрокамера',
+}
+

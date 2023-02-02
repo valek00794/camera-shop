@@ -3,7 +3,7 @@ import { Camera } from '../../types/camera';
 import classnames from 'classnames';
 import { useAppSelector } from '../../hooks';
 import { getSimilarCameras } from '../../store/app-data/selectors';
-import { SimilarListVisibleSetttings } from '../../consts';
+import { CameraNameIncludes, SimilarListVisibleSetttings } from '../../consts';
 import Stars from '../stars/stars';
 import { useEffect } from 'react';
 
@@ -47,8 +47,8 @@ function SimilarCard(proops: SimilarCardProps): JSX.Element {
           <p className="visually-hidden">Рейтинг: {proops.camera.rating}</p>
           <p className="rate__count"><span className="visually-hidden">Всего оценок:</span>{proops.camera.reviewCount}</p>
         </div>
-        <p className="product-card__title">{proops.camera.name}</p>
-        <p className="product-card__price"><span className="visually-hidden">Цена:</span>{proops.camera.price} ₽
+        <p className="product-card__title">{proops.camera.name.includes(CameraNameIncludes.SearchString) ? proops.camera.name : `${proops.camera.category} ${proops.camera.name}`}</p>
+        <p className="product-card__price"><span className="visually-hidden">Цена:</span>{proops.camera.price.toLocaleString()} ₽
         </p>
       </div>
       <div className="product-card__buttons">

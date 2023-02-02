@@ -22,6 +22,7 @@ function ReviewAdd(props: ReviewAddProps): JSX.Element {
   const dispatch = useAppDispatch();
   const [isActiveReviewAdd, setIsActiveReviewAdd] = props.activeReviewAddState;
   const [isActiveReviewAddSuccess, setIsActiveReviewAddSuccess] = useState(false);
+  const [ratingValue, setratingValue] = useState(0);
   const isReviewSubmitSuccessful = useAppSelector(getReviewSubmitSuccessful);
   const isModalOpen = isActiveReviewAdd || isActiveReviewAddSuccess;
 
@@ -29,7 +30,6 @@ function ReviewAdd(props: ReviewAddProps): JSX.Element {
     register,
     handleSubmit,
     reset,
-    getValues,
     formState: { isSubmitSuccessful, errors }
   } = useForm<ReviewPost>({
     mode: 'onChange'
@@ -83,8 +83,6 @@ function ReviewAdd(props: ReviewAddProps): JSX.Element {
     { 'is-active modal--narrow': isActiveReviewAddSuccess }
   );
 
-  const ratingValue = getValues('rating');
-
   const onSubmit: SubmitHandler<ReviewPost> = (postData) => {
     dispatch(fetchPostReviewAction(postData));
   };
@@ -122,6 +120,7 @@ function ReviewAdd(props: ReviewAddProps): JSX.Element {
                           {...register('rating', {
                             required: 'Нужно оценить товар',
                           })}
+                          onChange={(evt) => setratingValue(Number(evt.target.value))}
                         />
                         <label className="rate__label" htmlFor="star-5" title="Отлично"></label>
                         <input
@@ -132,6 +131,7 @@ function ReviewAdd(props: ReviewAddProps): JSX.Element {
                           {...register('rating', {
                             required: 'Нужно оценить товар',
                           })}
+                          onChange={(evt) => setratingValue(Number(evt.target.value))}
                         />
                         <label className="rate__label" htmlFor="star-4" title="Хорошо"></label>
                         <input
@@ -142,16 +142,18 @@ function ReviewAdd(props: ReviewAddProps): JSX.Element {
                           {...register('rating', {
                             required: 'Нужно оценить товар',
                           })}
+                          onChange={(evt) => setratingValue(Number(evt.target.value))}
                         />
                         <label className="rate__label" htmlFor="star-3" title="Нормально"></label>
                         <input
                           className="visually-hidden"
                           id="star-2"
                           type="radio"
-                          value="52"
+                          value="2"
                           {...register('rating', {
                             required: 'Нужно оценить товар',
                           })}
+                          onChange={(evt) => setratingValue(Number(evt.target.value))}
                         />
                         <label className="rate__label" htmlFor="star-2" title="Плохо"></label>
                         <input
@@ -162,6 +164,7 @@ function ReviewAdd(props: ReviewAddProps): JSX.Element {
                           {...register('rating', {
                             required: 'Нужно оценить товар',
                           })}
+                          onChange={(evt) => setratingValue(Number(evt.target.value))}
                         />
                         <label className="rate__label" htmlFor="star-1" title="Ужасно"></label>
                       </div>

@@ -49,11 +49,11 @@ function Catalog(): JSX.Element {
                   <div className="cards catalog__cards">
                     {sliceCameras.map((camera) => <ProductCard key={camera.id} camera={camera} />)}
                   </div>
+                  <PaginationList
+                    pageCount={pageCount}
+                    pages={pages}
+                  />
                 </div>
-                <PaginationList
-                  pageCount={pageCount}
-                  pages={pages}
-                />
               </div>
             </div>
           </section>

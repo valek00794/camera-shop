@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks';
@@ -10,7 +9,7 @@ import SimilarList from '../../components/similar/similar-list';
 import Stars from '../../components/stars/stars';
 import ReviewList from '../../components/review/review-list';
 import { scrollUp } from '../../utils';
-import { ReviewListSetttings } from '../../consts';
+import { CameraNameIncludes, ReviewListSetttings } from '../../consts';
 import ReviewAdd from '../../components/review/review-add';
 import NotFound from '../../components/not-found/not-found';
 import { Helmet } from 'react-helmet-async';
@@ -85,7 +84,7 @@ function Camera(): JSX.Element {
                   </picture>
                 </div>
                 <div className="product__content">
-                  <h1 className="title title--h3">{cameraInfo?.name}</h1>
+                  <h1 className="title title--h3">{cameraInfo?.name.includes(CameraNameIncludes.SearchString) ? cameraInfo.name : cameraInfo && `${cameraInfo.category} ${cameraInfo.name}`}</h1>
                   <div className="rate product__rate">
                     {
                       <Stars rating={cameraInfo?.rating} />
@@ -93,7 +92,7 @@ function Camera(): JSX.Element {
                     <p className="visually-hidden">Рейтинг: {cameraInfo?.rating}</p>
                     <p className="rate__count"><span className="visually-hidden">Всего оценок:</span>{cameraInfo?.reviewCount}</p>
                   </div>
-                  <p className="product__price"><span className="visually-hidden">Цена:</span>{cameraInfo?.price} ₽</p>
+                  <p className="product__price"><span className="visually-hidden">Цена:</span>{cameraInfo?.price.toLocaleString()} ₽</p>
                   <button className="btn btn--purple" type="button">
                     <svg width="24" height="16" aria-hidden="true">
                       <use xlinkHref="#icon-add-basket"></use>

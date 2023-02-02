@@ -1298,7 +1298,6 @@ button,
   font-size: 14px;
   line-height: 18px;
   color: #ed6041;
-  opacity: 0;
   -webkit-transition: opacity 0.3s ease;
   -o-transition: opacity 0.3s ease;
   transition: opacity 0.3s ease;
@@ -2309,7 +2308,6 @@ button,
   font-size: 14px;
   line-height: 18px;
   color: #ed6041;
-  opacity: 0;
 }
 
 .rate__group:not(:checked) > label {
@@ -3101,10 +3099,6 @@ button,
   display: flex;
 }
 
-.product-similar .product-card:last-child {
-  margin-right: 0;
-}
-
 .slider-controls {
   position: absolute;
   top: 50%;
@@ -3152,7 +3146,7 @@ button,
 
 .slider-controls--prev {
   left: 0;
-  margin-right: 16px;
+  margin-right: 16px
 }
 
 .slider-controls--prev svg {
@@ -3163,6 +3157,7 @@ button,
 
 .slider-controls--next {
   right: 0;
+
 }
 
 .review-block {
@@ -3624,7 +3619,7 @@ button,
   .slider-controls:active {
     color: #7575e2;
     background-color: #a2a2ff;
-    pointer-events: none;
+
   }
 
   .link:hover,
@@ -3655,4 +3650,7 @@ button,
   .tabs__control:active {
     background-color: #f4f4fc;
   }
+}
+.modal-open {
+  overflow: hidden;
 }

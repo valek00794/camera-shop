@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { CameraNameIncludes } from '../../consts';
 import { Camera } from '../../types/camera';
 import Stars from '../stars/stars';
 
@@ -23,8 +24,8 @@ function ProductCard(proops: ProductCardProps): JSX.Element {
           <p className="visually-hidden">Рейтинг: {proops.camera.rating}</p>
           <p className="rate__count"><span className="visually-hidden">Всего оценок:</span>{proops.camera.reviewCount}</p>
         </div>
-        <p className="product-card__title">{`${proops.camera.category} ${proops.camera.name}`}</p>
-        <p className="product-card__price"><span className="visually-hidden">Цена:</span>{proops.camera.price} ₽
+        <p className="product-card__title">{proops.camera.name.includes(CameraNameIncludes.SearchString) ? proops.camera.name : `${proops.camera.category} ${proops.camera.name}`}</p>
+        <p className="product-card__price"><span className="visually-hidden">Цена:</span>{proops.camera.price.toLocaleString()} ₽
         </p>
       </div>
       <div className="product-card__buttons">
