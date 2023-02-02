@@ -7,12 +7,13 @@ import classnames from 'classnames';
 import BreadcrumbsList from '../../components/breadcrumbs-list/breadcrumbs-list';
 import SimilarList from '../../components/similar/similar-list';
 import Stars from '../../components/stars/stars';
-import ReviewList from '../../components/review/review-list';
+import ReviewsList from '../../components/reviews/reviews-list';
 import { scrollUp } from '../../utils';
 import { CameraNameIncludes, ReviewListSetttings } from '../../consts';
-import ReviewAdd from '../../components/review/review-add';
+import ReviewAdd from '../../components/reviews/review-add';
 import NotFound from '../../components/not-found/not-found';
 import { Helmet } from 'react-helmet-async';
+import FocusLock from 'react-focus-lock';
 
 const aboutCameraTabsTitle = {
   specifications: 'Характеристики',
@@ -34,7 +35,6 @@ function Camera(): JSX.Element {
   const activeReviewAddState = useState(false);
   const [, setVisibleReviewsCount] = visibleReviewsCountState;
   const [specificationsTab, descriptionTab] = Object.keys(aboutCameraTabsTitle);
-
   const isCameraIdFound = id && !availableCamerasIDs.includes(id);
   const isAboutTitleFound = about as keyof typeof aboutCameraTabsTitle in aboutCameraTabsTitle;
 
@@ -160,7 +160,7 @@ function Camera(): JSX.Element {
           <div className="page-content__section">
             <section className="review-block">
               <div className="container">
-                <ReviewList
+                <ReviewsList
                   visibleReviewsCountState={visibleReviewsCountState}
                   activeReviewAddState={activeReviewAddState}
                 />
@@ -174,7 +174,9 @@ function Camera(): JSX.Element {
           </svg>
         </button>
       </main>
-      <ReviewAdd activeReviewAddState={activeReviewAddState} />
+      <FocusLock>
+        <ReviewAdd activeReviewAddState={activeReviewAddState} />
+      </FocusLock>
     </>
   );
 }

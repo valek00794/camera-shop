@@ -3,12 +3,12 @@ import { useAppSelector } from '../../hooks';
 import { getSortCameraReviews } from '../../store/app-data/selectors';
 import ReviewCard from './review-card';
 
-type ReviewListProps = {
+type ReviewsListProps = {
   visibleReviewsCountState: [ReviewListSetttings, React.Dispatch<React.SetStateAction<ReviewListSetttings>>];
   activeReviewAddState: [boolean, React.Dispatch<React.SetStateAction<boolean>>];
 }
 
-function ReviewList(props: ReviewListProps): JSX.Element {
+function ReviewsList(props: ReviewsListProps): JSX.Element {
   const [visibleReviewsCount, setVisibleReviewsCount] = props.visibleReviewsCountState;
   const [, setIsActiveReviewAdd] = props.activeReviewAddState;
   const cameraSortReviews = useAppSelector(getSortCameraReviews());
@@ -47,4 +47,4 @@ function ReviewList(props: ReviewListProps): JSX.Element {
   );
 }
 
-export default ReviewList;
+export default ReviewsList;

@@ -7,22 +7,27 @@ import { fetchPostReviewAction } from '../../store/api-actions';
 import { getReviewSubmitSuccessful } from '../../store/app-data/selectors';
 import { ReviewPost } from '../../types/review';
 import { scrollUp } from '../../utils';
+import FocusLock from 'react-focus-lock';
+import ReviewAddSuccess from './review-add-success';
 
 type ReviewAddProps = {
   activeReviewAddState: [boolean, React.Dispatch<React.SetStateAction<boolean>>];
 }
 
 const scrollToOptions: ScrollToOptions = {
-  top: 0,
+  top: 1175,
   behavior: 'smooth'
 };
+
+const DEFAULT_RATING_VALUE = 0;
 
 function ReviewAdd(props: ReviewAddProps): JSX.Element {
   const { id } = useParams();
   const dispatch = useAppDispatch();
   const [isActiveReviewAdd, setIsActiveReviewAdd] = props.activeReviewAddState;
-  const [isActiveReviewAddSuccess, setIsActiveReviewAddSuccess] = useState(false);
-  const [ratingValue, setratingValue] = useState(0);
+  const activeReviewAddSuccessState = useState(false);
+  const [isActiveReviewAddSuccess, setIsActiveReviewAddSuccess] = activeReviewAddSuccessState;
+  const [ratingValue, setRatingValue] = useState(DEFAULT_RATING_VALUE);
   const isReviewSubmitSuccessful = useAppSelector(getReviewSubmitSuccessful);
   const isModalOpen = isActiveReviewAdd || isActiveReviewAddSuccess;
 
@@ -37,21 +42,13 @@ function ReviewAdd(props: ReviewAddProps): JSX.Element {
 
   useEffect(() => {
     const modalOverlay = document.querySelector('.modal__overlay');
-    const header = document.querySelector('.header');
-    const footer = document.querySelector('.footer');
-    const main = document.querySelector('main');
     document.body.classList.toggle('modal-open', isModalOpen);
-
-    isModalOpen && header?.setAttribute('inert', 'inert');
-    isModalOpen && main?.setAttribute('inert', 'inert');
-    isModalOpen && footer?.setAttribute('inert', 'inert');
-    !isModalOpen && header?.removeAttribute('inert');
-    !isModalOpen && main?.removeAttribute('inert');
-    !isModalOpen && footer?.removeAttribute('inert');
 
     const handleCloseModal = () => {
       setIsActiveReviewAdd(false);
       setIsActiveReviewAddSuccess(false);
+      scrollUp(scrollToOptions);
+      setRatingValue(DEFAULT_RATING_VALUE);
     };
 
     const onUpEsc = (evt: KeyboardEvent) => {
@@ -66,6 +63,7 @@ function ReviewAdd(props: ReviewAddProps): JSX.Element {
         reset();
         setIsActiveReviewAdd(false);
         setIsActiveReviewAddSuccess(true);
+        setRatingValue(DEFAULT_RATING_VALUE);
       }
       window.addEventListener('keyup', onUpEsc);
       modalOverlay && modalOverlay.addEventListener('click', handleCloseModal);
@@ -75,7 +73,7 @@ function ReviewAdd(props: ReviewAddProps): JSX.Element {
       window.removeEventListener('keyup', onUpEsc);
       modalOverlay && modalOverlay.removeEventListener('click', handleCloseModal);
     };
-  }, [isReviewSubmitSuccessful, isSubmitSuccessful, reset, setIsActiveReviewAdd, isModalOpen]);
+  }, [isReviewSubmitSuccessful, isSubmitSuccessful, reset, setIsActiveReviewAdd, isModalOpen, setIsActiveReviewAddSuccess]);
 
   const getModalBlockClassName = classnames(
     'modal',
@@ -120,7 +118,7 @@ function ReviewAdd(props: ReviewAddProps): JSX.Element {
                           {...register('rating', {
                             required: 'Нужно оценить товар',
                           })}
-                          onChange={(evt) => setratingValue(Number(evt.target.value))}
+                          onChange={(evt) => setRatingValue(Number(evt.target.value))}
                         />
                         <label className="rate__label" htmlFor="star-5" title="Отлично"></label>
                         <input
@@ -131,7 +129,7 @@ function ReviewAdd(props: ReviewAddProps): JSX.Element {
                           {...register('rating', {
                             required: 'Нужно оценить товар',
                           })}
-                          onChange={(evt) => setratingValue(Number(evt.target.value))}
+                          onChange={(evt) => setRatingValue(Number(evt.target.value))}
                         />
                         <label className="rate__label" htmlFor="star-4" title="Хорошо"></label>
                         <input
@@ -142,7 +140,7 @@ function ReviewAdd(props: ReviewAddProps): JSX.Element {
                           {...register('rating', {
                             required: 'Нужно оценить товар',
                           })}
-                          onChange={(evt) => setratingValue(Number(evt.target.value))}
+                          onChange={(evt) => setRatingValue(Number(evt.target.value))}
                         />
                         <label className="rate__label" htmlFor="star-3" title="Нормально"></label>
                         <input
@@ -153,7 +151,7 @@ function ReviewAdd(props: ReviewAddProps): JSX.Element {
                           {...register('rating', {
                             required: 'Нужно оценить товар',
                           })}
-                          onChange={(evt) => setratingValue(Number(evt.target.value))}
+                          onChange={(evt) => setRatingValue(Number(evt.target.value))}
                         />
                         <label className="rate__label" htmlFor="star-2" title="Плохо"></label>
                         <input
@@ -164,7 +162,7 @@ function ReviewAdd(props: ReviewAddProps): JSX.Element {
                           {...register('rating', {
                             required: 'Нужно оценить товар',
                           })}
-                          onChange={(evt) => setratingValue(Number(evt.target.value))}
+                          onChange={(evt) => setRatingValue(Number(evt.target.value))}
                         />
                         <label className="rate__label" htmlFor="star-1" title="Ужасно"></label>
                       </div>
@@ -255,7 +253,10 @@ function ReviewAdd(props: ReviewAddProps): JSX.Element {
               className="cross-btn"
               type="button"
               aria-label="Закрыть попап"
-              onClick={() => setIsActiveReviewAdd(false)}
+              onClick={() => {
+                setIsActiveReviewAdd(false);
+                scrollUp(scrollToOptions);
+              }}
             >
               <svg width="10" height="10" aria-hidden="true">
                 <use xlinkHref="#icon-close"></use>
@@ -265,35 +266,9 @@ function ReviewAdd(props: ReviewAddProps): JSX.Element {
         }
         {
           isActiveReviewAddSuccess &&
-          <div className="modal__content">
-            <p className="title title--h4">Спасибо за отзыв</p>
-            <svg className="modal__icon" width="80" height="78" aria-hidden="true">
-              <use xlinkHref="#icon-review-success"></use>
-            </svg>
-            <div className="modal__buttons">
-              <button
-                className="btn btn--purple modal__btn modal__btn--fit-width"
-                type="button"
-                onClick={
-                  () => {
-                    scrollUp(scrollToOptions);
-                    setIsActiveReviewAddSuccess(false);
-                  }
-                }
-              >Вернуться к покупкам
-              </button>
-            </div>
-            <button
-              className="cross-btn"
-              type="button"
-              aria-label="Закрыть попап"
-              onClick={() => setIsActiveReviewAddSuccess(false)}
-            >
-              <svg width="10" height="10" aria-hidden="true">
-                <use xlinkHref="#icon-close"></use>
-              </svg>
-            </button>
-          </div>
+          <FocusLock>
+            <ReviewAddSuccess activeReviewAddSuccessState={activeReviewAddSuccessState} />
+          </FocusLock>
         }
       </div>
     </div>
