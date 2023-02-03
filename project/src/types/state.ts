@@ -7,7 +7,9 @@ export type AppData = {
     cameras: Camera[];
     isCamerasDataLoading: boolean;
     promo: Promo | null;
-    camera: Camera | null;
+    isPromoDataLoading: boolean;
+    cameraInfo: Camera | null;
+    isCameraInfoDataLoading: boolean;
     reviews: Review[];
     similarCameras: Camera[];
     isReviewSubmitSuccessful: boolean;

@@ -1,0 +1,18 @@
+
+.outer {
+  position: relative;
+  min-height: 64.6vh;
+
+}
+
+.inner {
+  margin: 0;
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+
+
+}

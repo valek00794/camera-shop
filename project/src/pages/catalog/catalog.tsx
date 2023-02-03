@@ -5,20 +5,27 @@ import ProductCard from '../../components/product-card/product-card';
 import PaginationList from '../../components/pagination-list/pagination-list';
 import BreadcrumbsList from '../../components/breadcrumbs-list/breadcrumbs-list';
 import { useAppSelector } from '../../hooks';
-import { getCamerasAmount, getCamerasByPage } from '../../store/app-data/selectors';
+import { getCamerasAmount, getCamerasByPage, getCamerasDataLoading, getPromoDataLoading } from '../../store/app-data/selectors';
 import { useParams } from 'react-router-dom';
 import NotFound from '../../components/not-found/not-found';
 import { CAMERAS_AMOUNT_SHOW_BY_PAGE } from '../../consts';
 import { Helmet } from 'react-helmet-async';
+import Loading from '../../components/loading/loading';
 
 function Catalog(): JSX.Element {
   const { page } = useParams();
   const paramPageToNumber = Number(page);
   const sliceCameras = useAppSelector(getCamerasByPage(paramPageToNumber));
+  const isCamerasDataLoading = useAppSelector(getCamerasDataLoading);
+  const isPromoDataLoading = useAppSelector(getPromoDataLoading);
 
   const camerasAmount = useAppSelector(getCamerasAmount);
   const pageCount = Math.ceil(camerasAmount / CAMERAS_AMOUNT_SHOW_BY_PAGE);
   const pages = Array.from({ length: pageCount }, (_, index) => index + 1);
+
+  if (isCamerasDataLoading || isPromoDataLoading) {
+    return <Loading />;
+  }
 
   if (paramPageToNumber && !pages.includes(paramPageToNumber)) {
     return <NotFound />;

@@ -14,7 +14,9 @@ export const initialState: AppData = {
   cameras: [],
   isCamerasDataLoading: false,
   promo: null,
-  camera: null,
+  isPromoDataLoading: false,
+  cameraInfo: null,
+  isCameraInfoDataLoading: false,
   reviews: [],
   similarCameras: [],
   isReviewSubmitSuccessful: false,
@@ -33,11 +35,19 @@ export const appData = createSlice({
         state.cameras = action.payload;
         state.isCamerasDataLoading = false;
       })
+      .addCase(fetchPromoAction.pending, (state) => {
+        state.isPromoDataLoading = true;
+      })
       .addCase(fetchPromoAction.fulfilled, (state, action) => {
         state.promo = action.payload;
+        state.isPromoDataLoading = false;
+      })
+      .addCase(fetchCameraInfoAction.pending, (state) => {
+        state.isCameraInfoDataLoading = true;
       })
       .addCase(fetchCameraInfoAction.fulfilled, (state, action) => {
-        state.camera = action.payload;
+        state.cameraInfo = action.payload;
+        state.isCameraInfoDataLoading = false;
       })
       .addCase(fetchCameraReviewsAction.fulfilled, (state, action) => {
         state.reviews = action.payload;

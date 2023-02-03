@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { fetchCameraInfoAction, fetchCameraReviewsAction, fetchSimilarCamerasAction } from '../../store/api-actions';
-import { getCameraInfo, getCamerasIds, getSimilarCameras } from '../../store/app-data/selectors';
+import { getCameraInfo, getCameraInfoDataLoading, getCamerasIds, getSimilarCameras } from '../../store/app-data/selectors';
 import classnames from 'classnames';
 import BreadcrumbsList from '../../components/breadcrumbs-list/breadcrumbs-list';
 import SimilarList from '../../components/similar/similar-list';
@@ -14,6 +14,7 @@ import ReviewAdd from '../../components/reviews/review-add';
 import NotFound from '../../components/not-found/not-found';
 import { Helmet } from 'react-helmet-async';
 import FocusLock from 'react-focus-lock';
+import Loading from '../../components/loading/loading';
 
 const aboutCameraTabsTitle = {
   specifications: 'Характеристики',
@@ -32,11 +33,12 @@ function Camera(): JSX.Element {
   const similarCameras = useAppSelector(getSimilarCameras);
   const availableCamerasIDs = useAppSelector(getCamerasIds);
   const visibleReviewsCountState = useState(ReviewListSetttings.VisibleCount);
-  const activeReviewAddState = useState(false);
   const [, setVisibleReviewsCount] = visibleReviewsCountState;
+  const activeReviewAddState = useState(false);
   const [specificationsTab, descriptionTab] = Object.keys(aboutCameraTabsTitle);
   const isCameraIdFound = id && !availableCamerasIDs.includes(id);
   const isAboutTitleFound = about as keyof typeof aboutCameraTabsTitle in aboutCameraTabsTitle;
+  const isCameraInfoDataLoading = useAppSelector(getCameraInfoDataLoading);
 
   useEffect(() => {
     let isMounted = true;
@@ -51,6 +53,10 @@ function Camera(): JSX.Element {
       isMounted = false;
     };
   }, [dispatch, id, isCameraIdFound, setVisibleReviewsCount]);
+
+  if (isCameraInfoDataLoading) {
+    return <Loading />;
+  }
 
   if (isCameraIdFound || !isAboutTitleFound) {
     return <NotFound />;
