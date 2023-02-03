@@ -1,5 +1,5 @@
 import { Review } from '../../types/review';
-import { getHumanizeDateDayMounth } from '../../utils';
+import { getHumanizeDateDayMounth } from '../../utils/utils';
 import Stars from '../stars/stars';
 
 type ReviewCardProps = {

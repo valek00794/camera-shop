@@ -39,7 +39,7 @@ export const fetchCameraInfoAction = createAsyncThunk<Camera, string | undefined
 }>(
   'data/fetchCameraInfo',
   async (id, {extra: api}) => {
-    const {data} = await api.get<Camera>(id ? `${APIRoute.Cameras}/${id}` : '');
+    const {data} = await api.get<Camera>(id ? `${APIRoute.Cameras}${id}` : '');
     return data;
   },
 );
@@ -51,7 +51,7 @@ export const fetchCameraReviewsAction = createAsyncThunk<Review[], string | unde
 }>(
   'data/fetchCameraReviews',
   async (id, {extra: api}) => {
-    const {data} = await api.get<Review[]>(id ? `${APIRoute.Cameras}/${id}${APIRoute.Reviews}` : '');
+    const {data} = await api.get<Review[]>(id ? `${APIRoute.Cameras}${id}${APIRoute.Reviews}` : '');
     return data;
   },
 );
@@ -63,7 +63,7 @@ export const fetchSimilarCamerasAction = createAsyncThunk<Camera[], string | und
 }>(
   'data/fetchSimilarCameras',
   async (id, {extra: api}) => {
-    const {data} = await api.get<Camera[]>(id ? `${APIRoute.Cameras}/${id}${APIRoute.Similar}` : '');
+    const {data} = await api.get<Camera[]>(id ? `${APIRoute.Cameras}${id}${APIRoute.Similar}` : '');
     return data;
   },
 );

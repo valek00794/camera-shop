@@ -6,7 +6,7 @@ import { useAppDispatch, useAppSelector } from '../../hooks';
 import { fetchPostReviewAction } from '../../store/api-actions';
 import { getReviewSubmitSuccessful } from '../../store/app-data/selectors';
 import { ReviewPost } from '../../types/review';
-import { scrollUp } from '../../utils';
+import { scrollUp } from '../../utils/utils';
 import FocusLock from 'react-focus-lock';
 import ReviewAddSuccess from './review-add-success';
 

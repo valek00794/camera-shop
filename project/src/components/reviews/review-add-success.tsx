@@ -1,4 +1,4 @@
-import { scrollUp } from '../../utils';
+import { scrollUp } from '../../utils/utils';
 
 const scrollToOptions: ScrollToOptions[] = [
   {

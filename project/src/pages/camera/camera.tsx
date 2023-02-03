@@ -8,7 +8,7 @@ import BreadcrumbsList from '../../components/breadcrumbs-list/breadcrumbs-list'
 import SimilarList from '../../components/similar/similar-list';
 import Stars from '../../components/stars/stars';
 import ReviewsList from '../../components/reviews/reviews-list';
-import { scrollUp } from '../../utils';
+import { scrollUp } from '../../utils/utils';
 import { CameraNameIncludes, ReviewListSetttings } from '../../consts';
 import ReviewAdd from '../../components/reviews/review-add';
 import NotFound from '../../components/not-found/not-found';
