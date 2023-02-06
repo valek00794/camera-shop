@@ -54,7 +54,7 @@ export const makeFakeNewReview = (): ReviewPost => ({
 
 export const makeFakeCameras = (count: number): Camera[] => {
   const cameras = [];
-  for (let i = 2; i < count; i++) {
+  for (let i = 2; i <= count; i++) {
     cameras.push(makeFakeCameraInfo(i));
   }
   cameras.push(fakeCameraInfo);
@@ -63,7 +63,7 @@ export const makeFakeCameras = (count: number): Camera[] => {
 
 export const makeFakeReviews = (count: number): Review[] => {
   const reviews = [];
-  for (let i = 2; i < count; i++) {
+  for (let i = 2; i <= count; i++) {
     reviews.push(makeFakeReview(i));
   }
   reviews.push(makeFakeReview(fakeCameraInfo.id));

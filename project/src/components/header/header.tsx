@@ -6,7 +6,12 @@ function Header(): JSX.Element {
     <>
       <header className="header" id="header">
         <div className="container">
-          <Link className="header__logo" to="/" aria-label="Переход на главную">
+          <Link
+            className="header__logo"
+            to="/"
+            aria-label="Переход на главную"
+            data-testid="logo-link"
+          >
             <svg width="100" height="36" aria-hidden="true">
               <use xlinkHref="#icon-logo"></use>
             </svg>
@@ -29,7 +34,7 @@ function Header(): JSX.Element {
                 <svg className="form-search__icon" width="16" height="16" aria-hidden="true">
                   <use xlinkHref="#icon-lens"></use>
                 </svg>
-                <input className="form-search__input" type="text" autoComplete="off" placeholder="Поиск по сайту"/>
+                <input className="form-search__input" type="text" autoComplete="off" placeholder="Поиск по сайту" />
               </label>
               <ul className="form-search__select-list">
                 <li className="form-search__select-item" tabIndex={0}>Cannonball Pro MX 8i</li>

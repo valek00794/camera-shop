@@ -7,7 +7,7 @@ import SimilarCard from './similar-card';
 function SimilarList(): JSX.Element {
   const firstVisibleSimilarState = useState(SimilarListVisibleSetttings.FirstElement);
   const [firstVisibleSimilarElement, setFirstVisibleSimilarElement] = firstVisibleSimilarState;
-  const smilarCameras = useAppSelector(getSimilarCameras);
+  const similarCameras = useAppSelector(getSimilarCameras);
 
   const handlePrev = () => setFirstVisibleSimilarElement(firstVisibleSimilarElement - 1);
   const handleNext = () => setFirstVisibleSimilarElement(firstVisibleSimilarElement + 1);
@@ -18,7 +18,7 @@ function SimilarList(): JSX.Element {
       <div className="product-similar__slider">
         <div className="product-similar__slider-list">
           {
-            smilarCameras.map((camera) => camera &&
+            similarCameras.map((camera) => camera &&
               <SimilarCard
                 firstVisibleSimilarState={firstVisibleSimilarState}
                 key={camera.id}
@@ -31,6 +31,7 @@ function SimilarList(): JSX.Element {
           type="button"
           aria-label="Предыдущий слайд"
           onClick={handlePrev}
+          data-testid="handle-prev"
           disabled={firstVisibleSimilarElement === 0}
         >
           <svg width="7" height="12" aria-hidden="true">
@@ -41,9 +42,10 @@ function SimilarList(): JSX.Element {
           className="slider-controls slider-controls--next"
           type="button" aria-label="Следующий слайд"
           onClick={handleNext}
+          data-testid="handle-next"
           disabled={
-            smilarCameras.length < SimilarListVisibleSetttings.VisibleCount ||
-            firstVisibleSimilarElement === smilarCameras.length - SimilarListVisibleSetttings.VisibleCount
+            similarCameras.length < SimilarListVisibleSetttings.VisibleCount ||
+            firstVisibleSimilarElement === similarCameras.length - SimilarListVisibleSetttings.VisibleCount
           }
         >
           <svg width="7" height="12" aria-hidden="true">
