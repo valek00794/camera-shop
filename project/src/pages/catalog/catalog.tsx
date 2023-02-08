@@ -14,8 +14,7 @@ import Loading from '../../components/loading/loading';
 
 function Catalog(): JSX.Element {
   const { page } = useParams();
-  const paramPageToNumber = Number(page);
-  const sliceCameras = useAppSelector(getCamerasByPage(paramPageToNumber));
+  const sliceCameras = useAppSelector(getCamerasByPage(Number(page)));
   const isCamerasDataLoading = useAppSelector(getCamerasDataLoading);
   const isPromoDataLoading = useAppSelector(getPromoDataLoading);
 
@@ -27,7 +26,7 @@ function Catalog(): JSX.Element {
     return <Loading />;
   }
 
-  if (paramPageToNumber && !pages.includes(paramPageToNumber)) {
+  if (!pages.includes(Number(page))) {
     return <NotFound />;
   }
 

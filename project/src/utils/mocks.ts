@@ -34,8 +34,8 @@ export const makeFakePromo = (): Promo => ({
 export const makeFakeReview = (id: number): Review => ({
   id,
   userName: internet.userName(),
-  advantage: commerce.productDescription(),
-  disadvantage: commerce.productDescription(),
+  advantage: commerce.product(),
+  disadvantage: commerce.productAdjective(),
   review: commerce.productDescription(),
   rating:  datatype.number(5),
   createAt: datatype.datetime().toString(),
@@ -44,8 +44,8 @@ export const makeFakeReview = (id: number): Review => ({
 
 export const makeFakeNewReview = (): ReviewPost => ({
   userName: internet.userName(),
-  advantage: commerce.productDescription(),
-  disadvantage: commerce.productDescription(),
+  advantage: commerce.product(),
+  disadvantage: commerce.productAdjective(),
   review: commerce.productDescription(),
   rating:  datatype.number(5),
   cameraId: datatype.number(),

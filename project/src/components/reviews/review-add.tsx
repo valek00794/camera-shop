@@ -89,7 +89,7 @@ function ReviewAdd(props: ReviewAddProps): JSX.Element {
   return (
     <div className={getModalBlockClassName}>
       <div className="modal__wrapper">
-        <div className="modal__overlay"></div>
+        <div className="modal__overlay" data-testid="close-overlay"></div>
         {
           isActiveReviewAdd &&
           <div className="modal__content">
@@ -253,6 +253,7 @@ function ReviewAdd(props: ReviewAddProps): JSX.Element {
               className="cross-btn"
               type="button"
               aria-label="Закрыть попап"
+              data-testid="btn-close-modal"
               onClick={() => {
                 setIsActiveReviewAdd(false);
                 scrollUp(scrollToOptions);

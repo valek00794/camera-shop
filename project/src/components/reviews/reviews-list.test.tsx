@@ -81,9 +81,9 @@ describe('Component: ReviewsList', () => {
       </Provider>
 
     );
-    expect(screen.getByText('Отзывы')).toBeInTheDocument();
-    expect(screen.getByText('Оставить свой отзыв')).toBeInTheDocument();
-    expect(screen.getByText('Показать больше отзывов')).toBeInTheDocument();
+    expect(screen.getByText(/Отзывы/i)).toBeInTheDocument();
+    expect(screen.getByText(/Оставить свой отзыв/i)).toBeInTheDocument();
+    expect(screen.getByText(/Показать больше отзывов/i)).toBeInTheDocument();
   });
   it('4. should click show more reviews correctly', async () => {
     const history = createMemoryHistory();
@@ -100,9 +100,9 @@ describe('Component: ReviewsList', () => {
 
     );
 
-    expect(screen.getByText('Показать больше отзывов')).toBeInTheDocument();
-    screen.getByText('Показать больше отзывов').onclick = fakeHandleShowMoreReviews;
-    await userEvent.click(screen.getByText('Показать больше отзывов'));
+    expect(screen.getByText(/Показать больше отзывов/i)).toBeInTheDocument();
+    screen.getByText(/Показать больше отзывов/i).onclick = fakeHandleShowMoreReviews;
+    await userEvent.click(screen.getByText(/Показать больше отзывов/i));
     expect(fakeHandleShowMoreReviews).toBeCalledTimes(1);
 
   });
