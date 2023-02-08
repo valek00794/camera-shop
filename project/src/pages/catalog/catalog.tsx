@@ -1,3 +1,6 @@
+import { useParams } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
+
 import Banner from '../../components/banner/banner';
 import FilterForm from '../../components/filter-form/filter-form';
 import SortForm from '../../components/sort-form/sort-form';
@@ -6,10 +9,8 @@ import PaginationList from '../../components/pagination-list/pagination-list';
 import BreadcrumbsList from '../../components/breadcrumbs-list/breadcrumbs-list';
 import { useAppSelector } from '../../hooks';
 import { getCamerasAmount, getCamerasByPage, getCamerasDataLoading, getPromoDataLoading } from '../../store/app-data/selectors';
-import { useParams } from 'react-router-dom';
 import NotFound from '../../components/not-found/not-found';
 import { CAMERAS_AMOUNT_SHOW_BY_PAGE } from '../../consts';
-import { Helmet } from 'react-helmet-async';
 import Loading from '../../components/loading/loading';
 
 function Catalog(): JSX.Element {

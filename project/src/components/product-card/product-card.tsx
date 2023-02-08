@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+
 import { CameraNameIncludes } from '../../consts';
 import { Camera } from '../../types/camera';
 import Stars from '../stars/stars';

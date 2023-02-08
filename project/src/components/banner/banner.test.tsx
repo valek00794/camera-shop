@@ -3,14 +3,12 @@ import { configureMockStore } from '@jedmao/redux-mock-store';
 import userEvent from '@testing-library/user-event';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
-
+import { Route, Routes } from 'react-router-dom';
 
 import { createMemoryHistory } from 'history';
 import { makeFakePromo } from '../../utils/mocks';
 import HistoryRouter from '../../components/history-route/history-route';
 import Banner from './banner';
-import { Route, Routes } from 'react-router-dom';
-
 
 const mockStore = configureMockStore([thunk]);
 

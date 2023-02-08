@@ -1,4 +1,5 @@
 import { createSelector } from 'reselect';
+
 import { CAMERAS_AMOUNT_SHOW_BY_PAGE, NameSpace } from '../../consts';
 import { Camera } from '../../types/camera';
 import { Promo } from '../../types/promo';

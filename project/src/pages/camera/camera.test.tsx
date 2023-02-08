@@ -3,14 +3,12 @@ import { configureMockStore } from '@jedmao/redux-mock-store';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import { HelmetProvider } from 'react-helmet-async';
-
 import { createMemoryHistory } from 'history';
+import { Route, Routes } from 'react-router-dom';
+
 import { makeFakeCameras, makeFakeReviews, fakeCameraInfo } from '../../utils/mocks';
 import HistoryRouter from '../../components/history-route/history-route';
-
-import { Route, Routes } from 'react-router-dom';
 import { AppRoute } from '../../consts';
-
 import Camera from './camera';
 
 const mockStore = configureMockStore([thunk]);

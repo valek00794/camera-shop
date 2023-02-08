@@ -1,9 +1,12 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
+import classnames from 'classnames';
+import { Helmet } from 'react-helmet-async';
+import FocusLock from 'react-focus-lock';
+
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { fetchCameraInfoAction, fetchCameraReviewsAction, fetchSimilarCamerasAction } from '../../store/api-actions';
 import { getCameraInfo, getCameraInfoDataLoading, getCamerasIds, getSimilarCameras } from '../../store/app-data/selectors';
-import classnames from 'classnames';
 import BreadcrumbsList from '../../components/breadcrumbs-list/breadcrumbs-list';
 import SimilarList from '../../components/similar/similar-list';
 import Stars from '../../components/stars/stars';
@@ -12,8 +15,6 @@ import { scrollUp } from '../../utils/utils';
 import { CameraNameIncludes, ReviewListSetttings } from '../../consts';
 import ReviewAdd from '../../components/reviews/review-add';
 import NotFound from '../../components/not-found/not-found';
-import { Helmet } from 'react-helmet-async';
-import FocusLock from 'react-focus-lock';
 import Loading from '../../components/loading/loading';
 
 const aboutCameraTabsTitle = {

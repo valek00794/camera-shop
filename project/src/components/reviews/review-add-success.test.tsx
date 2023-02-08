@@ -2,12 +2,12 @@ import { render, renderHook, screen } from '@testing-library/react';
 import { configureMockStore } from '@jedmao/redux-mock-store';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
+import { useState } from 'react';
+import userEvent from '@testing-library/user-event';
 
 import { createMemoryHistory } from 'history';
 import { makeFakeReview } from '../../utils/mocks';
 import HistoryRouter from '../../components/history-route/history-route';
-import { useState } from 'react';
-import userEvent from '@testing-library/user-event';
 import ReviewAddSuccess from './review-add-success';
 
 

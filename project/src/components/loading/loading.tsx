@@ -1,6 +1,5 @@
 import './loading.css';
 
-
 function Loading(): JSX.Element {
   return (
     <main className="outer">

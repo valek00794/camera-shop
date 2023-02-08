@@ -7,7 +7,6 @@ import { HelmetProvider } from 'react-helmet-async';
 
 import HistoryRouter from '../history-route/history-route';
 import App from './app';
-
 import { AppRoute } from '../../consts';
 import {
   makeFakePromo,

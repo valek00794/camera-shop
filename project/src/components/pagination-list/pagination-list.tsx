@@ -1,5 +1,6 @@
 import { Link, useParams } from 'react-router-dom';
 import classnames from 'classnames';
+
 import { scrollUp } from '../../utils/utils';
 
 type PaginationListProps = {

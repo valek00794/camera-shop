@@ -1,4 +1,5 @@
 import { useState } from 'react';
+
 import { SimilarListVisibleSetttings } from '../../consts';
 import { useAppSelector } from '../../hooks';
 import { getSimilarCameras } from '../../store/app-data/selectors';

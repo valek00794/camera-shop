@@ -1,4 +1,5 @@
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
+
 import { AppRoute } from '../../consts';
 import Camera from '../../pages/camera/camera';
 import Catalog from '../../pages/catalog/catalog';

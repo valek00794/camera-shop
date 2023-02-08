@@ -3,15 +3,13 @@ import { configureMockStore } from '@jedmao/redux-mock-store';
 import userEvent from '@testing-library/user-event';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
-
+import { useState } from 'react';
 
 import { createMemoryHistory } from 'history';
 import { makeFakeReviews } from '../../utils/mocks';
 import HistoryRouter from '../../components/history-route/history-route';
 import ReviewsList from './reviews-list';
 import { ReviewListSetttings } from '../../consts';
-import { useState } from 'react';
-
 
 const mockStore = configureMockStore([thunk]);
 

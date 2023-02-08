@@ -4,13 +4,13 @@ import userEvent from '@testing-library/user-event';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import { Route, Routes } from 'react-router-dom';
+import { useState } from 'react';
 
 import { createMemoryHistory } from 'history';
 import { fakeCameraInfo, makeFakeCameras } from '../../utils/mocks';
 import HistoryRouter from '../../components/history-route/history-route';
 import SimilarCard from './similar-card';
 import { SimilarListVisibleSetttings } from '../../consts';
-import { useState } from 'react';
 
 const mockStore = configureMockStore([thunk]);
 

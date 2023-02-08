@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+
 import { useAppSelector } from '../../hooks';
 import { getPromo } from '../../store/app-data/selectors';
 

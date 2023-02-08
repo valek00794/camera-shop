@@ -2,13 +2,12 @@ import { render, screen } from '@testing-library/react';
 import { configureMockStore } from '@jedmao/redux-mock-store';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
-
+import userEvent from '@testing-library/user-event';
 
 import { createMemoryHistory } from 'history';
 import { makeFakeCameras } from '../../utils/mocks';
 import HistoryRouter from '../../components/history-route/history-route';
 import SimilarList from './similar-list';
-import userEvent from '@testing-library/user-event';
 
 const mockStore = configureMockStore([thunk]);
 

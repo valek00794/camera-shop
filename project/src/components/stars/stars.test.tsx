@@ -3,11 +3,9 @@ import { configureMockStore } from '@jedmao/redux-mock-store';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 
-
 import { createMemoryHistory } from 'history';
 import HistoryRouter from '../../components/history-route/history-route';
 import Stars from './stars';
-
 
 const mockStore = configureMockStore([thunk]);
 

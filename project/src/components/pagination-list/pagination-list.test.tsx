@@ -3,14 +3,13 @@ import { render, screen } from '@testing-library/react';
 import { configureMockStore } from '@jedmao/redux-mock-store';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
+import { Route, Routes } from 'react-router-dom';
 
 import { createMemoryHistory } from 'history';
 import HistoryRouter from '../../components/history-route/history-route';
 import PaginationList from './pagination-list';
 import { makeFakeCameras } from '../../utils/mocks';
 import { CAMERAS_AMOUNT_SHOW_BY_PAGE } from '../../consts';
-import { Route, Routes } from 'react-router-dom';
-
 
 const mockStore = configureMockStore([thunk]);
 const fakeCameras = makeFakeCameras(datatype.number({min: 10, max: 200}));

@@ -2,13 +2,12 @@ import { render, screen } from '@testing-library/react';
 import { configureMockStore } from '@jedmao/redux-mock-store';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
-
+import { Route, Routes } from 'react-router-dom';
 
 import { createMemoryHistory } from 'history';
 import { makeFakeCameras, fakeCameraInfo } from '../../utils/mocks';
 import HistoryRouter from '../../components/history-route/history-route';
 import BreadcrumbsList from './breadcrumbs-list';
-import { Route, Routes } from 'react-router-dom';
 import { AppRoute } from '../../consts';
 
 

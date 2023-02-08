@@ -1,11 +1,13 @@
 import { Link } from 'react-router-dom';
-import { Camera } from '../../types/camera';
 import classnames from 'classnames';
+import { useEffect } from 'react';
+
+import { Camera } from '../../types/camera';
 import { useAppSelector } from '../../hooks';
 import { getSimilarCameras } from '../../store/app-data/selectors';
 import { CameraNameIncludes, SimilarListVisibleSetttings } from '../../consts';
 import Stars from '../stars/stars';
-import { useEffect } from 'react';
+
 
 type SimilarCardProps = {
   camera: Camera;
