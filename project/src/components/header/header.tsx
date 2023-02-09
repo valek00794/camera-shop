@@ -57,7 +57,9 @@ function Header(): JSX.Element {
           </Link>
         </div>
       </header>
-      <Outlet />
+      <div style={{minHeight: '100vh'}}>
+        <Outlet />
+      </div>
     </>
   );
 }
