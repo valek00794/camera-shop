@@ -6,7 +6,7 @@ import FocusLock from 'react-focus-lock';
 
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { fetchCameraInfoWithReviewsAction, fetchSimilarCamerasAction } from '../../store/api-actions';
-import { getCameraInfo, getCameraInfoDataLoading, getCamerasIds, getSimilarCameras } from '../../store/app-data/selectors';
+import { getCameraInfo, getCameraInfoDataLoading, getSimilarCameras } from '../../store/app-data/selectors';
 import BreadcrumbsList from '../../components/breadcrumbs-list/breadcrumbs-list';
 import SimilarList from '../../components/similar/similar-list';
 import Stars from '../../components/stars/stars';
@@ -32,18 +32,16 @@ function Camera(): JSX.Element {
   const { id, about } = useParams();
   const cameraInfo = useAppSelector(getCameraInfo);
   const similarCameras = useAppSelector(getSimilarCameras);
-  const availableCamerasIDs = useAppSelector(getCamerasIds);
   const visibleReviewsCountState = useState(ReviewListSetttings.VisibleCount);
   const [, setVisibleReviewsCount] = visibleReviewsCountState;
   const activeReviewAddState = useState(false);
   const [specificationsTab, descriptionTab] = Object.keys(aboutCameraTabsTitle);
-  const isCameraIdFound = id && !availableCamerasIDs.includes(id);
   const isAboutTitleFound = about as keyof typeof aboutCameraTabsTitle in aboutCameraTabsTitle;
   const isCameraInfoDataLoading = useAppSelector(getCameraInfoDataLoading);
 
   useEffect(() => {
     let isMounted = true;
-    if (isMounted && !isCameraIdFound) {
+    if (isMounted) {
       dispatch(fetchCameraInfoWithReviewsAction(id));
       dispatch(fetchSimilarCamerasAction(id));
       setVisibleReviewsCount(ReviewListSetttings.VisibleCount);
@@ -52,13 +50,13 @@ function Camera(): JSX.Element {
     return () => {
       isMounted = false;
     };
-  }, [dispatch, id, isCameraIdFound, setVisibleReviewsCount]);
+  }, [dispatch, id, setVisibleReviewsCount]);
 
   if (isCameraInfoDataLoading) {
     return <Loading />;
   }
 
-  if (isCameraIdFound || !isAboutTitleFound) {
+  if (!isAboutTitleFound) {
     return <NotFound />;
   }
 

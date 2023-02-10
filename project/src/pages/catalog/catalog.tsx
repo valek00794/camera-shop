@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 
@@ -8,29 +7,28 @@ import SortForm from '../../components/sort-form/sort-form';
 import ProductCard from '../../components/product-card/product-card';
 import PaginationList from '../../components/pagination-list/pagination-list';
 import BreadcrumbsList from '../../components/breadcrumbs-list/breadcrumbs-list';
-import { useAppSelector } from '../../hooks';
-import { getCamerasAmount, getCamerasByPage, getCamerasDataLoading, getPromoDataLoading } from '../../store/app-data/selectors';
-import NotFound from '../../components/not-found/not-found';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { getCameras, } from '../../store/app-data/selectors';
 import { CAMERAS_AMOUNT_SHOW_BY_PAGE } from '../../consts';
-import Loading from '../../components/loading/loading';
+import { fetchCamerasAction } from '../../store/api-actions';
+import { useEffect } from 'react';
 
 function Catalog(): JSX.Element {
+  const dispatch = useAppDispatch();
+
   const { page } = useParams();
-  const sliceCameras = useAppSelector(getCamerasByPage(Number(page)));
-  const isCamerasDataLoading = useAppSelector(getCamerasDataLoading);
-  const isPromoDataLoading = useAppSelector(getPromoDataLoading);
+  const cameras = useAppSelector(getCameras);
 
-  const camerasAmount = useAppSelector(getCamerasAmount);
-  const pageCount = Math.ceil(camerasAmount / CAMERAS_AMOUNT_SHOW_BY_PAGE);
-  const pages = Array.from({ length: pageCount }, (_, index) => index + 1);
+  useEffect(() => {
+    let isMounted = true;
+    if (isMounted) {
+      dispatch(fetchCamerasAction([CAMERAS_AMOUNT_SHOW_BY_PAGE * Number(page) - CAMERAS_AMOUNT_SHOW_BY_PAGE, CAMERAS_AMOUNT_SHOW_BY_PAGE]));
+    }
+    return () => {
+      isMounted = false;
 
-  if (isCamerasDataLoading) {
-    return <Loading />;
-  }
-
-  if (!pages.includes(Number(page))) {
-    return <NotFound />;
-  }
+    };
+  }, [dispatch, page]);
 
   return (
     <>
@@ -55,12 +53,9 @@ function Catalog(): JSX.Element {
                     <SortForm />
                   </div>
                   <div className="cards catalog__cards">
-                    {sliceCameras.map((camera) => <ProductCard key={camera.id} camera={camera} />)}
+                    {cameras.map((camera) => <ProductCard key={camera.id} camera={camera} />)}
                   </div>
-                  <PaginationList
-                    pageCount={pageCount}
-                    pages={pages}
-                  />
+                  <PaginationList />
                 </div>
               </div>
             </div>

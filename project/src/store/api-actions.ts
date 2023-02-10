@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import {AxiosInstance} from 'axios';
 import {createAsyncThunk} from '@reduxjs/toolkit';
 
@@ -8,15 +9,18 @@ import { Camera, CameraEmbedRevievs } from '../types/camera';
 import { Promo } from '../types/promo';
 import { Review, ReviewPost } from '../types/review';
 
-export const fetchCamerasAction = createAsyncThunk<Camera[], undefined, {
+export const fetchCamerasAction = createAsyncThunk<Camera[], [number, number], {
   dispatch: AppDispatch;
   state: State;
   extra: AxiosInstance;
 }>(
   'data/fetchCameras',
-  async (_arg, {extra: api}) => {
-    const {data} = await api.get<Camera[]>(APIRoute.Cameras);
+  async ([start, limit], {extra: api}) => {
+    const resp = await api.get<Camera[]>(`${APIRoute.Cameras}?_start=${start}&_limit=${limit}`);
+    const data = [...resp.data];
+    data.length = Number(resp.headers['x-total-count']);
     return data;
+
   },
 );
 

@@ -18,44 +18,7 @@ const fakeCameras = makeFakeCameras(20);
 
 describe('Component: Catalog', () => {
 
-  it('1. should render correctly when cameras data loading', () => {
-    const history = createMemoryHistory();
-    const store = mockStore({
-      DATA: { isCamerasDataLoading: true, isPromoDataLoading: false, cameras: [], promo: fakePromo },
-    });
-
-    render(
-      <Provider store={store}>
-        <HistoryRouter history={history}>
-          <Catalog />
-        </HistoryRouter>
-      </Provider>
-
-    );
-    expect(screen.getByText(/Загрузка, пожалуйста подождите/i)).toBeInTheDocument();
-
-  });
-  it('2. should render correctly if params is wrong', () => {
-    const history = createMemoryHistory();
-    const store = mockStore({
-      DATA: { isCamerasDataLoading: false, isPromoDataLoading: false, cameras: fakeCameras, promo: fakePromo },
-    });
-    const fakeLink = '/catalog/page_user-put-in-addres-bar';
-    history.push(fakeLink);
-    render(
-      <HelmetProvider>
-        <Provider store={store}>
-          <HistoryRouter history={history}>
-            <Routes>
-              <Route path={AppRoute.Catalog} element={<Catalog />} />
-            </Routes>
-          </HistoryRouter>
-        </Provider>
-      </HelmetProvider>
-    );
-    expect(screen.getByText(/404. Увы страница не найдена!/i)).toBeInTheDocument();
-  });
-  it('3. should render correctly', () => {
+  it('1. should render correctly', () => {
     const history = createMemoryHistory();
     const store = mockStore({
       DATA: { isCamerasDataLoading: false, isPromoDataLoading: false, cameras: fakeCameras, promo: fakePromo },

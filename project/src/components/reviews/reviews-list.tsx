@@ -12,7 +12,7 @@ function ReviewsList(props: ReviewsListProps): JSX.Element {
   const [visibleReviewsCount, setVisibleReviewsCount] = props.visibleReviewsCountState;
   const [, setIsActiveReviewAdd] = props.activeReviewAddState;
   const cameraSortReviews = useAppSelector(getSortCameraReviews());
-  const cameraReviewsByCount = cameraSortReviews.slice(0, visibleReviewsCount);
+  const cameraReviewsByCount = cameraSortReviews?.slice(0, visibleReviewsCount);
 
   const handleShowMoreReviews = () => setVisibleReviewsCount(visibleReviewsCount + ReviewListSetttings.VisibleCount);
 
@@ -29,11 +29,11 @@ function ReviewsList(props: ReviewsListProps): JSX.Element {
       </div>
       <ul className="review-block__list">
         {
-          cameraReviewsByCount.map((review) => <ReviewCard key={review.id} review={review} />)
+          cameraReviewsByCount?.map((review) => <ReviewCard key={review.id} review={review} />)
         }
       </ul>
       {
-        cameraSortReviews.length > visibleReviewsCount &&
+        cameraSortReviews && cameraSortReviews.length > visibleReviewsCount &&
         <div className="review-block__buttons">
           <button
             className="btn btn--purple"

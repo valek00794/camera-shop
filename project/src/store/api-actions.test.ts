@@ -42,13 +42,14 @@ describe('Async actions', () => {
     >(middlewares);
 
   it('1. should dispatch cameras when GET /cameras', async () => {
+    const [start, limit] = [0, 5];
     mockAPI
       .onGet(APIRoute.Cameras)
-      .reply(200, mockCameras);
+      .reply(200, mockCameras.slice(start, limit));
 
     const store = mockStore();
 
-    await store.dispatch(fetchCamerasAction());
+    await store.dispatch(fetchCamerasAction([start, limit]));
 
     const actions = store.getActions().map(({type}) => type);
 
