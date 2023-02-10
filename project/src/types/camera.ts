@@ -1,3 +1,5 @@
+import { Review } from './review';
+
 export type Camera = {
   id: number;
   name: string;
@@ -14,3 +16,5 @@ export type Camera = {
   previewImgWebp2x: string;
   reviewCount: number;
 };
+
+export type CameraEmbedRevievs = Pick<Camera, keyof Camera> & {reviews?: Pick<Review, keyof Review>[]};

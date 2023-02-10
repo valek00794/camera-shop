@@ -4,8 +4,7 @@ import {AppData} from '../../types/state';
 import {
   fetchCamerasAction,
   fetchPromoAction,
-  fetchCameraInfoAction,
-  fetchCameraReviewsAction,
+  fetchCameraInfoWithReviewsAction,
   fetchSimilarCamerasAction,
   fetchPostReviewAction,
 } from '../api-actions';
@@ -42,22 +41,21 @@ export const appData = createSlice({
         state.promo = action.payload;
         state.isPromoDataLoading = false;
       })
-      .addCase(fetchCameraInfoAction.pending, (state) => {
+      .addCase(fetchCameraInfoWithReviewsAction.pending, (state) => {
         state.isCameraInfoDataLoading = true;
       })
-      .addCase(fetchCameraInfoAction.fulfilled, (state, action) => {
+      .addCase(fetchCameraInfoWithReviewsAction.fulfilled, (state, action) => {
+        state.reviews = action.payload.reviews;
+        delete action.payload.reviews;
         state.cameraInfo = action.payload;
         state.isCameraInfoDataLoading = false;
-      })
-      .addCase(fetchCameraReviewsAction.fulfilled, (state, action) => {
-        state.reviews = action.payload;
       })
       .addCase(fetchSimilarCamerasAction.fulfilled, (state, action) => {
         state.similarCameras = action.payload;
       })
       .addCase(fetchPostReviewAction.fulfilled, (state, action) => {
         state.isReviewSubmitSuccessful = true;
-        state.reviews.push(action.payload);
+        state.reviews?.push(action.payload);
       })
       .addCase(fetchPostReviewAction.rejected, (state) => {
         state.isReviewSubmitSuccessful = false;

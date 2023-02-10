@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 
@@ -23,7 +24,7 @@ function Catalog(): JSX.Element {
   const pageCount = Math.ceil(camerasAmount / CAMERAS_AMOUNT_SHOW_BY_PAGE);
   const pages = Array.from({ length: pageCount }, (_, index) => index + 1);
 
-  if (isCamerasDataLoading || isPromoDataLoading) {
+  if (isCamerasDataLoading) {
     return <Loading />;
   }
 

@@ -10,8 +10,7 @@ import {
 import {
   fetchCamerasAction,
   fetchPromoAction,
-  fetchCameraInfoAction,
-  fetchCameraReviewsAction,
+  fetchCameraInfoWithReviewsAction,
   fetchSimilarCamerasAction,
   fetchPostReviewAction,
 } from '../api-actions';
@@ -21,6 +20,7 @@ const fakePromo = makeFakePromo();
 const fakeReviews = makeFakeReviews(5);
 const fakeSimilarCameras = makeFakeCameras(5);
 const fakeNewReview = makeFakeReview(1);
+const fakeCameraInfoWithReviews = {...fakeCameraInfo, reviews: fakeReviews };
 
 const initialState = {
   cameras: [],
@@ -55,14 +55,14 @@ describe('Reducer: appData', () => {
 
   it('3.1. should set isCameraInfoDataLoading when load cameraInfo', () => {
     const state = initialState;
-    expect(appData.reducer(state, {type: fetchCameraInfoAction.pending.type}))
+    expect(appData.reducer(state, {type: fetchCameraInfoWithReviewsAction.pending.type}))
       .toEqual({...state, isCameraInfoDataLoading: true});
   });
 
-  it('3.2. should update cameraInfo by load cameraInfo and set isCameraInfoDataLoading', () => {
+  it('3.2. should update cameraInfo and revievs by load cameraInfo _embed=reviews and set isCameraInfoDataLoading', () => {
     const state = initialState;
-    expect(appData.reducer(state, {type: fetchCameraInfoAction.fulfilled.type, payload: fakeCameraInfo}))
-      .toEqual({...state, cameraInfo: fakeCameraInfo, isCameraInfoDataLoading: false});
+    expect(appData.reducer(state, {type: fetchCameraInfoWithReviewsAction.fulfilled.type, payload: {...fakeCameraInfo, reviews: fakeReviews}}))
+      .toEqual({...state, cameraInfo: fakeCameraInfo, isCameraInfoDataLoading: false, reviews: fakeReviews});
   });
 
   it('4.1. should set isPromoDataLoading when load promo', () => {
@@ -77,19 +77,13 @@ describe('Reducer: appData', () => {
       .toEqual({...state, promo: fakePromo, isPromoDataLoading: false});
   });
 
-  it('5.1. should update reviews by load reviews', () => {
-    const state = initialState;
-    expect(appData.reducer(state, {type: fetchCameraReviewsAction.fulfilled.type, payload: fakeReviews}))
-      .toEqual({...state, reviews: fakeReviews});
-  });
-
-  it('6.1. should update similarCameras by load similarCameras', () => {
+  it('5.1. should update similarCameras by load similarCameras', () => {
     const state = initialState;
     expect(appData.reducer(state, {type: fetchSimilarCamerasAction.fulfilled.type, payload: fakeSimilarCameras}))
       .toEqual({...state, similarCameras: fakeSimilarCameras});
   });
 
-  it('7.1. should update reviews before post review and set isReviewSubmitSuccessful', () => {
+  it('6.1. should update reviews before post review and set isReviewSubmitSuccessful', () => {
     const state = {...initialState, reviews: fakeReviews};
     const updateReviews = fakeReviews.slice();
     updateReviews.push(fakeNewReview);

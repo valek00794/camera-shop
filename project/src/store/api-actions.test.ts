@@ -7,8 +7,7 @@ import {createAPI} from '../services/api';
 import {
   fetchCamerasAction,
   fetchPromoAction,
-  fetchCameraInfoAction,
-  fetchCameraReviewsAction,
+  fetchCameraInfoWithReviewsAction,
   fetchSimilarCamerasAction,
   fetchPostReviewAction,
 } from './api-actions';
@@ -59,20 +58,20 @@ describe('Async actions', () => {
     ]);
   });
 
-  it('2. should dispatch cameraInfo when GET /cameras/id', async () => {
+  it('2. should dispatch cameraInfo when GET /cameras/:id?_embed=reviews', async () => {
     mockAPI
-      .onGet(APIRoute.Cameras + String(mockCameraInfo.id))
-      .reply(200, mockCameraInfo);
+      .onGet(`${APIRoute.Cameras}${String(mockCameraInfo.id)}?_embed=reviews`)
+      .reply(200, {...mockCameraInfo, reviews: mockReviews});
 
     const store = mockStore();
 
-    await store.dispatch(fetchCameraInfoAction(String(mockCameraInfo.id)));
+    await store.dispatch(fetchCameraInfoWithReviewsAction(String(mockCameraInfo.id)));
 
     const actions = store.getActions().map(({type}) => type);
 
     expect(actions).toEqual([
-      fetchCameraInfoAction.pending.type,
-      fetchCameraInfoAction.fulfilled.type
+      fetchCameraInfoWithReviewsAction.pending.type,
+      fetchCameraInfoWithReviewsAction.fulfilled.type
     ]);
   });
 
@@ -93,24 +92,7 @@ describe('Async actions', () => {
     ]);
   });
 
-  it('4. should dispatch reviews when GET /cameras/id/reviews', async () => {
-    mockAPI
-      .onGet(APIRoute.Cameras + String(mockCameraInfo.id) + APIRoute.Reviews)
-      .reply(200, mockReviews);
-
-    const store = mockStore();
-
-    await store.dispatch(fetchCameraReviewsAction(String(mockCameraInfo.id)));
-
-    const actions = store.getActions().map(({type}) => type);
-
-    expect(actions).toEqual([
-      fetchCameraReviewsAction.pending.type,
-      fetchCameraReviewsAction.fulfilled.type
-    ]);
-  });
-
-  it('5. should dispatch similarCameras when GET /cameras/id/similar', async () => {
+  it('4. should dispatch similarCameras when GET /cameras/id/similar', async () => {
 
     mockAPI
       .onGet(APIRoute.Cameras + String(mockCameraInfo.id) + APIRoute.Similar)
@@ -129,7 +111,7 @@ describe('Async actions', () => {
   });
 
 
-  it('6. should dispatch favoriteOffers when POST /reviews/', async () => {
+  it('5. should dispatch favoriteOffers when POST /reviews/', async () => {
     mockAPI
       .onPost(APIRoute.Reviews)
       .reply(200, mockReviews);

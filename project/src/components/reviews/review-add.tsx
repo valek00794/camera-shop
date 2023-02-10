@@ -1,5 +1,5 @@
 import classnames from 'classnames';
-import { useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
 
@@ -18,6 +18,14 @@ type ReviewAddProps = {
 const scrollToOptions: ScrollToOptions = {
   top: 1175,
   behavior: 'smooth'
+};
+
+const ratingTitle = {
+  1: 'Ужасно',
+  2: 'Плохо',
+  3: 'Нормально',
+  4: 'Хорошо',
+  5: 'Отлично'
 };
 
 const DEFAULT_RATING_VALUE = 0;
@@ -111,61 +119,23 @@ function ReviewAdd(props: ReviewAddProps): JSX.Element {
                     </legend>
                     <div className="rate__bar">
                       <div className="rate__group">
-                        <input
-                          className="visually-hidden"
-                          id="star-5"
-                          type="radio"
-                          value="5"
-                          {...register('rating', {
-                            required: 'Нужно оценить товар',
-                          })}
-                          onChange={(evt) => setRatingValue(Number(evt.target.value))}
-                        />
-                        <label className="rate__label" htmlFor="star-5" title="Отлично"></label>
-                        <input
-                          className="visually-hidden"
-                          id="star-4"
-                          type="radio"
-                          value="4"
-                          {...register('rating', {
-                            required: 'Нужно оценить товар',
-                          })}
-                          onChange={(evt) => setRatingValue(Number(evt.target.value))}
-                        />
-                        <label className="rate__label" htmlFor="star-4" title="Хорошо"></label>
-                        <input
-                          className="visually-hidden"
-                          id="star-3"
-                          type="radio"
-                          value="3"
-                          {...register('rating', {
-                            required: 'Нужно оценить товар',
-                          })}
-                          onChange={(evt) => setRatingValue(Number(evt.target.value))}
-                        />
-                        <label className="rate__label" htmlFor="star-3" title="Нормально"></label>
-                        <input
-                          className="visually-hidden"
-                          id="star-2"
-                          type="radio"
-                          value="2"
-                          {...register('rating', {
-                            required: 'Нужно оценить товар',
-                          })}
-                          onChange={(evt) => setRatingValue(Number(evt.target.value))}
-                        />
-                        <label className="rate__label" htmlFor="star-2" title="Плохо"></label>
-                        <input
-                          className="visually-hidden"
-                          id="star-1"
-                          type="radio"
-                          value="1"
-                          {...register('rating', {
-                            required: 'Нужно оценить товар',
-                          })}
-                          onChange={(evt) => setRatingValue(Number(evt.target.value))}
-                        />
-                        <label className="rate__label" htmlFor="star-1" title="Ужасно"></label>
+                        {
+                          Object.keys(ratingTitle).reverse().map((rating) => (
+                            <Fragment key={rating}>
+                              <input
+                                className="visually-hidden"
+                                id={`star-${rating}`}
+                                type="radio"
+                                value={rating}
+                                {...register('rating', {
+                                  required: 'Нужно оценить товар',
+                                })}
+                                onChange={(evt) => setRatingValue(Number(evt.target.value))}
+                              />
+                              <label className="rate__label" htmlFor={`star-${rating}`} title={ratingTitle[rating as unknown as keyof typeof ratingTitle]}></label>
+                            </Fragment>
+                          ))
+                        }
                       </div>
                       <div className="rate__progress"><span className="rate__stars">{ratingValue}</span> <span>/</span> <span className="rate__all-stars">5</span>
                       </div>
@@ -187,7 +157,10 @@ function ReviewAdd(props: ReviewAddProps): JSX.Element {
                           <use xlinkHref="#icon-snowflake"></use>
                         </svg>
                       </span>
-                      <input type="text" placeholder="Введите ваше имя"
+                      <input
+                        type="text"
+                        placeholder="Введите ваше имя"
+                        aria-label="userName"
                         {...register('userName', {
                           required: 'Нужно указать имя',
                         })}

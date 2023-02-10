@@ -1,10 +1,24 @@
+import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
-import { useAppSelector } from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { fetchPromoAction } from '../../store/api-actions';
 import { getPromo } from '../../store/app-data/selectors';
 
 function Banner(): JSX.Element {
+  const dispatch = useAppDispatch();
   const promo = useAppSelector(getPromo);
+
+  useEffect(() => {
+    let isMounted = true;
+    if (isMounted) {
+      dispatch(fetchPromoAction());
+    }
+    return () => {
+      isMounted = false;
+    };
+  }, [dispatch]);
+
   return (
     <div className="banner">
       <picture>

@@ -35,23 +35,7 @@ describe('Component: Catalog', () => {
     expect(screen.getByText(/Загрузка, пожалуйста подождите/i)).toBeInTheDocument();
 
   });
-  it('2. should render correctly when promo data loading', () => {
-    const history = createMemoryHistory();
-    const store = mockStore({
-      DATA: { isCamerasDataLoading: false, isPromoDataLoading: true, cameras: fakeCameras, promo: null },
-    });
-
-    render(
-      <Provider store={store}>
-        <HistoryRouter history={history}>
-          <Catalog />
-        </HistoryRouter>
-      </Provider>
-
-    );
-    expect(screen.getByText(/Загрузка, пожалуйста подождите/i)).toBeInTheDocument();
-  });
-  it('3. should render correctly if params is wrong', () => {
+  it('2. should render correctly if params is wrong', () => {
     const history = createMemoryHistory();
     const store = mockStore({
       DATA: { isCamerasDataLoading: false, isPromoDataLoading: false, cameras: fakeCameras, promo: fakePromo },
@@ -71,7 +55,7 @@ describe('Component: Catalog', () => {
     );
     expect(screen.getByText(/404. Увы страница не найдена!/i)).toBeInTheDocument();
   });
-  it('4. should render correctly', () => {
+  it('3. should render correctly', () => {
     const history = createMemoryHistory();
     const store = mockStore({
       DATA: { isCamerasDataLoading: false, isPromoDataLoading: false, cameras: fakeCameras, promo: fakePromo },

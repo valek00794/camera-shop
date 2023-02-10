@@ -10,7 +10,7 @@ export type AppData = {
     isPromoDataLoading: boolean;
     cameraInfo: Camera | null;
     isCameraInfoDataLoading: boolean;
-    reviews: Review[];
+    reviews?: Review[];
     similarCameras: Camera[];
     isReviewSubmitSuccessful: boolean;
 };

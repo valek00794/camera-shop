@@ -5,6 +5,7 @@ import thunk from 'redux-thunk';
 import { HelmetProvider } from 'react-helmet-async';
 import { createMemoryHistory } from 'history';
 import { Route, Routes } from 'react-router-dom';
+import userEvent from '@testing-library/user-event';
 
 import { makeFakeCameras, makeFakeReviews, fakeCameraInfo } from '../../utils/mocks';
 import HistoryRouter from '../../components/history-route/history-route';
@@ -127,7 +128,40 @@ describe('Component: Camera', () => {
     expect(screen.getByText(/Отзывы/i)).toBeInTheDocument();
     expect(screen.getByText(/Показать больше отзывов/i)).toBeInTheDocument();
   });
-  it('5. should render correctly if similarCameras is empty', () => {
+  it('5. should render modal AddReview correctly when click Add review', async () => {
+    const history = createMemoryHistory();
+    const store = mockStore({
+      DATA: {
+        cameras: fakeCameras,
+        cameraInfo: fakeCameraInfo,
+        isCameraInfoDataLoading: false,
+        similarCameras: fakeSimilarCameras,
+        reviews: fakeReviews,
+      },
+    });
+    const fakeLink = `/catalog/${fakeCameraInfo.id}/description`;
+    history.push(fakeLink);
+    render(
+
+      <HelmetProvider>
+        <Provider store={store}>
+          <HistoryRouter history={history}>
+            <Routes>
+              <Route path={AppRoute.DefaultCamera} element={<Camera />} />
+            </Routes>
+          </HistoryRouter>
+        </Provider>
+      </HelmetProvider>
+
+    );
+    expect(screen.getByText(/Отзывы/i)).toBeInTheDocument();
+    expect(screen.getByText(/Оставить свой отзыв/i)).toBeInTheDocument();
+    await userEvent.click(screen.getByText(/Оставить свой отзыв/i));
+    expect(screen.getByTestId('close-overlay')).toBeInTheDocument();
+    expect(screen.getByText(/Оставить отзыв/i)).toBeInTheDocument();
+    expect(screen.getByText(/Отправить отзыв/i)).toBeInTheDocument();
+  });
+  it('6. should render correctly if similarCameras is empty', () => {
     const history = createMemoryHistory();
     const store = mockStore({
       DATA: {

@@ -4,7 +4,7 @@ import {createAsyncThunk} from '@reduxjs/toolkit';
 import {APIRoute} from '../consts';
 
 import {AppDispatch, State} from '../types/state.js';
-import { Camera } from '../types/camera';
+import { Camera, CameraEmbedRevievs } from '../types/camera';
 import { Promo } from '../types/promo';
 import { Review, ReviewPost } from '../types/review';
 
@@ -32,26 +32,14 @@ export const fetchPromoAction = createAsyncThunk<Promo, undefined, {
   },
 );
 
-export const fetchCameraInfoAction = createAsyncThunk<Camera, string | undefined, {
+export const fetchCameraInfoWithReviewsAction = createAsyncThunk<CameraEmbedRevievs, string | undefined, {
   dispatch: AppDispatch;
   state: State;
   extra: AxiosInstance;
 }>(
-  'data/fetchCameraInfo',
+  'data/fetchCameraInfoWithReviews',
   async (id, {extra: api}) => {
-    const {data} = await api.get<Camera>(id ? `${APIRoute.Cameras}${id}` : '');
-    return data;
-  },
-);
-
-export const fetchCameraReviewsAction = createAsyncThunk<Review[], string | undefined, {
-  dispatch: AppDispatch;
-  state: State;
-  extra: AxiosInstance;
-}>(
-  'data/fetchCameraReviews',
-  async (id, {extra: api}) => {
-    const {data} = await api.get<Review[]>(id ? `${APIRoute.Cameras}${id}${APIRoute.Reviews}` : '');
+    const {data} = await api.get<CameraEmbedRevievs>(id ? `${APIRoute.Cameras}${id}?_embed=reviews` : '');
     return data;
   },
 );

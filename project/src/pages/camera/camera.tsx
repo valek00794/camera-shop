@@ -5,7 +5,7 @@ import { Helmet } from 'react-helmet-async';
 import FocusLock from 'react-focus-lock';
 
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { fetchCameraInfoAction, fetchCameraReviewsAction, fetchSimilarCamerasAction } from '../../store/api-actions';
+import { fetchCameraInfoWithReviewsAction, fetchSimilarCamerasAction } from '../../store/api-actions';
 import { getCameraInfo, getCameraInfoDataLoading, getCamerasIds, getSimilarCameras } from '../../store/app-data/selectors';
 import BreadcrumbsList from '../../components/breadcrumbs-list/breadcrumbs-list';
 import SimilarList from '../../components/similar/similar-list';
@@ -44,8 +44,7 @@ function Camera(): JSX.Element {
   useEffect(() => {
     let isMounted = true;
     if (isMounted && !isCameraIdFound) {
-      dispatch(fetchCameraInfoAction(id));
-      dispatch(fetchCameraReviewsAction(id));
+      dispatch(fetchCameraInfoWithReviewsAction(id));
       dispatch(fetchSimilarCamerasAction(id));
       setVisibleReviewsCount(ReviewListSetttings.VisibleCount);
       window.scrollTo(0, 0);
