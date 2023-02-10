@@ -6,7 +6,7 @@ import FocusLock from 'react-focus-lock';
 
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { fetchCameraInfoWithReviewsAction, fetchSimilarCamerasAction } from '../../store/api-actions';
-import { getCameraInfo, getCameraInfoDataLoading, getSimilarCameras } from '../../store/app-data/selectors';
+import { getCameraInfo, getCameraInfoDataLoading, getResponseStatus, getSimilarCameras } from '../../store/app-data/selectors';
 import BreadcrumbsList from '../../components/breadcrumbs-list/breadcrumbs-list';
 import SimilarList from '../../components/similar/similar-list';
 import Stars from '../../components/stars/stars';
@@ -38,6 +38,7 @@ function Camera(): JSX.Element {
   const [specificationsTab, descriptionTab] = Object.keys(aboutCameraTabsTitle);
   const isAboutTitleFound = about as keyof typeof aboutCameraTabsTitle in aboutCameraTabsTitle;
   const isCameraInfoDataLoading = useAppSelector(getCameraInfoDataLoading);
+  const isRequestFailed = useAppSelector(getResponseStatus);
 
   useEffect(() => {
     let isMounted = true;
@@ -56,7 +57,7 @@ function Camera(): JSX.Element {
     return <Loading />;
   }
 
-  if (!isAboutTitleFound) {
+  if (!isAboutTitleFound || isRequestFailed) {
     return <NotFound />;
   }
 

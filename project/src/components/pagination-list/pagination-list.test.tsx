@@ -12,7 +12,7 @@ import { makeFakeCameras } from '../../utils/mocks';
 import { CAMERAS_AMOUNT_SHOW_BY_PAGE } from '../../consts';
 
 const mockStore = configureMockStore([thunk]);
-const fakeCameras = makeFakeCameras(datatype.number({min: 10, max: 200}));
+const fakeCameras = makeFakeCameras(datatype.number({min: 20, max: 200}));
 
 const store = mockStore({
   DATA: { cameras: fakeCameras },
@@ -30,7 +30,7 @@ describe('Component: PaginationList', () => {
       <Provider store={store}>
         <HistoryRouter history={history}>
           <Routes>
-            <Route path="/catalog/page_:page" element={<PaginationList />} />
+            <Route path="/catalog/page_:page" element={<PaginationList pages={pages} pageCount={pageCount} />} />
           </Routes>
         </HistoryRouter>
       </Provider>
@@ -51,7 +51,7 @@ describe('Component: PaginationList', () => {
       <Provider store={store}>
         <HistoryRouter history={history}>
           <Routes>
-            <Route path="/catalog/page_:page" element={<PaginationList />} />
+            <Route path="/catalog/page_:page" element={<PaginationList pages={pages} pageCount={pageCount} />} />
           </Routes>
         </HistoryRouter>
       </Provider>
@@ -72,7 +72,7 @@ describe('Component: PaginationList', () => {
       <Provider store={store}>
         <HistoryRouter history={history}>
           <Routes>
-            <Route path="/catalog/page_:page" element={<PaginationList />} />
+            <Route path="/catalog/page_:page" element={<PaginationList pages={pages} pageCount={pageCount}/>} />
           </Routes>
         </HistoryRouter>
       </Provider>

@@ -20,7 +20,6 @@ const fakePromo = makeFakePromo();
 const fakeReviews = makeFakeReviews(5);
 const fakeSimilarCameras = makeFakeCameras(5);
 const fakeNewReview = makeFakeReview(1);
-const fakeCameraInfoWithReviews = {...fakeCameraInfo, reviews: fakeReviews };
 
 const initialState = {
   cameras: [],
@@ -32,6 +31,7 @@ const initialState = {
   reviews: [],
   similarCameras: [],
   isReviewSubmitSuccessful: false,
+  isRequestFailed: false,
 };
 
 

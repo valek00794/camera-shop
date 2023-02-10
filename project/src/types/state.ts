@@ -13,6 +13,7 @@ export type AppData = {
     reviews?: Review[];
     similarCameras: Camera[];
     isReviewSubmitSuccessful: boolean;
+    isRequestFailed: boolean;
 };
 
 export type State = ReturnType<typeof store.getState>;

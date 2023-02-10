@@ -19,6 +19,7 @@ export const initialState: AppData = {
   reviews: [],
   similarCameras: [],
   isReviewSubmitSuccessful: false,
+  isRequestFailed: false,
 };
 
 export const appData = createSlice({
@@ -43,12 +44,17 @@ export const appData = createSlice({
       })
       .addCase(fetchCameraInfoWithReviewsAction.pending, (state) => {
         state.isCameraInfoDataLoading = true;
+        state.isRequestFailed = false;
       })
       .addCase(fetchCameraInfoWithReviewsAction.fulfilled, (state, action) => {
         state.reviews = action.payload.reviews;
         delete action.payload.reviews;
         state.cameraInfo = action.payload;
         state.isCameraInfoDataLoading = false;
+      })
+      .addCase(fetchCameraInfoWithReviewsAction.rejected, (state) => {
+        state.isCameraInfoDataLoading = false;
+        state.isRequestFailed = true;
       })
       .addCase(fetchSimilarCamerasAction.fulfilled, (state, action) => {
         state.similarCameras = action.payload;

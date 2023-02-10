@@ -1,5 +1,6 @@
 import { useParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
+import { useEffect } from 'react';
 
 import Banner from '../../components/banner/banner';
 import FilterForm from '../../components/filter-form/filter-form';
@@ -8,27 +9,35 @@ import ProductCard from '../../components/product-card/product-card';
 import PaginationList from '../../components/pagination-list/pagination-list';
 import BreadcrumbsList from '../../components/breadcrumbs-list/breadcrumbs-list';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { getCameras, } from '../../store/app-data/selectors';
+import { getCameras, getCamerasAmount } from '../../store/app-data/selectors';
 import { CAMERAS_AMOUNT_SHOW_BY_PAGE } from '../../consts';
 import { fetchCamerasAction } from '../../store/api-actions';
-import { useEffect } from 'react';
+import NotFound from '../../components/not-found/not-found';
 
 function Catalog(): JSX.Element {
   const dispatch = useAppDispatch();
 
   const { page } = useParams();
   const cameras = useAppSelector(getCameras);
+  const camerasAmount = useAppSelector(getCamerasAmount);
+  const pageCount = Math.ceil(camerasAmount / CAMERAS_AMOUNT_SHOW_BY_PAGE);
+  const pages = Array.from({ length: pageCount }, (_, index) => index + 1);
 
   useEffect(() => {
     let isMounted = true;
+    const startItem = CAMERAS_AMOUNT_SHOW_BY_PAGE * Number(page) - CAMERAS_AMOUNT_SHOW_BY_PAGE;
     if (isMounted) {
-      dispatch(fetchCamerasAction([CAMERAS_AMOUNT_SHOW_BY_PAGE * Number(page) - CAMERAS_AMOUNT_SHOW_BY_PAGE, CAMERAS_AMOUNT_SHOW_BY_PAGE]));
+      dispatch(fetchCamerasAction(startItem));
     }
     return () => {
       isMounted = false;
 
     };
   }, [dispatch, page]);
+
+  if (pages.length !== 0 && !pages.includes(Number(page))) {
+    return <NotFound />;
+  }
 
   return (
     <>
@@ -55,7 +64,10 @@ function Catalog(): JSX.Element {
                   <div className="cards catalog__cards">
                     {cameras.map((camera) => <ProductCard key={camera.id} camera={camera} />)}
                   </div>
-                  <PaginationList />
+                  <PaginationList
+                    pageCount={pageCount}
+                    pages={pages}
+                  />
                 </div>
               </div>
             </div>

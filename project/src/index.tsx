@@ -1,4 +1,4 @@
-import React from 'react';
+import { StrictMode } from 'react';
 import ReactDOM from 'react-dom/client';
 import { Provider } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
@@ -15,7 +15,7 @@ const root = ReactDOM.createRoot(
 );
 
 root.render(
-  <React.StrictMode>
+  <StrictMode>
     <HelmetProvider>
       <HistoryRouter history={browserHistory}>
         <Provider store={store}>
@@ -24,5 +24,5 @@ root.render(
         </Provider>
       </HistoryRouter>
     </HelmetProvider>
-  </React.StrictMode>
+  </StrictMode>
 );

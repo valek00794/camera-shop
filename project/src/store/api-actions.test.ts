@@ -1,9 +1,9 @@
-import {Action} from 'redux';
-import thunk, {ThunkDispatch} from 'redux-thunk';
+import { Action } from 'redux';
+import thunk, { ThunkDispatch } from 'redux-thunk';
 import MockAdapter from 'axios-mock-adapter';
-import {configureMockStore} from '@jedmao/redux-mock-store';
+import { configureMockStore } from '@jedmao/redux-mock-store';
 
-import {createAPI} from '../services/api';
+import { createAPI } from '../services/api';
 import {
   fetchCamerasAction,
   fetchPromoAction,
@@ -12,9 +12,9 @@ import {
   fetchPostReviewAction,
 } from './api-actions';
 
-import {State} from '../types/state';
+import { State } from '../types/state';
 
-import {APIRoute} from '../consts';
+import { APIRoute, CAMERAS_AMOUNT_SHOW_BY_PAGE } from '../consts';
 import {
   fakeCameraInfo,
   makeFakeCameras,
@@ -36,22 +36,23 @@ describe('Async actions', () => {
   const middlewares = [thunk.withExtraArgument(api)];
 
   const mockStore = configureMockStore<
-      State,
-      Action<string>,
-      ThunkDispatch<State, typeof api, Action>
-    >(middlewares);
+    State,
+    Action<string>,
+    ThunkDispatch<State, typeof api, Action>
+  >(middlewares);
 
-  it('1. should dispatch cameras when GET /cameras', async () => {
-    const [start, limit] = [0, 5];
+  it('1. should dispatch cameras when GET /cameras with start & limit', async () => {
+    const start = 0;
+    const headers = {'x-total-count': '50'};
     mockAPI
-      .onGet(APIRoute.Cameras)
-      .reply(200, mockCameras.slice(start, limit));
+      .onGet(`${APIRoute.Cameras}?_start=${start}&_limit=${CAMERAS_AMOUNT_SHOW_BY_PAGE}`)
+      .reply(200, mockCameras, headers);
 
     const store = mockStore();
 
-    await store.dispatch(fetchCamerasAction([start, limit]));
+    await store.dispatch(fetchCamerasAction(start));
 
-    const actions = store.getActions().map(({type}) => type);
+    const actions = store.getActions().map(({ type }) => type);
 
     expect(actions).toEqual([
       fetchCamerasAction.pending.type,
@@ -62,13 +63,13 @@ describe('Async actions', () => {
   it('2. should dispatch cameraInfo when GET /cameras/:id?_embed=reviews', async () => {
     mockAPI
       .onGet(`${APIRoute.Cameras}${String(mockCameraInfo.id)}?_embed=reviews`)
-      .reply(200, {...mockCameraInfo, reviews: mockReviews});
+      .reply(200, { ...mockCameraInfo, reviews: mockReviews });
 
     const store = mockStore();
 
     await store.dispatch(fetchCameraInfoWithReviewsAction(String(mockCameraInfo.id)));
 
-    const actions = store.getActions().map(({type}) => type);
+    const actions = store.getActions().map(({ type }) => type);
 
     expect(actions).toEqual([
       fetchCameraInfoWithReviewsAction.pending.type,
@@ -85,7 +86,7 @@ describe('Async actions', () => {
 
     await store.dispatch(fetchPromoAction());
 
-    const actions = store.getActions().map(({type}) => type);
+    const actions = store.getActions().map(({ type }) => type);
 
     expect(actions).toEqual([
       fetchPromoAction.pending.type,
@@ -103,7 +104,7 @@ describe('Async actions', () => {
 
     await store.dispatch(fetchSimilarCamerasAction(String(mockCameraInfo.id)));
 
-    const actions = store.getActions().map(({type}) => type);
+    const actions = store.getActions().map(({ type }) => type);
 
     expect(actions).toEqual([
       fetchSimilarCamerasAction.pending.type,
@@ -121,7 +122,7 @@ describe('Async actions', () => {
 
     await store.dispatch(fetchPostReviewAction(mockNewReview));
 
-    const actions = store.getActions().map(({type}) => type);
+    const actions = store.getActions().map(({ type }) => type);
 
     expect(actions).toEqual([
       fetchPostReviewAction.pending.type,
