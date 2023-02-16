@@ -16,6 +16,7 @@ export const getCameraReviews = (state: State): Review[] | undefined => state[Na
 export const getSimilarCameras = (state: State): Camera[] => state[NameSpace.Data].similarCameras;
 export const getReviewSubmitSuccessful = (state: State): boolean => state[NameSpace.Data].isReviewSubmitSuccessful;
 export const getResponseStatus = (state: State): boolean => state[NameSpace.Data].isRequestFailed;
+export const getFoundCameras = (state: State): Camera[] | null => state[NameSpace.Data].foundCameras;
 
 export const getSortCameraReviews = () => createSelector(
   getCameraReviews,

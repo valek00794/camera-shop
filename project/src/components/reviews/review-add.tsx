@@ -2,13 +2,13 @@ import classnames from 'classnames';
 import { Fragment, useEffect, useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
+import FocusLock from 'react-focus-lock';
 
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { fetchPostReviewAction } from '../../store/api-actions';
 import { getReviewSubmitSuccessful } from '../../store/app-data/selectors';
 import { ReviewPost } from '../../types/review';
 import { scrollUp } from '../../utils/utils';
-import FocusLock from 'react-focus-lock';
 import ReviewAddSuccess from './review-add-success';
 
 type ReviewAddProps = {
@@ -61,7 +61,7 @@ function ReviewAdd(props: ReviewAddProps): JSX.Element {
     };
 
     const onUpEsc = (evt: KeyboardEvent) => {
-      if (evt.key === 'Escape') {
+      if (evt.key === 'Escape' && isModalOpen) {
         handleCloseModal();
       }
     };

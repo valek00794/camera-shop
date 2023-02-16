@@ -32,6 +32,7 @@ const initialState = {
   similarCameras: [],
   isReviewSubmitSuccessful: false,
   isRequestFailed: false,
+  foundCameras: [],
 };
 
 

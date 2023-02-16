@@ -22,14 +22,14 @@ export const fetchCamerasAction = createAsyncThunk<Camera[], number, {
   },
 );
 
-export const fetchCamerasAction2 = createAsyncThunk<Camera[], number, {
+export const fetchSearchCamerasAction = createAsyncThunk<Camera[], string, {
   dispatch: AppDispatch;
   state: State;
   extra: AxiosInstance;
 }>(
-  'data/fetchCameras2',
-  async (start, { extra: api }) => {
-    const { data } = await api.get<Camera[]>(`${APIRoute.Cameras}?_start=${start}&_limit=${CAMERAS_AMOUNT_SHOW_BY_PAGE}`);
+  'data/fetchSearchCameras',
+  async (searchString, { extra: api }) => {
+    const { data } = await api.get<Camera[]>(`${APIRoute.Cameras}?name_like=${searchString}`);
     return data;
   },
 );

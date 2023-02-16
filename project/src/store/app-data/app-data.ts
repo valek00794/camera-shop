@@ -1,12 +1,13 @@
-import {createSlice} from '@reduxjs/toolkit';
-import {NameSpace} from '../../consts';
-import {AppData} from '../../types/state';
+import { createSlice } from '@reduxjs/toolkit';
+import { NameSpace } from '../../consts';
+import { AppData } from '../../types/state';
 import {
   fetchCamerasAction,
   fetchPromoAction,
   fetchCameraInfoWithReviewsAction,
   fetchSimilarCamerasAction,
   fetchPostReviewAction,
+  fetchSearchCamerasAction,
 } from '../api-actions';
 
 export const initialState: AppData = {
@@ -20,6 +21,7 @@ export const initialState: AppData = {
   similarCameras: [],
   isReviewSubmitSuccessful: false,
   isRequestFailed: false,
+  foundCameras: [],
 };
 
 export const appData = createSlice({
@@ -65,6 +67,9 @@ export const appData = createSlice({
       })
       .addCase(fetchPostReviewAction.rejected, (state) => {
         state.isReviewSubmitSuccessful = false;
+      })
+      .addCase(fetchSearchCamerasAction.fulfilled, (state, action) => {
+        state.foundCameras = action.payload;
       });
   }
 });

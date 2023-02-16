@@ -11,8 +11,8 @@ import BreadcrumbsList from '../../components/breadcrumbs-list/breadcrumbs-list'
 import SimilarList from '../../components/similar/similar-list';
 import Stars from '../../components/stars/stars';
 import ReviewsList from '../../components/reviews/reviews-list';
-import { scrollUp } from '../../utils/utils';
-import { CameraNameIncludes, ReviewListSetttings } from '../../consts';
+import { getCameraTitle, scrollUp } from '../../utils/utils';
+import { ReviewListSetttings } from '../../consts';
 import ReviewAdd from '../../components/reviews/review-add';
 import NotFound from '../../components/not-found/not-found';
 import Loading from '../../components/loading/loading';
@@ -89,7 +89,7 @@ function Camera(): JSX.Element {
                   </picture>
                 </div>
                 <div className="product__content">
-                  <h1 className="title title--h3">{cameraInfo?.name.includes(CameraNameIncludes.SearchString) ? cameraInfo.name : cameraInfo && `${cameraInfo.category} ${cameraInfo.name}`}</h1>
+                  <h1 className="title title--h3">{getCameraTitle(cameraInfo)}</h1>
                   <div className="rate product__rate">
                     {
                       <Stars rating={cameraInfo?.rating} />
