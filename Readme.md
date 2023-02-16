@@ -9,17 +9,27 @@
 
 Макет figma: https://www.figma.com/file/xalMZO1dyXFWLIa83NZXpG/React-Camera-shop?node-id=0%3A1&t=UIPtNAeCSiqeqSKZ-0
 
+Техническое задание: https://puffy-bracket-6ab.notion.site/Camera_shop-1-df8f366145c4415eb766f9f60a47e583
+
 Карточка проекта: https://docs.google.com/spreadsheets/d/1gWICIp5fqdYx2cSyWeHRCvjOlPiN36JTeQ-1u47nnyk/edit?usp=sharing
+
+
 
 Колличество затраченного времени на проект: 48 ч. 27 мин.
 
-Результаты 1 итераци:
+Результаты 1 итерации:
 
 Коэффициент скорости в днях — 120,00%
+
 Коэффициент скорости в часах —  115,58%
+
 Оценка за код-ревью —  94,55%
+
 Оценка за баг-лист — 100,00%
+
 Общий балл за качество — 97,27%
+
+
 
 Для запуска проекта необходимо перейти в папку:
 
@@ -33,4 +43,3 @@ npm i
 
 npm start
 
-Результат проверки проекта: 
