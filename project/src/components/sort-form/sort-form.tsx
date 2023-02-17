@@ -1,39 +1,50 @@
+import { useSearchParams } from 'react-router-dom';
+
 import { SortState } from '../../consts';
 
 type SortFormProps = {
-  sortByState: [SortState, React.Dispatch<React.SetStateAction<SortState>>];
-  sortAscDescState: [SortState, React.Dispatch<React.SetStateAction<SortState>>];
+  sortParam: string;
+  orderParam: string;
 }
 
 function SortForm(props: SortFormProps): JSX.Element {
-  const [isSortBy, setSortBy] = props.sortByState;
-  const [isSortAscDesc, setSortAscDesc] = props.sortAscDescState;
+  const [searchParams, setSearchParams] = useSearchParams();
+  const params = {
+    sort: props.sortParam,
+    order: props.orderParam,
+  };
 
   const handleSortByPrice = () => {
-    if (isSortAscDesc === SortState.Default) {
-      setSortAscDesc(SortState.Asc);
+    if (params.order === SortState.Default) {
+      params.order = 'asc';
     }
-    setSortBy(SortState.Price);
-  };
-  const handleSortByPopular = () => {
-    if (isSortAscDesc === SortState.Default) {
-      setSortAscDesc(SortState.Asc);
-    }
-    setSortBy(SortState.Rating);
-  };
-  const handleSortAsc = () => {
-    if (isSortBy === SortState.Default) {
-      setSortBy(SortState.Price);
-    }
-    setSortAscDesc(SortState.Asc);
-  };
-  const handleSortDesc = () => {
-    if (isSortBy === SortState.Default) {
-      setSortBy(SortState.Price);
-    }
-    setSortAscDesc(SortState.Desc);
+    params.sort = 'price';
+    setSearchParams(params);
   };
 
+  const handleSortByPopular = () => {
+    if (params.order === SortState.Default) {
+      params.order = 'asc';
+    }
+    params.sort = 'rating';
+    setSearchParams(params);
+  };
+
+  const handleSortAsc = () => {
+    if (params.sort === SortState.Default) {
+      params.sort = 'price';
+    }
+    params.order = 'asc';
+    setSearchParams(params);
+  };
+
+  const handleSortDesc = () => {
+    if (params.sort === SortState.Default) {
+      params.sort = 'price';
+    }
+    params.order = 'desc';
+    setSearchParams(params);
+  };
 
   return (
     <form action="#">
@@ -41,17 +52,17 @@ function SortForm(props: SortFormProps): JSX.Element {
         <p className="title title--h5">Сортировать:</p>
         <div className="catalog-sort__type">
           <div className="catalog-sort__btn-text">
-            <input type="radio" id="sortPrice" name="sort" checked={isSortBy === SortState.Price} onChange={handleSortByPrice} />
+            <input type="radio" id="sortPrice" name="sort" checked={searchParams.get('sort') === SortState.Price} onChange={handleSortByPrice} />
             <label htmlFor="sortPrice">по цене</label>
           </div>
           <div className="catalog-sort__btn-text">
-            <input type="radio" id="sortPopular" name="sort" checked={isSortBy === SortState.Rating} onChange={handleSortByPopular} />
+            <input type="radio" id="sortPopular" name="sort" checked={searchParams.get('sort') === SortState.Rating} onChange={handleSortByPopular} />
             <label htmlFor="sortPopular">по популярности</label>
           </div>
         </div>
         <div className="catalog-sort__order">
           <div className="catalog-sort__btn catalog-sort__btn--up">
-            <input type="radio" id="up" name="sort-icon" aria-label="По возрастанию" checked={isSortAscDesc === SortState.Asc} onChange={handleSortAsc} />
+            <input type="radio" id="up" name="sort-icon" aria-label="По возрастанию" checked={searchParams.get('order') === SortState.Asc} onChange={handleSortAsc} />
             <label htmlFor="up">
               <svg width="16" height="14" aria-hidden="true">
                 <use xlinkHref="#icon-sort"></use>
@@ -59,7 +70,7 @@ function SortForm(props: SortFormProps): JSX.Element {
             </label>
           </div>
           <div className="catalog-sort__btn catalog-sort__btn--down">
-            <input type="radio" id="down" name="sort-icon" aria-label="По убыванию" checked={isSortAscDesc === SortState.Desc} onChange={handleSortDesc} />
+            <input type="radio" id="down" name="sort-icon" aria-label="По убыванию" checked={searchParams.get('order') === SortState.Desc} onChange={handleSortDesc} />
             <label htmlFor="down">
               <svg width="16" height="14" aria-hidden="true">
                 <use xlinkHref="#icon-sort"></use>
