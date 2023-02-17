@@ -6,6 +6,8 @@ import { scrollUp } from '../../utils/utils';
 type PaginationListProps = {
   pageCount: number;
   pages: number[];
+  sortParam: string;
+  orderParam: string;
 }
 
 const scrollToOptions: ScrollToOptions = {
@@ -39,7 +41,7 @@ function PaginationList(props: PaginationListProps): JSX.Element {
             >
               <Link
                 className="pagination__link"
-                to={`/catalog/page_${paramPageToNumber - 1}`}
+                to={`/catalog/page_${paramPageToNumber - 1}?sort=${props.sortParam}&order=${props.orderParam}`}
               >Назад
               </Link>
             </li>
@@ -53,7 +55,7 @@ function PaginationList(props: PaginationListProps): JSX.Element {
               >
                 <Link
                   className={getPaginationLinkClassName(pageNumber)}
-                  to={`/catalog/page_${pageNumber}`}
+                  to={`/catalog/page_${pageNumber}?sort=${props.sortParam}&order=${props.orderParam}`}
                 >{pageNumber}
                 </Link>
               </li>
@@ -68,7 +70,7 @@ function PaginationList(props: PaginationListProps): JSX.Element {
             >
               <Link
                 className="pagination__link"
-                to={`/catalog/page_${paramPageToNumber + 1}`}
+                to={`/catalog/page_${paramPageToNumber + 1}?sort=${props.sortParam}&order=${props.orderParam}`}
               >Далее
               </Link>
             </li>

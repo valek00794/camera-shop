@@ -71,6 +71,8 @@ function Catalog(): JSX.Element {
                   <PaginationList
                     pageCount={pageCount}
                     pages={pages}
+                    sortParam={sortParam}
+                    orderParam={orderParam}
                   />
                 </div>
               </div>

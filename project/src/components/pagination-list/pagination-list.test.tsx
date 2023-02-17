@@ -9,7 +9,7 @@ import { createMemoryHistory } from 'history';
 import HistoryRouter from '../../components/history-route/history-route';
 import PaginationList from './pagination-list';
 import { makeFakeCameras } from '../../utils/mocks';
-import { CAMERAS_AMOUNT_SHOW_BY_PAGE } from '../../consts';
+import { CAMERAS_AMOUNT_SHOW_BY_PAGE, SortState } from '../../consts';
 
 const mockStore = configureMockStore([thunk]);
 const fakeCameras = makeFakeCameras(datatype.number({min: 20, max: 200}));
@@ -30,7 +30,7 @@ describe('Component: PaginationList', () => {
       <Provider store={store}>
         <HistoryRouter history={history}>
           <Routes>
-            <Route path="/catalog/page_:page" element={<PaginationList pages={pages} pageCount={pageCount} />} />
+            <Route path="/catalog/page_:page" element={<PaginationList pages={pages} pageCount={pageCount} sortParam={SortState.Default} orderParam={SortState.Default}/>} />
           </Routes>
         </HistoryRouter>
       </Provider>
@@ -51,7 +51,7 @@ describe('Component: PaginationList', () => {
       <Provider store={store}>
         <HistoryRouter history={history}>
           <Routes>
-            <Route path="/catalog/page_:page" element={<PaginationList pages={pages} pageCount={pageCount} />} />
+            <Route path="/catalog/page_:page" element={<PaginationList pages={pages} pageCount={pageCount} sortParam={SortState.Default} orderParam={SortState.Default}/>} />
           </Routes>
         </HistoryRouter>
       </Provider>
@@ -72,7 +72,7 @@ describe('Component: PaginationList', () => {
       <Provider store={store}>
         <HistoryRouter history={history}>
           <Routes>
-            <Route path="/catalog/page_:page" element={<PaginationList pages={pages} pageCount={pageCount}/>} />
+            <Route path="/catalog/page_:page" element={<PaginationList pages={pages} pageCount={pageCount} sortParam={SortState.Default} orderParam={SortState.Default}/>} />
           </Routes>
         </HistoryRouter>
       </Provider>
