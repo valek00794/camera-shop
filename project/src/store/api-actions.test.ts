@@ -14,7 +14,7 @@ import {
 
 import { State } from '../types/state';
 
-import { APIRoute, CAMERAS_AMOUNT_SHOW_BY_PAGE } from '../consts';
+import { APIRoute, CAMERAS_AMOUNT_SHOW_BY_PAGE, SortState } from '../consts';
 import {
   fakeCameraInfo,
   makeFakeCameras,
@@ -22,6 +22,8 @@ import {
   makeFakeReviews,
   makeFakeNewReview,
 } from '../utils/mocks';
+import { renderHook } from '@testing-library/react';
+import { useState } from 'react';
 
 const mockCameraInfo = fakeCameraInfo;
 const mockCameras = makeFakeCameras(10);
@@ -44,13 +46,15 @@ describe('Async actions', () => {
   it('1. should dispatch cameras when GET /cameras with start & limit', async () => {
     const start = 0;
     const headers = {'x-total-count': '50'};
+    const { result } = renderHook(() => useState(SortState.Default));
+    const fakeSortState = result.current[0];
     mockAPI
       .onGet(`${APIRoute.Cameras}?_start=${start}&_limit=${CAMERAS_AMOUNT_SHOW_BY_PAGE}`)
       .reply(200, mockCameras, headers);
 
     const store = mockStore();
 
-    await store.dispatch(fetchCamerasAction(start));
+    await store.dispatch(fetchCamerasAction([start, fakeSortState, fakeSortState]));
 
     const actions = store.getActions().map(({ type }) => type);
 

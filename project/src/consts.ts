@@ -36,3 +36,11 @@ export enum CameraNameIncludes {
   SearchString = 'Ретрокамера',
 }
 
+export enum SortState {
+  Default = '',
+  Price = 'price',
+  Rating = 'rating',
+  Asc = 'asc',
+  Desc = 'desc',
+}
+

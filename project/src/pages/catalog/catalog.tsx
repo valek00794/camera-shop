@@ -1,6 +1,6 @@
 import { useParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import Banner from '../../components/banner/banner';
 import FilterForm from '../../components/filter-form/filter-form';
@@ -10,12 +10,17 @@ import PaginationList from '../../components/pagination-list/pagination-list';
 import BreadcrumbsList from '../../components/breadcrumbs-list/breadcrumbs-list';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { getCameras, getCamerasAmount } from '../../store/app-data/selectors';
-import { CAMERAS_AMOUNT_SHOW_BY_PAGE } from '../../consts';
+import { CAMERAS_AMOUNT_SHOW_BY_PAGE, SortState } from '../../consts';
 import { fetchCamerasAction } from '../../store/api-actions';
 import NotFound from '../../components/not-found/not-found';
 
 function Catalog(): JSX.Element {
   const dispatch = useAppDispatch();
+
+  const sortByState = useState(SortState.Default);
+  const sortAscDescState = useState(SortState.Default);
+  const [isSortBy, ] = sortByState;
+  const [isSortAscDesc, ] = sortAscDescState;
 
   const { page } = useParams();
   const cameras = useAppSelector(getCameras);
@@ -27,13 +32,13 @@ function Catalog(): JSX.Element {
     let isMounted = true;
     const startItem = CAMERAS_AMOUNT_SHOW_BY_PAGE * Number(page) - CAMERAS_AMOUNT_SHOW_BY_PAGE;
     if (isMounted) {
-      dispatch(fetchCamerasAction(startItem));
+      dispatch(fetchCamerasAction([startItem, isSortBy, isSortAscDesc]));
     }
     return () => {
       isMounted = false;
 
     };
-  }, [dispatch, page]);
+  }, [dispatch, isSortAscDesc, isSortBy, page]);
 
   if (pages.length !== 0 && !pages.includes(Number(page))) {
     return <NotFound />;
@@ -59,7 +64,7 @@ function Catalog(): JSX.Element {
                 </div>
                 <div className="catalog__content">
                   <div className="catalog-sort">
-                    <SortForm />
+                    <SortForm sortByState={sortByState} sortAscDescState={sortAscDescState}/>
                   </div>
                   <div className="cards catalog__cards">
                     {cameras.map((camera) => <ProductCard key={camera.id} camera={camera} />)}

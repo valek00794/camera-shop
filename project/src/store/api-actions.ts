@@ -8,14 +8,17 @@ import { Camera, CameraEmbedRevievs } from '../types/camera';
 import { Promo } from '../types/promo';
 import { Review, ReviewPost } from '../types/review';
 
-export const fetchCamerasAction = createAsyncThunk<Camera[], number, {
+export const fetchCamerasAction = createAsyncThunk<Camera[], [number, string | null, string | null], {
   dispatch: AppDispatch;
   state: State;
   extra: AxiosInstance;
 }>(
   'data/fetchCameras',
-  async (start, { extra: api }) => {
-    const { data, headers } = await api.get<Camera[]>(`${APIRoute.Cameras}?_start=${start}&_limit=${CAMERAS_AMOUNT_SHOW_BY_PAGE}`);
+  async ([start, sort, order], { extra: api }) => {
+    const { data, headers } = await api.get<Camera[]>(
+      sort && order ?
+        `${APIRoute.Cameras}?_start=${start}&_limit=${CAMERAS_AMOUNT_SHOW_BY_PAGE}&_sort=${sort}&_order=${order}` :
+        `${APIRoute.Cameras}?_start=${start}&_limit=${CAMERAS_AMOUNT_SHOW_BY_PAGE}`);
     const respData = [...data];
     respData.length = Number(headers['x-total-count']);
     return respData;
