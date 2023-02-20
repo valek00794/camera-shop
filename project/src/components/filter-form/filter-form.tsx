@@ -15,13 +15,16 @@ function FilterForm(): JSX.Element {
     if (isMounted) {
       if (searchParams.has(FilterParams.Category) && !isCheckedPhotoCameras && !isCheckedVideoCameras) {
         searchParams.delete(FilterParams.Category);
-        setSearchParams(searchParams);
       }
+      if (searchParams.has(FilterParams.Level) && !isCheckedZeroLevel && !isCheckedNonProLevel && !isCheckedProLevel) {
+        searchParams.delete(FilterParams.Level);
+      }
+      setSearchParams(searchParams);
     }
     return () => {
       isMounted = false;
     };
-  }, [isCheckedPhotoCameras, isCheckedVideoCameras, searchParams, setSearchParams]);
+  }, [isCheckedNonProLevel, isCheckedPhotoCameras, isCheckedProLevel, isCheckedVideoCameras, isCheckedZeroLevel, searchParams, setSearchParams]);
 
 
   const handleSelectPhotoCameras = () => {
