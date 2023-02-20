@@ -1,13 +1,12 @@
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useSearchParams } from 'react-router-dom';
 import classnames from 'classnames';
 
 import { scrollUp } from '../../utils/utils';
+import { SortParams } from '../../consts';
 
 type PaginationListProps = {
   pageCount: number;
   pages: number[];
-  sortParam: string;
-  orderParam: string;
 }
 
 const scrollToOptions: ScrollToOptions = {
@@ -17,7 +16,12 @@ const scrollToOptions: ScrollToOptions = {
 
 function PaginationList(props: PaginationListProps): JSX.Element {
   const { page } = useParams();
+  const [searchParams,] = useSearchParams();
+
   const paramPageToNumber = Number(page);
+
+  const sortParam = searchParams.get(SortParams.Sort);
+  const orderParam = searchParams.get(SortParams.Order);
 
   const getPaginationLinkClassName = (pageNumber: number) =>
     classnames(
@@ -41,13 +45,15 @@ function PaginationList(props: PaginationListProps): JSX.Element {
             >
               <Link
                 className="pagination__link"
-                to={`/catalog/page_${paramPageToNumber - 1}?sort=${props.sortParam}&order=${props.orderParam}`}
+                to={sortParam !== null && orderParam ?
+                  `/catalog/page_${paramPageToNumber - 1}?sort=${sortParam}&order=${orderParam}` :
+                  `/catalog/page_${paramPageToNumber - 1}`}
               >Назад
               </Link>
             </li>
           }
           {
-            props.pages.map((pageNumber) =>(
+            props.pages.map((pageNumber) => (
               <li
                 onClick={() => scrollUp(scrollToOptions)}
                 key={pageNumber}
@@ -55,7 +61,9 @@ function PaginationList(props: PaginationListProps): JSX.Element {
               >
                 <Link
                   className={getPaginationLinkClassName(pageNumber)}
-                  to={`/catalog/page_${pageNumber}?sort=${props.sortParam}&order=${props.orderParam}`}
+                  to={sortParam !== null && orderParam ?
+                    `/catalog/page_${pageNumber}?sort=${sortParam}&order=${orderParam}` :
+                    `/catalog/page_${pageNumber}`}
                 >{pageNumber}
                 </Link>
               </li>
@@ -70,7 +78,9 @@ function PaginationList(props: PaginationListProps): JSX.Element {
             >
               <Link
                 className="pagination__link"
-                to={`/catalog/page_${paramPageToNumber + 1}?sort=${props.sortParam}&order=${props.orderParam}`}
+                to={sortParam !== null && orderParam ?
+                  `/catalog/page_${paramPageToNumber + 1}?sort=${sortParam}&order=${orderParam}` :
+                  `/catalog/page_${paramPageToNumber + 1}`}
               >Далее
               </Link>
             </li>

@@ -36,11 +36,32 @@ export enum CameraNameIncludes {
   SearchString = 'Ретрокамера',
 }
 
+export enum SortParams {
+  Order = 'order',
+  Sort = 'sort',
+}
+
+export enum FilterParams {
+  Category = 'category',
+  Level = 'level'
+}
+
 export enum SortState {
   Default = '',
   Price = 'price',
   Rating = 'rating',
   Asc = 'asc',
   Desc = 'desc',
+}
+
+export enum FilterCategory {
+  Photo = 'Фотоаппарат',
+  Video = 'Видеокамера',
+}
+
+export enum FilterLevel {
+  Zero = 'Нулевой',
+  NonPro = 'Любительский',
+  Pro = 'Профессиональный'
 }
 

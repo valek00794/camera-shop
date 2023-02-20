@@ -1,49 +1,40 @@
 import { useSearchParams } from 'react-router-dom';
 
-import { SortState } from '../../consts';
+import { SortParams, SortState } from '../../consts';
 
-type SortFormProps = {
-  sortParam: string;
-  orderParam: string;
-}
-
-function SortForm(props: SortFormProps): JSX.Element {
+function SortForm(): JSX.Element {
   const [searchParams, setSearchParams] = useSearchParams();
-  const params = {
-    sort: props.sortParam,
-    order: props.orderParam,
-  };
 
   const handleSortByPrice = () => {
-    if (params.order === SortState.Default) {
-      params.order = 'asc';
+    if (!searchParams.has(SortParams.Order) || searchParams.get(SortParams.Order) === SortState.Default) {
+      searchParams.set(SortParams.Order, SortState.Asc);
     }
-    params.sort = 'price';
-    setSearchParams(params);
+    searchParams.set(SortParams.Sort, SortState.Price);
+    setSearchParams(searchParams);
   };
 
   const handleSortByPopular = () => {
-    if (params.order === SortState.Default) {
-      params.order = 'asc';
+    if (!searchParams.has(SortParams.Order) || searchParams.get(SortParams.Order) === SortState.Default) {
+      searchParams.set(SortParams.Order, SortState.Asc);
     }
-    params.sort = 'rating';
-    setSearchParams(params);
+    searchParams.set(SortParams.Sort, SortState.Rating);
+    setSearchParams(searchParams);
   };
 
   const handleSortAsc = () => {
-    if (params.sort === SortState.Default) {
-      params.sort = 'price';
+    if (!searchParams.has(SortParams.Sort) || searchParams.get(SortParams.Sort) === SortState.Default) {
+      searchParams.set(SortParams.Sort, SortState.Price);
     }
-    params.order = 'asc';
-    setSearchParams(params);
+    searchParams.set(SortParams.Order, SortState.Asc);
+    setSearchParams(searchParams);
   };
 
   const handleSortDesc = () => {
-    if (params.sort === SortState.Default) {
-      params.sort = 'price';
+    if (!searchParams.has(SortParams.Sort) || searchParams.get(SortParams.Sort) === SortState.Default) {
+      searchParams.set(SortParams.Sort, SortState.Price);
     }
-    params.order = 'desc';
-    setSearchParams(params);
+    searchParams.set(SortParams.Order, SortState.Desc);
+    setSearchParams(searchParams);
   };
 
   return (
@@ -52,17 +43,17 @@ function SortForm(props: SortFormProps): JSX.Element {
         <p className="title title--h5">Сортировать:</p>
         <div className="catalog-sort__type">
           <div className="catalog-sort__btn-text">
-            <input type="radio" id="sortPrice" name="sort" checked={searchParams.get('sort') === SortState.Price} onChange={handleSortByPrice} />
+            <input type="radio" id="sortPrice" name="sort" checked={searchParams.get(SortParams.Sort) === SortState.Price} onChange={handleSortByPrice} />
             <label htmlFor="sortPrice">по цене</label>
           </div>
           <div className="catalog-sort__btn-text">
-            <input type="radio" id="sortPopular" name="sort" checked={searchParams.get('sort') === SortState.Rating} onChange={handleSortByPopular} />
+            <input type="radio" id="sortPopular" name="sort" checked={searchParams.get(SortParams.Sort) === SortState.Rating} onChange={handleSortByPopular} />
             <label htmlFor="sortPopular">по популярности</label>
           </div>
         </div>
         <div className="catalog-sort__order">
           <div className="catalog-sort__btn catalog-sort__btn--up">
-            <input type="radio" id="up" name="sort-icon" aria-label="По возрастанию" checked={searchParams.get('order') === SortState.Asc} onChange={handleSortAsc} />
+            <input type="radio" id="up" name="sort-icon" aria-label="По возрастанию" checked={searchParams.get(SortParams.Order) === SortState.Asc} onChange={handleSortAsc} />
             <label htmlFor="up">
               <svg width="16" height="14" aria-hidden="true">
                 <use xlinkHref="#icon-sort"></use>
@@ -70,7 +61,7 @@ function SortForm(props: SortFormProps): JSX.Element {
             </label>
           </div>
           <div className="catalog-sort__btn catalog-sort__btn--down">
-            <input type="radio" id="down" name="sort-icon" aria-label="По убыванию" checked={searchParams.get('order') === SortState.Desc} onChange={handleSortDesc} />
+            <input type="radio" id="down" name="sort-icon" aria-label="По убыванию" checked={searchParams.get(SortParams.Order) === SortState.Desc} onChange={handleSortDesc} />
             <label htmlFor="down">
               <svg width="16" height="14" aria-hidden="true">
                 <use xlinkHref="#icon-sort"></use>

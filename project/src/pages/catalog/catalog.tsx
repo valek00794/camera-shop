@@ -10,15 +10,13 @@ import PaginationList from '../../components/pagination-list/pagination-list';
 import BreadcrumbsList from '../../components/breadcrumbs-list/breadcrumbs-list';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { getCameras, getCamerasAmount } from '../../store/app-data/selectors';
-import { CAMERAS_AMOUNT_SHOW_BY_PAGE, SortState } from '../../consts';
+import { CAMERAS_AMOUNT_SHOW_BY_PAGE } from '../../consts';
 import { fetchCamerasAction } from '../../store/api-actions';
 import NotFound from '../../components/not-found/not-found';
 
 function Catalog(): JSX.Element {
   const dispatch = useAppDispatch();
-  const [searchParams, ] = useSearchParams();
-  const sortParam = searchParams.get('sort') || SortState.Default;
-  const orderParam = searchParams.get('order') || SortState.Default;
+  const [searchParams,] = useSearchParams();
 
   const { page } = useParams();
   const cameras = useAppSelector(getCameras);
@@ -31,13 +29,13 @@ function Catalog(): JSX.Element {
     let isMounted = true;
     const startItem = CAMERAS_AMOUNT_SHOW_BY_PAGE * Number(page) - CAMERAS_AMOUNT_SHOW_BY_PAGE;
     if (isMounted) {
-      dispatch(fetchCamerasAction([startItem, sortParam, orderParam]));
+      dispatch(fetchCamerasAction([startItem, searchParams]));
     }
     return () => {
       isMounted = false;
 
     };
-  }, [dispatch, orderParam, page, sortParam]);
+  }, [dispatch, page, searchParams]);
 
   if (pages.length !== 0 && !pages.includes(Number(page))) {
     return <NotFound />;
@@ -63,7 +61,7 @@ function Catalog(): JSX.Element {
                 </div>
                 <div className="catalog__content">
                   <div className="catalog-sort">
-                    <SortForm sortParam={sortParam} orderParam={orderParam} />
+                    <SortForm />
                   </div>
                   <div className="cards catalog__cards">
                     {cameras.map((camera) => <ProductCard key={camera.id} camera={camera} />)}
@@ -71,8 +69,6 @@ function Catalog(): JSX.Element {
                   <PaginationList
                     pageCount={pageCount}
                     pages={pages}
-                    sortParam={sortParam}
-                    orderParam={orderParam}
                   />
                 </div>
               </div>

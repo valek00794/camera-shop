@@ -11,7 +11,7 @@ import { SortState } from '../../consts';
 const mockStore = configureMockStore([thunk]);
 
 const store = mockStore({
-  DATA: { },
+  DATA: {},
 });
 
 describe('Component: SortForm', () => {
@@ -20,7 +20,7 @@ describe('Component: SortForm', () => {
     render(
       <Provider store={store}>
         <HistoryRouter history={history}>
-          <SortForm sortParam={SortState.Default} orderParam={SortState.Default}/>
+          <SortForm />
         </HistoryRouter>
       </Provider>
 

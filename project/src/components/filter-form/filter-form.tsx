@@ -1,5 +1,64 @@
+import { useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
+import { FilterCategory, FilterLevel, FilterParams } from '../../consts';
 
 function FilterForm(): JSX.Element {
+  const [isCheckedPhotoCameras, setIsCheckedPhotoCameras] = useState(false);
+  const [isCheckedVideoCameras, setIsCheckedVideoCameras] = useState(false);
+  const [isCheckedZeroLevel, setCheckedZeroLevel] = useState(false);
+  const [isCheckedNonProLevel, setCheckedNonProLevel] = useState(false);
+  const [isCheckedProLevel, setCheckedProLevel] = useState(false);
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  useEffect(() => {
+    let isMounted = true;
+    if (isMounted) {
+      if (searchParams.has(FilterParams.Category) && !isCheckedPhotoCameras && !isCheckedVideoCameras) {
+        searchParams.delete(FilterParams.Category);
+        setSearchParams(searchParams);
+      }
+    }
+    return () => {
+      isMounted = false;
+    };
+  }, [isCheckedPhotoCameras, isCheckedVideoCameras, searchParams, setSearchParams]);
+
+
+  const handleSelectPhotoCameras = () => {
+    setIsCheckedPhotoCameras(!isCheckedPhotoCameras);
+    if (isCheckedVideoCameras) {
+      setIsCheckedVideoCameras(false);
+    }
+    searchParams.set(FilterParams.Category, FilterCategory.Photo);
+    setSearchParams(searchParams);
+  };
+  const handleSelectVideoCameras = () => {
+    setIsCheckedVideoCameras(!isCheckedVideoCameras);
+    if (isCheckedPhotoCameras) {
+      setIsCheckedPhotoCameras(false);
+    }
+    searchParams.set(FilterParams.Category, FilterCategory.Video);
+    setSearchParams(searchParams);
+  };
+
+
+  const handleSelectZeroLevelCameras = () => {
+    setCheckedZeroLevel(!isCheckedZeroLevel);
+    !isCheckedZeroLevel && searchParams.append(FilterParams.Level, FilterLevel.Zero);
+    setSearchParams(searchParams);
+  };
+
+  const handleSelectNonProLevelCameras = () => {
+    setCheckedNonProLevel(!isCheckedNonProLevel);
+    !isCheckedNonProLevel && searchParams.append(FilterParams.Level, FilterLevel.NonPro);
+    setSearchParams(searchParams);
+  };
+
+  const handleSelectProLevelCameras = () => {
+    setCheckedProLevel(!isCheckedProLevel);
+    !isCheckedProLevel && searchParams.append(FilterParams.Level, FilterLevel.Pro);
+    setSearchParams(searchParams);
+  };
 
   return (
     <form action="#">
@@ -23,14 +82,14 @@ function FilterForm(): JSX.Element {
         <legend className="title title--h5">Категория</legend>
         <div className="custom-checkbox catalog-filter__item">
           <label>
-            <input type="checkbox" name="photocamera" />
+            <input type="checkbox" name="photocamera" checked={isCheckedPhotoCameras} onChange={handleSelectPhotoCameras} />
             <span className="custom-checkbox__icon"></span>
             <span className="custom-checkbox__label">Фотокамера</span>
           </label>
         </div>
         <div className="custom-checkbox catalog-filter__item">
           <label>
-            <input type="checkbox" name="videocamera" />
+            <input type="checkbox" name="videocamera" checked={isCheckedVideoCameras} onChange={handleSelectVideoCameras} />
             <span className="custom-checkbox__icon"></span>
             <span className="custom-checkbox__label">Видеокамера</span>
           </label>
@@ -71,21 +130,21 @@ function FilterForm(): JSX.Element {
         <legend className="title title--h5">Уровень</legend>
         <div className="custom-checkbox catalog-filter__item">
           <label>
-            <input type="checkbox" name="zero" />
+            <input type="checkbox" name="zero" checked={isCheckedZeroLevel} onChange={handleSelectZeroLevelCameras} />
             <span className="custom-checkbox__icon"></span>
             <span className="custom-checkbox__label">Нулевой</span>
           </label>
         </div>
         <div className="custom-checkbox catalog-filter__item">
           <label>
-            <input type="checkbox" name="non-professional" />
+            <input type="checkbox" name="non-professional" checked={isCheckedNonProLevel} onChange={handleSelectNonProLevelCameras} />
             <span className="custom-checkbox__icon"></span>
             <span className="custom-checkbox__label">Любительский</span>
           </label>
         </div>
         <div className="custom-checkbox catalog-filter__item">
           <label>
-            <input type="checkbox" name="professional" />
+            <input type="checkbox" name="professional" checked={isCheckedProLevel} onChange={handleSelectProLevelCameras} />
             <span className="custom-checkbox__icon"></span>
             <span className="custom-checkbox__label">Профессиональный</span>
           </label>
@@ -98,3 +157,4 @@ function FilterForm(): JSX.Element {
 }
 
 export default FilterForm;
+

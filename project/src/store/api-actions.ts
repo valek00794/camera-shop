@@ -1,24 +1,28 @@
 import { AxiosInstance } from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
-import { APIRoute, CAMERAS_AMOUNT_SHOW_BY_PAGE } from '../consts';
+import { APIRoute, CAMERAS_AMOUNT_SHOW_BY_PAGE, FilterParams, SortParams } from '../consts';
 
 import { AppDispatch, State } from '../types/state.js';
 import { Camera, CameraEmbedRevievs } from '../types/camera';
 import { Promo } from '../types/promo';
 import { Review, ReviewPost } from '../types/review';
 
-export const fetchCamerasAction = createAsyncThunk<Camera[], [number, string | null, string | null], {
+export const fetchCamerasAction = createAsyncThunk<Camera[], [number, URLSearchParams], {
   dispatch: AppDispatch;
   state: State;
   extra: AxiosInstance;
 }>(
   'data/fetchCameras',
-  async ([start, sort, order], { extra: api }) => {
-    const { data, headers } = await api.get<Camera[]>(
-      sort && order ?
-        `${APIRoute.Cameras}?_start=${start}&_limit=${CAMERAS_AMOUNT_SHOW_BY_PAGE}&_sort=${sort}&_order=${order}` :
-        `${APIRoute.Cameras}?_start=${start}&_limit=${CAMERAS_AMOUNT_SHOW_BY_PAGE}`);
+  async ([start, searchParams], { extra: api }) => {
+    const { data, headers } = await api.get<Camera[]>(`${APIRoute.Cameras}?_start=${start}&_limit=${CAMERAS_AMOUNT_SHOW_BY_PAGE}`, {
+      params: {
+        _sort: searchParams.get(SortParams.Sort),
+        _order: searchParams.get(SortParams.Order),
+        category: searchParams.get(FilterParams.Category),
+        level: searchParams.getAll(FilterParams.Level),
+      }
+    });
     const respData = [...data];
     respData.length = Number(headers['x-total-count']);
     return respData;
