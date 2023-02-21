@@ -1,12 +1,25 @@
-/* eslint-disable no-console */
+import { useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { FilterCategory, FilterLevel, FilterParams, FilterType } from '../../consts';
 import { removeValueByKeyFromSearchParams } from '../../utils/utils';
+import browserHistory from '../../browser-history';
 
 function FilterForm(): JSX.Element {
   const [searchParams, setSearchParams] = useSearchParams();
   const typeParams: string[] = searchParams.getAll(FilterParams.Type);
   const levelParams: string[] = searchParams.getAll(FilterParams.Level);
+
+  useEffect(() => {
+    let isMounted = true;
+    if (isMounted) {
+      const postUrl = new URL('/catalog/page_1/', window.location.origin);
+      postUrl.search = searchParams.toString();
+      browserHistory.push(postUrl.href);
+    }
+    return () => {
+      isMounted = false;
+    };
+  }, [searchParams]);
 
   const handleSelectPhotoCameras = () => {
     if (searchParams.get(FilterParams.Category) !== FilterCategory.Photo) {
@@ -14,7 +27,6 @@ function FilterForm(): JSX.Element {
     } else {
       removeValueByKeyFromSearchParams(searchParams, FilterParams.Category, FilterCategory.Photo);
     }
-
     setSearchParams(searchParams);
   };
 
