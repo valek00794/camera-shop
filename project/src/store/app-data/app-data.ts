@@ -8,6 +8,7 @@ import {
   fetchSimilarCamerasAction,
   fetchPostReviewAction,
   fetchSearchCamerasAction,
+  fetchCamerasPriceRangeAction,
 } from '../api-actions';
 
 export const initialState: AppData = {
@@ -22,6 +23,7 @@ export const initialState: AppData = {
   isReviewSubmitSuccessful: false,
   isRequestFailed: false,
   foundCameras: [],
+  priceRange: [],
 };
 
 export const appData = createSlice({
@@ -36,6 +38,9 @@ export const appData = createSlice({
       .addCase(fetchCamerasAction.fulfilled, (state, action) => {
         state.cameras = action.payload;
         state.isCamerasDataLoading = false;
+      })
+      .addCase(fetchCamerasPriceRangeAction.fulfilled, (state, action) => {
+        state.priceRange?.push(action.payload);
       })
       .addCase(fetchPromoAction.pending, (state) => {
         state.isPromoDataLoading = true;

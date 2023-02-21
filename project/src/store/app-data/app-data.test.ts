@@ -33,6 +33,7 @@ const initialState = {
   isReviewSubmitSuccessful: false,
   isRequestFailed: false,
   foundCameras: [],
+  priceRange: null,
 };
 
 

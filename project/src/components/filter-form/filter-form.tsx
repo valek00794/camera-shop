@@ -1,17 +1,26 @@
 import { ChangeEvent, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { FilterCategory, FilterLevel, FilterParams, FilterType } from '../../consts';
+import { FilterCategory, FilterLevel, FilterParams, FilterType, SortState } from '../../consts';
 import { removeValueByKeyFromSearchParams } from '../../utils/utils';
 import browserHistory from '../../browser-history';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { fetchCamerasPriceRangeAction } from '../../store/api-actions';
+import { getCamerasPriceRange } from '../../store/app-data/selectors';
 
 function FilterForm(): JSX.Element {
+  const dispatch = useAppDispatch();
   const [searchParams, setSearchParams] = useSearchParams();
+  const priceRange = useAppSelector(getCamerasPriceRange);
   const typeParams: string[] = searchParams.getAll(FilterParams.Type);
   const levelParams: string[] = searchParams.getAll(FilterParams.Level);
+
+  const [ priceFrom, priceTo ] = [priceRange !== null ? String(Math.min.apply(null, priceRange)) : '', priceRange !== null ? String(Math.max.apply(null, priceRange)) : ''];
 
   useEffect(() => {
     let isMounted = true;
     if (isMounted) {
+      dispatch(fetchCamerasPriceRangeAction(SortState.Asc));
+      dispatch(fetchCamerasPriceRangeAction(SortState.Desc));
       const postUrl = new URL('/catalog/page_1/', window.location.origin);
       postUrl.search = searchParams.toString();
       browserHistory.push(postUrl.href);
@@ -19,7 +28,7 @@ function FilterForm(): JSX.Element {
     return () => {
       isMounted = false;
     };
-  }, [searchParams]);
+  }, [dispatch, searchParams]);
 
   const handleSelectPhotoCameras = () => {
     if (searchParams.get(FilterParams.Category) !== FilterCategory.Photo) {
@@ -140,7 +149,7 @@ function FilterForm(): JSX.Element {
               <input
                 type="number"
                 name="price"
-                placeholder="от"
+                placeholder={priceFrom}
                 onChange={handleChangePriceFromRange}
                 value={Math.abs(Number(searchParams.get(FilterParams.PriceFrom))) || ''}
                 min={0}
@@ -153,7 +162,7 @@ function FilterForm(): JSX.Element {
               <input
                 type="number"
                 name="priceUp"
-                placeholder="до"
+                placeholder={priceTo}
                 onChange={handleChangePriceToRange}
                 value={Math.abs(Number(searchParams.get(FilterParams.PriceTo))) || ''}
                 min={0}
