@@ -22,6 +22,8 @@ export const fetchCamerasAction = createAsyncThunk<Camera[], [number, URLSearchP
         category: searchParams.get(FilterParams.Category),
         level: searchParams.getAll(FilterParams.Level),
         type: searchParams.getAll(FilterParams.Type),
+        'price_gte': searchParams.getAll(FilterParams.PriceFrom),
+        'price_lte': searchParams.getAll(FilterParams.PriceTo),
       }
     });
     const respData = [...data];

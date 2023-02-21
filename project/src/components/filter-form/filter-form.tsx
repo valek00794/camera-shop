@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { ChangeEvent, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { FilterCategory, FilterLevel, FilterParams, FilterType } from '../../consts';
 import { removeValueByKeyFromSearchParams } from '../../utils/utils';
@@ -114,6 +114,16 @@ function FilterForm(): JSX.Element {
     setSearchParams(searchParams);
   };
 
+  const handleChangePriceFromRange = (evt: ChangeEvent<HTMLInputElement>) => {
+    searchParams.set(FilterParams.PriceFrom, evt.target.value);
+    setSearchParams(searchParams);
+  };
+
+  const handleChangePriceToRange = (evt: ChangeEvent<HTMLInputElement>) => {
+    searchParams.set(FilterParams.PriceTo, evt.target.value);
+    setSearchParams(searchParams);
+  };
+
   const handleResetFillter = () => {
     Object.values(FilterParams).map((key) => searchParams.delete(key));
     setSearchParams(searchParams);
@@ -127,12 +137,28 @@ function FilterForm(): JSX.Element {
         <div className="catalog-filter__price-range">
           <div className="custom-input">
             <label>
-              <input type="number" name="price" placeholder="от" />
+              <input
+                type="number"
+                name="price"
+                placeholder="от"
+                onChange={handleChangePriceFromRange}
+                value={Math.abs(Number(searchParams.get(FilterParams.PriceFrom))) || ''}
+                min={0}
+                pattern={'/^\\d+$/'}
+              />
             </label>
           </div>
           <div className="custom-input">
             <label>
-              <input type="number" name="priceUp" placeholder="до" />
+              <input
+                type="number"
+                name="priceUp"
+                placeholder="до"
+                onChange={handleChangePriceToRange}
+                value={Math.abs(Number(searchParams.get(FilterParams.PriceTo))) || ''}
+                min={0}
+                pattern={'/^\\d+$/'}
+              />
             </label>
           </div>
         </div>

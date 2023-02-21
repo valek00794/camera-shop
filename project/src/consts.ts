@@ -45,6 +45,8 @@ export enum FilterParams {
   Category = 'category',
   Level = 'level',
   Type = 'type',
+  PriceFrom = 'price_gte',
+  PriceTo = 'price_lte'
 }
 
 export enum SortState {
