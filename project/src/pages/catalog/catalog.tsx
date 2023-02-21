@@ -13,6 +13,7 @@ import { getCameras, getCamerasAmount } from '../../store/app-data/selectors';
 import { CAMERAS_AMOUNT_SHOW_BY_PAGE } from '../../consts';
 import { fetchCamerasAction } from '../../store/api-actions';
 import NotFound from '../../components/not-found/not-found';
+import './catalog.css';
 
 function Catalog(): JSX.Element {
   const dispatch = useAppDispatch();
@@ -63,9 +64,23 @@ function Catalog(): JSX.Element {
                   <div className="catalog-sort">
                     <SortForm />
                   </div>
-                  <div className="cards catalog__cards">
-                    {cameras.map((camera) => <ProductCard key={camera.id} camera={camera} />)}
-                  </div>
+                  {
+                    cameras.length === 0 &&
+                    <div className="outer">
+                      <div className="inner">
+                        <h4>Странно, но ничего нет</h4>
+                        <p>Попробуйте изменить критерии фильтра</p>
+                      </div>
+                    </div>
+                  }
+                  {
+                    cameras.length > 0 &&
+                    <div className="cards catalog__cards">
+                      {
+                        cameras.map((camera) => <ProductCard key={camera.id} camera={camera} />)
+                      }
+                    </div>
+                  }
                   <PaginationList
                     pageCount={pageCount}
                     pages={pages}

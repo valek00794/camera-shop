@@ -13,7 +13,7 @@ export enum APIRoute {
   Reviews = '/reviews',
   Similar = '/similar',
   Coupons = '/coupons',
-  Orders = '/orders'
+  Orders = '/orders',
 }
 
 
@@ -43,7 +43,8 @@ export enum SortParams {
 
 export enum FilterParams {
   Category = 'category',
-  Level = 'level'
+  Level = 'level',
+  Type = 'type',
 }
 
 export enum SortState {
@@ -62,6 +63,13 @@ export enum FilterCategory {
 export enum FilterLevel {
   Zero = 'Нулевой',
   NonPro = 'Любительский',
-  Pro = 'Профессиональный'
+  Pro = 'Профессиональный',
+}
+
+export enum FilterType {
+  Digital = 'Цифровая',
+  Film = 'Плёночная',
+  Snapshot = 'Моментальная',
+  Collection = 'Коллекционная',
 }
 

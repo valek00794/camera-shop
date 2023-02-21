@@ -2,7 +2,6 @@ import { Link, useParams, useSearchParams } from 'react-router-dom';
 import classnames from 'classnames';
 
 import { scrollUp } from '../../utils/utils';
-import { SortParams } from '../../consts';
 
 type PaginationListProps = {
   pageCount: number;
@@ -17,11 +16,8 @@ const scrollToOptions: ScrollToOptions = {
 function PaginationList(props: PaginationListProps): JSX.Element {
   const { page } = useParams();
   const [searchParams,] = useSearchParams();
-
   const paramPageToNumber = Number(page);
-
-  const sortParam = searchParams.get(SortParams.Sort);
-  const orderParam = searchParams.get(SortParams.Order);
+  const searchParamsString = searchParams.toString();
 
   const getPaginationLinkClassName = (pageNumber: number) =>
     classnames(
@@ -45,9 +41,7 @@ function PaginationList(props: PaginationListProps): JSX.Element {
             >
               <Link
                 className="pagination__link"
-                to={sortParam !== null && orderParam ?
-                  `/catalog/page_${paramPageToNumber - 1}?sort=${sortParam}&order=${orderParam}` :
-                  `/catalog/page_${paramPageToNumber - 1}`}
+                to={`/catalog/page_${paramPageToNumber - 1}?${searchParamsString}`}
               >Назад
               </Link>
             </li>
@@ -61,9 +55,7 @@ function PaginationList(props: PaginationListProps): JSX.Element {
               >
                 <Link
                   className={getPaginationLinkClassName(pageNumber)}
-                  to={sortParam !== null && orderParam ?
-                    `/catalog/page_${pageNumber}?sort=${sortParam}&order=${orderParam}` :
-                    `/catalog/page_${pageNumber}`}
+                  to={`/catalog/page_${pageNumber}?${searchParamsString}`}
                 >{pageNumber}
                 </Link>
               </li>
@@ -78,9 +70,7 @@ function PaginationList(props: PaginationListProps): JSX.Element {
             >
               <Link
                 className="pagination__link"
-                to={sortParam !== null && orderParam ?
-                  `/catalog/page_${paramPageToNumber + 1}?sort=${sortParam}&order=${orderParam}` :
-                  `/catalog/page_${paramPageToNumber + 1}`}
+                to={`/catalog/page_${paramPageToNumber + 1}?${searchParamsString}`}
               >Далее
               </Link>
             </li>

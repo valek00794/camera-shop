@@ -14,7 +14,7 @@ import {
 
 import { State } from '../types/state';
 
-import { APIRoute, CAMERAS_AMOUNT_SHOW_BY_PAGE, SortState } from '../consts';
+import { APIRoute, CAMERAS_AMOUNT_SHOW_BY_PAGE } from '../consts';
 import {
   fakeCameraInfo,
   makeFakeCameras,
@@ -23,7 +23,6 @@ import {
   makeFakeNewReview,
 } from '../utils/mocks';
 import { renderHook } from '@testing-library/react';
-import { useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
 const mockCameraInfo = fakeCameraInfo;

@@ -11,3 +11,17 @@ export const getHumanizeDateDayMounth = (date: string) =>
     month: 'long',
     day: 'numeric'
   });
+
+export const removeValueByKeyFromSearchParams = (params: URLSearchParams, key: string, valueToRemove: string) => {
+  const values = params.getAll(key);
+  if (values.length) {
+    params.delete(key);
+    for (const value of values) {
+
+      if (value !== valueToRemove) {
+        params.append(key, value);
+      }
+    }
+  }
+  return params;
+};
