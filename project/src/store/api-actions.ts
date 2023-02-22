@@ -1,4 +1,4 @@
-import { AxiosInstance } from 'axios';
+import axios, { AxiosInstance } from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
 import { APIRoute, CAMERAS_AMOUNT_SHOW_BY_PAGE, FilterParams, SortParams, SortState } from '../consts';
@@ -32,15 +32,20 @@ export const fetchCamerasAction = createAsyncThunk<Camera[], [number, URLSearchP
   },
 );
 
-export const fetchCamerasPriceRangeAction = createAsyncThunk<number, string, {
+export const fetchCamerasPriceRangeAction = createAsyncThunk<number[], undefined, {
   dispatch: AppDispatch;
   state: State;
   extra: AxiosInstance;
 }>(
   'data/fetchCamerasPriceRange',
-  async (order, { extra: api }) => {
-    const { data } = await api.get<Camera[]>(`${APIRoute.Cameras}?_start=$0&_limit=1&_sort=${SortState.Price}&_order=${order}`);
-    return data[0].price;
+  async (_arg, { extra: api }) => {
+    const urls = [
+      `${APIRoute.Cameras}?_start=$0&_limit=1&_sort=${SortState.Price}&_order=${SortState.Asc}`,
+      `${APIRoute.Cameras}?_start=$0&_limit=1&_sort=${SortState.Price}&_order=${SortState.Desc}`,
+    ];
+    const requests = urls.map((url) => api.get<[Camera]>(url));
+    const [resp1, resp2] = await axios.all(requests);
+    return [resp1.data[0].price, resp2.data[0].price];
   },
 );
 

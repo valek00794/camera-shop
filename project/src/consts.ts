@@ -75,3 +75,7 @@ export enum FilterType {
   Collection = 'Коллекционная',
 }
 
+export const scrollToTopCatalogOptions: ScrollToOptions = {
+  top: 348,
+  behavior: 'smooth'
+};

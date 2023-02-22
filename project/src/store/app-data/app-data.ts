@@ -40,7 +40,7 @@ export const appData = createSlice({
         state.isCamerasDataLoading = false;
       })
       .addCase(fetchCamerasPriceRangeAction.fulfilled, (state, action) => {
-        state.priceRange?.push(action.payload);
+        state.priceRange?.push(...action.payload);
       })
       .addCase(fetchPromoAction.pending, (state) => {
         state.isPromoDataLoading = true;

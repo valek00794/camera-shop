@@ -2,16 +2,12 @@ import { Link, useParams, useSearchParams } from 'react-router-dom';
 import classnames from 'classnames';
 
 import { scrollUp } from '../../utils/utils';
+import { scrollToTopCatalogOptions } from '../../consts';
 
 type PaginationListProps = {
   pageCount: number;
   pages: number[];
 }
-
-const scrollToOptions: ScrollToOptions = {
-  top: 348,
-  behavior: 'smooth'
-};
 
 function PaginationList(props: PaginationListProps): JSX.Element {
   const { page } = useParams();
@@ -36,7 +32,7 @@ function PaginationList(props: PaginationListProps): JSX.Element {
           {
             isBtnBackVisible &&
             <li
-              onClick={() => scrollUp(scrollToOptions)}
+              onClick={() => scrollUp(scrollToTopCatalogOptions)}
               className="pagination__item"
             >
               <Link
@@ -49,7 +45,7 @@ function PaginationList(props: PaginationListProps): JSX.Element {
           {
             props.pages.map((pageNumber) => (
               <li
-                onClick={() => scrollUp(scrollToOptions)}
+                onClick={() => scrollUp(scrollToTopCatalogOptions)}
                 key={pageNumber}
                 className="pagination__item"
               >
@@ -65,7 +61,7 @@ function PaginationList(props: PaginationListProps): JSX.Element {
           {
             isBtnNextVisible &&
             <li
-              onClick={() => scrollUp(scrollToOptions)}
+              onClick={() => scrollUp(scrollToTopCatalogOptions)}
               className="pagination__item"
             >
               <Link
