@@ -8,6 +8,7 @@ import { State } from '../../types/state';
 
 export const getCameras = (state: State): Camera[] => state[NameSpace.Data].cameras;
 export const getCamerasPriceRange = (state: State): number[] | null => state[NameSpace.Data].priceRange;
+export const getPriceRangeDataLoading = (state: State): boolean => state[NameSpace.Data].isPriceRangeLoading;
 export const getCamerasAmount = (state: State): number => state[NameSpace.Data].cameras.length;
 export const getPromo = (state: State): Promo | null => state[NameSpace.Data].promo;
 export const getPromoDataLoading = (state: State): boolean => state[NameSpace.Data].isPromoDataLoading;

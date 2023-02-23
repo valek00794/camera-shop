@@ -34,6 +34,7 @@ const initialState = {
   isRequestFailed: false,
   foundCameras: [],
   priceRange: null,
+  isPriceRangeLoading: false,
 };
 
 

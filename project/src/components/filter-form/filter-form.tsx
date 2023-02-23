@@ -4,34 +4,30 @@ import { useSearchParams } from 'react-router-dom';
 import { FilterCategory, FilterLevel, FilterParams, FilterType, scrollToTopCatalogOptions } from '../../consts';
 import { removeValueByKeyFromSearchParams, scrollUp } from '../../utils/utils';
 import browserHistory from '../../browser-history';
-import { useAppDispatch, useAppSelector } from '../../hooks';
-import { fetchCamerasPriceRangeAction } from '../../store/api-actions';
-import { getCamerasPriceRange } from '../../store/app-data/selectors';
-import { useFocus } from '../../hooks/use-focus';
+import { useAppDispatch } from '../../hooks';
 
-const exceptThisSymbolsInputRange = ['e', 'E', '+', '-', '.'];
-const defaultPriceValue = '';
+const exceptInputRangeThisSymbols = ['e', 'E', '+', '-', '.'];
+const DEFAULT_PRICE_VALUE = '';
 
-function FilterForm(): JSX.Element {
+type FilterFormProops = {
+  priceFromFieldFocusRef: React.MutableRefObject<boolean>;
+  priceToFieldFocusRef: React.MutableRefObject<boolean>;
+  serverPriceFrom: string;
+  serverPriceTo: string;
+}
+
+function FilterForm(props: FilterFormProops): JSX.Element {
   const dispatch = useAppDispatch();
   const [searchParams, setSearchParams] = useSearchParams();
-  const refPriceFrom = useRef(searchParams.get(FilterParams.PriceFrom) || defaultPriceValue);
-  const refPriceTo = useRef(searchParams.get(FilterParams.PriceTo) || defaultPriceValue);
-  const [inputPriceToRef, setInputPriceToFocus] = useFocus();
-  const [inputPriceFromRef, setInputPriceFromFocus] = useFocus();
-  const priceRange = useAppSelector(getCamerasPriceRange);
+  const refPriceFrom = useRef(searchParams.get(FilterParams.PriceFrom) || DEFAULT_PRICE_VALUE);
+  const refPriceTo = useRef(searchParams.get(FilterParams.PriceTo) || DEFAULT_PRICE_VALUE);
   const typeParams: string[] = searchParams.getAll(FilterParams.Type);
   const levelParams: string[] = searchParams.getAll(FilterParams.Level);
-  const [priceFrom, priceTo] = [
-    priceRange !== null ? String(Math.min.apply(null, priceRange)) : defaultPriceValue,
-    priceRange !== null ? String(Math.max.apply(null, priceRange)) : defaultPriceValue
-  ];
 
 
   useEffect(() => {
     let isMounted = true;
     if (isMounted) {
-      dispatch(fetchCamerasPriceRangeAction());
       const postUrl = new URL('/catalog/page_1/', window.location.origin);
       postUrl.search = searchParams.toString();
       browserHistory.push(postUrl.href);
@@ -135,55 +131,76 @@ function FilterForm(): JSX.Element {
   };
 
   const handleChangePriceFrom = (evt: ChangeEvent<HTMLInputElement>) => {
+    props.priceFromFieldFocusRef.current = true;
     searchParams.set(FilterParams.PriceFrom, evt.target.value);
     refPriceFrom.current = evt.target.value;
-    if (searchParams.get(FilterParams.PriceFrom) === defaultPriceValue) {
+    if (searchParams.get(FilterParams.PriceFrom) === DEFAULT_PRICE_VALUE) {
       searchParams.delete(FilterParams.PriceFrom);
     }
     setSearchParams(searchParams);
   };
 
   const handleSelectCamerasByPriceFrom = (evt: ChangeEvent<HTMLInputElement>) => {
-    if (Number(evt.target.value) < Number(priceFrom)) {
-      evt.target.value = priceFrom;
-      searchParams.set(FilterParams.PriceFrom, priceFrom);
+    props.priceFromFieldFocusRef.current = false;
+    if (
+      Number(evt.target.value) !== 0 &&
+      Number(evt.target.value) < Number(props.serverPriceFrom)
+    ) {
+      evt.target.value = props.serverPriceFrom;
+      searchParams.set(FilterParams.PriceFrom, props.serverPriceFrom);
       refPriceFrom.current = evt.target.value;
     }
     if (
       Number(evt.target.value) !== 0 &&
-      refPriceTo.current !== defaultPriceValue &&
+      Number(evt.target.value) > Number(props.serverPriceTo)
+    ) {
+      evt.target.value = props.serverPriceTo;
+      searchParams.set(FilterParams.PriceFrom, props.serverPriceTo);
+      refPriceFrom.current = evt.target.value;
+    }
+    if (
+      Number(evt.target.value) !== 0 &&
+      refPriceTo.current !== DEFAULT_PRICE_VALUE &&
       Number(evt.target.value) > Number(refPriceTo.current)
     ) {
       evt.target.value = '';
       searchParams.delete(FilterParams.PriceFrom);
-      setInputPriceFromFocus();
     }
     setSearchParams(searchParams);
   };
 
   const handleChangePriceTo = (evt: ChangeEvent<HTMLInputElement>) => {
+    props.priceToFieldFocusRef.current = true;
     searchParams.set(FilterParams.PriceTo, evt.target.value);
     refPriceTo.current = evt.target.value;
-    if (searchParams.get(FilterParams.PriceTo) === defaultPriceValue) {
+    if (searchParams.get(FilterParams.PriceTo) === DEFAULT_PRICE_VALUE) {
       searchParams.delete(FilterParams.PriceTo);
     }
     setSearchParams(searchParams);
   };
 
   const handleSelectCamerasByPriceTo = (evt: ChangeEvent<HTMLInputElement>) => {
-    if (Number(evt.target.value) > Number(priceTo)) {
-      evt.target.value = priceTo;
-      searchParams.set(FilterParams.PriceTo, priceTo);
+    props.priceToFieldFocusRef.current = false;
+    if (Number(evt.target.value) > Number(props.serverPriceTo)) {
+      evt.target.value = props.serverPriceTo;
+      searchParams.set(FilterParams.PriceTo, props.serverPriceTo);
       refPriceTo.current = evt.target.value;
     }
     if (
       Number(evt.target.value) !== 0 &&
-      refPriceFrom.current !== defaultPriceValue &&
+      Number(evt.target.value) < Number(props.serverPriceFrom)
+    ) {
+      evt.target.value = props.serverPriceFrom;
+      searchParams.set(FilterParams.PriceTo, props.serverPriceFrom);
+      refPriceTo.current = evt.target.value;
+    }
+    if (
+      Number(evt.target.value) !== 0 &&
+      refPriceFrom.current !== DEFAULT_PRICE_VALUE &&
       Number(evt.target.value) < Number(refPriceFrom.current)
     ) {
       evt.target.value = '';
       searchParams.delete(FilterParams.PriceTo);
-      setInputPriceToFocus();
     }
     setSearchParams(searchParams);
   };
@@ -203,14 +220,13 @@ function FilterForm(): JSX.Element {
           <div className="custom-input">
             <label>
               <input
-                ref={inputPriceFromRef}
                 type="number"
                 name="price"
-                placeholder={priceFrom}
+                placeholder={props.serverPriceFrom}
                 onBlur={handleSelectCamerasByPriceFrom}
                 onChange={handleChangePriceFrom}
-                value={searchParams.get(FilterParams.PriceFrom) || defaultPriceValue}
-                onKeyDown={(evt) => exceptThisSymbolsInputRange.includes(evt.key) && evt.preventDefault()}
+                value={searchParams.get(FilterParams.PriceFrom) || DEFAULT_PRICE_VALUE}
+                onKeyDown={(evt) => exceptInputRangeThisSymbols.includes(evt.key) && evt.preventDefault()}
                 min={0}
               />
             </label>
@@ -218,14 +234,13 @@ function FilterForm(): JSX.Element {
           <div className="custom-input">
             <label>
               <input
-                ref={inputPriceToRef}
                 type="number"
                 name="priceUp"
-                placeholder={priceTo}
+                placeholder={props.serverPriceTo}
                 onBlur={handleSelectCamerasByPriceTo}
                 onChange={handleChangePriceTo}
-                value={searchParams.get(FilterParams.PriceTo) || defaultPriceValue}
-                onKeyDown={(evt) => exceptThisSymbolsInputRange.includes(evt.key) && evt.preventDefault()}
+                value={searchParams.get(FilterParams.PriceTo) || DEFAULT_PRICE_VALUE}
+                onKeyDown={(evt) => exceptInputRangeThisSymbols.includes(evt.key) && evt.preventDefault()}
                 min={0}
               />
             </label>

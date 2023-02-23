@@ -39,9 +39,11 @@ export const fetchCamerasPriceRangeAction = createAsyncThunk<number[], undefined
 }>(
   'data/fetchCamerasPriceRange',
   async (_arg, { extra: api }) => {
+    const startitem = 0;
+    const countItems = 1;
     const urls = [
-      `${APIRoute.Cameras}?_start=$0&_limit=1&_sort=${SortState.Price}&_order=${SortState.Asc}`,
-      `${APIRoute.Cameras}?_start=$0&_limit=1&_sort=${SortState.Price}&_order=${SortState.Desc}`,
+      `${APIRoute.Cameras}?_start=${startitem}&_limit=${countItems}&_sort=${SortState.Price}&_order=${SortState.Asc}`,
+      `${APIRoute.Cameras}?_start=${startitem}&_limit=${countItems}&_sort=${SortState.Price}&_order=${SortState.Desc}`,
     ];
     const requests = urls.map((url) => api.get<[Camera]>(url));
     const [resp1, resp2] = await axios.all(requests);

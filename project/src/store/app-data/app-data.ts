@@ -24,6 +24,7 @@ export const initialState: AppData = {
   isRequestFailed: false,
   foundCameras: [],
   priceRange: [],
+  isPriceRangeLoading: false,
 };
 
 export const appData = createSlice({
@@ -39,8 +40,12 @@ export const appData = createSlice({
         state.cameras = action.payload;
         state.isCamerasDataLoading = false;
       })
+      .addCase(fetchCamerasPriceRangeAction.pending, (state) => {
+        state.isPriceRangeLoading = true;
+      })
       .addCase(fetchCamerasPriceRangeAction.fulfilled, (state, action) => {
         state.priceRange?.push(...action.payload);
+        state.isPriceRangeLoading = false;
       })
       .addCase(fetchPromoAction.pending, (state) => {
         state.isPromoDataLoading = true;

@@ -50,7 +50,6 @@ export enum FilterParams {
 }
 
 export enum SortState {
-  Default = '',
   Price = 'price',
   Rating = 'rating',
   Asc = 'asc',

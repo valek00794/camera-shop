@@ -2,11 +2,13 @@ import { useSearchParams } from 'react-router-dom';
 
 import { SortParams, SortState } from '../../consts';
 
+const DEFAULT_SORT_VALUE = '';
+
 function SortForm(): JSX.Element {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const handleSortByPrice = () => {
-    if (!searchParams.has(SortParams.Order) || searchParams.get(SortParams.Order) === SortState.Default) {
+    if (!searchParams.has(SortParams.Order) || searchParams.get(SortParams.Order) === DEFAULT_SORT_VALUE) {
       searchParams.set(SortParams.Order, SortState.Asc);
     }
     searchParams.set(SortParams.Sort, SortState.Price);
@@ -14,7 +16,7 @@ function SortForm(): JSX.Element {
   };
 
   const handleSortByPopular = () => {
-    if (!searchParams.has(SortParams.Order) || searchParams.get(SortParams.Order) === SortState.Default) {
+    if (!searchParams.has(SortParams.Order) || searchParams.get(SortParams.Order) === DEFAULT_SORT_VALUE) {
       searchParams.set(SortParams.Order, SortState.Asc);
     }
     searchParams.set(SortParams.Sort, SortState.Rating);
@@ -22,7 +24,7 @@ function SortForm(): JSX.Element {
   };
 
   const handleSortAsc = () => {
-    if (!searchParams.has(SortParams.Sort) || searchParams.get(SortParams.Sort) === SortState.Default) {
+    if (!searchParams.has(SortParams.Sort) || searchParams.get(SortParams.Sort) === DEFAULT_SORT_VALUE) {
       searchParams.set(SortParams.Sort, SortState.Price);
     }
     searchParams.set(SortParams.Order, SortState.Asc);
@@ -30,7 +32,7 @@ function SortForm(): JSX.Element {
   };
 
   const handleSortDesc = () => {
-    if (!searchParams.has(SortParams.Sort) || searchParams.get(SortParams.Sort) === SortState.Default) {
+    if (!searchParams.has(SortParams.Sort) || searchParams.get(SortParams.Sort) === DEFAULT_SORT_VALUE) {
       searchParams.set(SortParams.Sort, SortState.Price);
     }
     searchParams.set(SortParams.Order, SortState.Desc);
