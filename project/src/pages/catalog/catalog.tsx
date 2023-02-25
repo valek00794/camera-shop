@@ -10,8 +10,9 @@ import PaginationList from '../../components/pagination-list/pagination-list';
 import BreadcrumbsList from '../../components/breadcrumbs-list/breadcrumbs-list';
 import NotFound from '../../components/not-found/not-found';
 import Loading from '../../components/loading/loading';
+import ProductCardLoading from '../../components/product-card/product-card-loading';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { getCameras, getCamerasAmount, getCamerasPriceRange, getPriceRangeDataLoading } from '../../store/app-data/selectors';
+import { getCameras, getCamerasAmount, getCamerasDataLoading, getCamerasPriceRange, getPriceRangeDataLoading } from '../../store/app-data/selectors';
 import { CAMERAS_AMOUNT_SHOW_BY_PAGE, FilterCategory, FilterLevel, FilterParams, FilterType, SortParams, SortState } from '../../consts';
 import { fetchCamerasAction } from '../../store/api-actions';
 import './catalog.css';
@@ -29,6 +30,7 @@ function Catalog(): JSX.Element {
   const camerasAmount = useAppSelector(getCamerasAmount);
   const priceRange = useAppSelector(getCamerasPriceRange);
   const isPriceRangeLoading = useAppSelector(getPriceRangeDataLoading);
+  const isCamerasDataLoading = useAppSelector(getCamerasDataLoading);
 
   const pageCount = Math.ceil(camerasAmount / CAMERAS_AMOUNT_SHOW_BY_PAGE);
   const pages = Array.from({ length: pageCount }, (_, index) => index + 1);
@@ -162,7 +164,7 @@ function Catalog(): JSX.Element {
                     <SortForm />
                   </div>
                   {
-                    cameras.length === 0 &&
+                    cameras.length === 0 && !isCamerasDataLoading &&
                     <div className="outer">
                       <div className="inner">
                         <h4>Странно, но ничего нет</h4>
@@ -171,10 +173,14 @@ function Catalog(): JSX.Element {
                     </div>
                   }
                   {
-                    cameras.length > 0 &&
                     <div className="cards catalog__cards">
                       {
+                        cameras.length > 0 && !isCamerasDataLoading &&
                         cameras.map((camera) => <ProductCard key={camera.id} camera={camera} />)
+                      }
+                      {
+                        isCamerasDataLoading &&
+                        cameras.map((camera) => <ProductCardLoading key={camera.id} />)
                       }
                     </div>
                   }
