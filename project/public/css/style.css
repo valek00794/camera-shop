@@ -3650,3 +3650,7 @@ button,
     background-color: #f4f4fc;
   }
 }
+
+.modal-open {
+  overflow: hidden;
+}
