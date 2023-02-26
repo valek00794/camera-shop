@@ -24,7 +24,8 @@ export const initialState: AppData = {
   isRequestFailed: false,
   foundCameras: [],
   priceRange: [],
-  isPriceRangeLoading: false,
+  isPriceRangeDataLoading: false,
+  isSearchDataLoading: false,
 };
 
 export const appData = createSlice({
@@ -41,11 +42,11 @@ export const appData = createSlice({
         state.isCamerasDataLoading = false;
       })
       .addCase(fetchCamerasPriceRangeAction.pending, (state) => {
-        state.isPriceRangeLoading = true;
+        state.isPriceRangeDataLoading = true;
       })
       .addCase(fetchCamerasPriceRangeAction.fulfilled, (state, action) => {
         state.priceRange?.push(...action.payload);
-        state.isPriceRangeLoading = false;
+        state.isPriceRangeDataLoading = false;
       })
       .addCase(fetchPromoAction.pending, (state) => {
         state.isPromoDataLoading = true;
@@ -78,8 +79,13 @@ export const appData = createSlice({
       .addCase(fetchPostReviewAction.rejected, (state) => {
         state.isReviewSubmitSuccessful = false;
       })
+      .addCase(fetchSearchCamerasAction.pending, (state,) => {
+        state.isSearchDataLoading = true;
+        state.foundCameras = [];
+      })
       .addCase(fetchSearchCamerasAction.fulfilled, (state, action) => {
         state.foundCameras = action.payload;
+        state.isSearchDataLoading = false;
       });
   }
 });

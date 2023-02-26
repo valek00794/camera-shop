@@ -16,7 +16,8 @@ export type AppData = {
     isRequestFailed: boolean;
     foundCameras: Camera[] | null;
     priceRange: number[] | null;
-    isPriceRangeLoading: boolean;
+    isPriceRangeDataLoading: boolean;
+    isSearchDataLoading: boolean;
 };
 
 export type State = ReturnType<typeof store.getState>;

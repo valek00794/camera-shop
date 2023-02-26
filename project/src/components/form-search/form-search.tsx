@@ -4,17 +4,18 @@ import { Link } from 'react-router-dom';
 
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { fetchSearchCamerasAction } from '../../store/api-actions';
-import { getFoundCameras } from '../../store/app-data/selectors';
+import { getFoundCameras, getSearchDataLoading } from '../../store/app-data/selectors';
 import { getCameraTitle } from '../../utils/utils';
 
 const defaultInputSearchString = '';
-
 
 function FormSearch(): JSX.Element {
   const dispatch = useAppDispatch();
   const [searchName, setSearchName] = useState(defaultInputSearchString);
   const [isOpenSelectList, setIsOpenSelectList] = useState(false);
   const foundCameras = useAppSelector(getFoundCameras);
+  const isSearchDataLoading = useAppSelector(getSearchDataLoading);
+
   const availableSelectListElements: HTMLAnchorElement[] | null[] = [];
   const availableElementsRef = useRef(availableSelectListElements);
   foundCameras?.length ? availableElementsRef.current.length = foundCameras?.length : availableElementsRef.current.length = 0;
@@ -23,7 +24,7 @@ function FormSearch(): JSX.Element {
 
   useEffect(() => {
     let startIndex = -1;
-    document.body.classList.toggle('modal-open', isOpenSelectList);
+    document.body.classList.toggle('modal-open', isOpenSelectList && !isSearchDataLoading);
     let isMounted = true;
 
     const handleKeyPress = (evt: KeyboardEvent) => {
@@ -89,11 +90,13 @@ function FormSearch(): JSX.Element {
       window.removeEventListener('keyup', handleKeyPress);
       window.removeEventListener('click', handleCloseSelectList);
     };
-  }, [dispatch, endActiveElement, foundCameras?.length, isOpenSelectList, searchName, startActiveElement]);
+  }, [dispatch, endActiveElement, foundCameras?.length, isOpenSelectList, isSearchDataLoading, searchName, startActiveElement]);
 
   const handleInputSearch = (evt: ChangeEvent<HTMLInputElement>) => {
     setSearchName(evt.target.value);
-    dispatch(fetchSearchCamerasAction(evt.target.value));
+    if (evt.target.value !== '') {
+      dispatch(fetchSearchCamerasAction(evt.target.value));
+    }
   };
 
   const handleResetSearch = () => {
@@ -103,7 +106,7 @@ function FormSearch(): JSX.Element {
 
   const getOpenListClassName = () => classnames(
     'form-search',
-    { 'list-opened': isOpenSelectList }
+    { 'list-opened': isOpenSelectList && !isSearchDataLoading }
   );
 
   return (
@@ -126,7 +129,7 @@ function FormSearch(): JSX.Element {
         <ul className="form-search__select-list scroller">
 
           {
-            foundCameras?.length !== 0 &&
+            !isSearchDataLoading &&
             foundCameras?.map((camera, index) => (
               <Link
                 key={camera.id}
@@ -143,7 +146,6 @@ function FormSearch(): JSX.Element {
               </Link>
             ))
           }
-
         </ul>
       </form>
       <button className="form-search__reset" type="reset" onClick={handleResetSearch}>
