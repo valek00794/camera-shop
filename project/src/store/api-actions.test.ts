@@ -10,11 +10,13 @@ import {
   fetchCameraInfoWithReviewsAction,
   fetchSimilarCamerasAction,
   fetchPostReviewAction,
+  fetchSearchCamerasAction,
+  fetchCamerasPriceRangeAction,
 } from './api-actions';
 
 import { State } from '../types/state';
 
-import { APIRoute, CAMERAS_AMOUNT_SHOW_BY_PAGE } from '../consts';
+import { APIRoute, CAMERAS_AMOUNT_SHOW_BY_PAGE, SortState } from '../consts';
 import {
   fakeCameraInfo,
   makeFakeCameras,
@@ -22,8 +24,6 @@ import {
   makeFakeReviews,
   makeFakeNewReview,
 } from '../utils/mocks';
-import { renderHook } from '@testing-library/react';
-import { useSearchParams } from 'react-router-dom';
 
 const mockCameraInfo = fakeCameraInfo;
 const mockCameras = makeFakeCameras(10);
@@ -45,22 +45,63 @@ describe('Async actions', () => {
 
   it('1. should dispatch cameras when GET /cameras with start & limit', async () => {
     const start = 0;
-    const headers = {'x-total-count': '50'};
-    const { result } = renderHook(() => useSearchParams());
-    const fakeSortState = result.current[0];
+    const headers = { 'x-total-count': '50' };
+    const fakeUrlSearchParams = new URLSearchParams();
     mockAPI
       .onGet(`${APIRoute.Cameras}?_start=${start}&_limit=${CAMERAS_AMOUNT_SHOW_BY_PAGE}`)
       .reply(200, mockCameras, headers);
 
     const store = mockStore();
 
-    await store.dispatch(fetchCamerasAction([start, fakeSortState]));
+    await store.dispatch(fetchCamerasAction([start, fakeUrlSearchParams]));
 
     const actions = store.getActions().map(({ type }) => type);
 
     expect(actions).toEqual([
       fetchCamerasAction.pending.type,
       fetchCamerasAction.fulfilled.type
+    ]);
+  });
+  it('2. should dispatch foundCameras when GET /cameras with name_like="string"', async () => {
+    const searchString = 'Sony';
+    mockAPI
+      .onGet(`${APIRoute.Cameras}?name_like=${searchString}`)
+      .reply(200, mockCameras);
+
+    const store = mockStore();
+
+    await store.dispatch(fetchSearchCamerasAction(searchString));
+
+    const actions = store.getActions().map(({ type }) => type);
+
+    expect(actions).toEqual([
+      fetchSearchCamerasAction.pending.type,
+      fetchSearchCamerasAction.fulfilled.type
+    ]);
+  });
+
+  it('3. should dispatch priceRange when GET /cameras with params', async () => {
+    const startitem = 0;
+    const countItems = 1;
+    const fakePriceRange: number[] = [mockCameraInfo.price];
+
+    const urls = [
+      `${APIRoute.Cameras}?_start=${startitem}&_limit=${countItems}&_sort=${SortState.Price}&_order=${SortState.Asc}`,
+      `${APIRoute.Cameras}?_start=${startitem}&_limit=${countItems}&_sort=${SortState.Price}&_order=${SortState.Desc}`,
+    ];
+    urls.map((url) => mockAPI
+      .onGet(url)
+      .reply(200, fakePriceRange));
+
+    const store = mockStore();
+
+    await store.dispatch(fetchCamerasPriceRangeAction());
+
+    const actions = store.getActions().map(({ type }) => type);
+
+    expect(actions).toEqual([
+      fetchCamerasPriceRangeAction.pending.type,
+      fetchCamerasPriceRangeAction.fulfilled.type
     ]);
   });
 

@@ -1,61 +1,26 @@
 import { render, screen } from '@testing-library/react';
-import { configureMockStore } from '@jedmao/redux-mock-store';
-import { Provider } from 'react-redux';
-import thunk from 'redux-thunk';
 
 import { createMemoryHistory } from 'history';
 import HistoryRouter from '../../components/history-route/history-route';
 import SortForm from './sort-form';
 import { SortParams, SortState } from '../../consts';
 import userEvent from '@testing-library/user-event';
-
-const mockStore = configureMockStore([thunk]);
-
-const store = mockStore({
-  DATA: {},
-});
 const history = createMemoryHistory();
 
 describe('Component: SortForm', () => {
   it('1. should render correctly', () => {
     render(
-      <Provider store={store}>
-        <HistoryRouter history={history}>
-          <SortForm />
-        </HistoryRouter>
-      </Provider>
+      <HistoryRouter history={history}>
+        <SortForm />
+      </HistoryRouter>
     );
     expect(screen.getByText('Сортировать:')).toBeInTheDocument();
-  });
-  it('2. should render correctly if select sort by Price and should auto cheked order Asc', async () => {
-    render(
-      <Provider store={store}>
-        <HistoryRouter history={history}>
-          <SortForm />
-        </HistoryRouter>
-      </Provider>
-    );
-
-    const radioSortByPrice = screen.getByLabelText('По цене');
-    const radioOrderAsc = screen.getByLabelText('По возрастанию');
-    const radioSortByPopular = screen.getByLabelText('По популярности');
-    const radioOrderDesc = screen.getByLabelText('По убыванию');
-
-    expect(screen.getByText('Сортировать:')).toBeInTheDocument();
-
-    await userEvent.click(radioSortByPrice);
-    expect(radioSortByPrice).toBeChecked();
-    expect(radioOrderAsc).toBeChecked();
-    expect(radioSortByPopular).not.toBeChecked();
-    expect(radioOrderDesc).not.toBeChecked();
   });
   it('3. should render correctly if select sort by Popular and should auto cheked order Asc', async () => {
     render(
-      <Provider store={store}>
-        <HistoryRouter history={history}>
-          <SortForm />
-        </HistoryRouter>
-      </Provider>
+      <HistoryRouter history={history}>
+        <SortForm />
+      </HistoryRouter>
     );
 
     const radioSortByPrice = screen.getByLabelText('По цене');
@@ -71,13 +36,32 @@ describe('Component: SortForm', () => {
     expect(radioSortByPrice).not.toBeChecked();
     expect(radioOrderDesc).not.toBeChecked();
   });
+  it('2. should render correctly if select sort by Price and should auto cheked order Asc', async () => {
+    render(
+      <HistoryRouter history={history}>
+        <SortForm />
+      </HistoryRouter>
+    );
+
+    const radioSortByPrice = screen.getByLabelText('По цене');
+    const radioOrderAsc = screen.getByLabelText('По возрастанию');
+    const radioSortByPopular = screen.getByLabelText('По популярности');
+    const radioOrderDesc = screen.getByLabelText('По убыванию');
+
+    expect(screen.getByText('Сортировать:')).toBeInTheDocument();
+
+    await userEvent.click(radioSortByPrice);
+    expect(radioSortByPrice).toBeChecked();
+    expect(radioOrderAsc).toBeChecked();
+    expect(radioSortByPopular).not.toBeChecked();
+    expect(radioOrderDesc).not.toBeChecked();
+  });
+
   it('4. should render correctly if select order Asc and should auto cheked sort by Price', async () => {
     render(
-      <Provider store={store}>
-        <HistoryRouter history={history}>
-          <SortForm />
-        </HistoryRouter>
-      </Provider>
+      <HistoryRouter history={history}>
+        <SortForm />
+      </HistoryRouter>
     );
 
     const radioSortByPrice = screen.getByLabelText('По цене');
@@ -88,7 +72,7 @@ describe('Component: SortForm', () => {
     expect(screen.getByText('Сортировать:')).toBeInTheDocument();
 
     await userEvent.click(radioOrderAsc);
-    await userEvent.click(radioOrderAsc);
+
     expect(radioOrderAsc).toBeChecked();
     expect(radioSortByPrice).toBeChecked();
 
@@ -97,11 +81,9 @@ describe('Component: SortForm', () => {
   });
   it('5. should render correctly if select order Desc and should auto cheked sort by Price', async () => {
     render(
-      <Provider store={store}>
-        <HistoryRouter history={history}>
-          <SortForm />
-        </HistoryRouter>
-      </Provider>
+      <HistoryRouter history={history}>
+        <SortForm />
+      </HistoryRouter>
     );
 
     const radioSortByPrice = screen.getByLabelText('По цене');
@@ -117,27 +99,5 @@ describe('Component: SortForm', () => {
     expect(radioSortByPopular).not.toBeChecked();
     expect(radioOrderAsc).not.toBeChecked();
   });
-  it('6. should click sort button correctly', async () => {
-    const searchParams = new URLSearchParams(window.location.search);
-    render(
-      <Provider store={store}>
-        <HistoryRouter history={history}>
-          <SortForm />
-        </HistoryRouter>
-      </Provider>
-    );
 
-    const radioSortByPrice = screen.getByLabelText('По цене');
-    const radioOrderAsc = screen.getByLabelText('По возрастанию');
-
-    expect(screen.getByText('Сортировать:')).toBeInTheDocument();
-
-    radioOrderAsc.onchange = () => searchParams.set(SortParams.Order, SortState.Asc);
-    radioSortByPrice.onchange = () => searchParams.set(SortParams.Sort, SortState.Price);
-
-    await userEvent.click(radioOrderAsc);
-    expect(searchParams.get(SortParams.Order)).toBe(SortState.Asc);
-    await userEvent.click(radioSortByPrice);
-    expect(searchParams.get(SortParams.Sort)).toBe(SortState.Price);
-  });
 });

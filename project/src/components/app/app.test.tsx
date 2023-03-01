@@ -31,6 +31,10 @@ const store = mockStore({
     cameraInfo: fakeCameraInfo,
     similarCameras: fakeSimilarCameras,
     reviews: fakeReviews,
+    foundCameras: fakeCameras.slice(3),
+    priceRange: [fakeCameras[0].price, fakeCameras[fakeCameras.length - 1].price ],
+    isPriceRangeDataLoading: false,
+    isSearchDataLoading: false,
   },
 });
 
