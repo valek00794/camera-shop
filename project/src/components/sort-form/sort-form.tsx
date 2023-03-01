@@ -2,13 +2,11 @@ import { useSearchParams } from 'react-router-dom';
 
 import { SortParams, SortState } from '../../consts';
 
-const DEFAULT_SORT_VALUE = '';
-
 function SortForm(): JSX.Element {
   const [searchParams, setSearchParams] = useSearchParams();
 
   const handleSortByPrice = () => {
-    if (!searchParams.has(SortParams.Order) || searchParams.get(SortParams.Order) === DEFAULT_SORT_VALUE) {
+    if (!searchParams.has(SortParams.Order)) {
       searchParams.set(SortParams.Order, SortState.Asc);
     }
     searchParams.set(SortParams.Sort, SortState.Price);
@@ -16,7 +14,7 @@ function SortForm(): JSX.Element {
   };
 
   const handleSortByPopular = () => {
-    if (!searchParams.has(SortParams.Order) || searchParams.get(SortParams.Order) === DEFAULT_SORT_VALUE) {
+    if (!searchParams.has(SortParams.Order)) {
       searchParams.set(SortParams.Order, SortState.Asc);
     }
     searchParams.set(SortParams.Sort, SortState.Rating);
@@ -24,7 +22,7 @@ function SortForm(): JSX.Element {
   };
 
   const handleSortAsc = () => {
-    if (!searchParams.has(SortParams.Sort) || searchParams.get(SortParams.Sort) === DEFAULT_SORT_VALUE) {
+    if (!searchParams.has(SortParams.Sort)) {
       searchParams.set(SortParams.Sort, SortState.Price);
     }
     searchParams.set(SortParams.Order, SortState.Asc);
@@ -32,7 +30,7 @@ function SortForm(): JSX.Element {
   };
 
   const handleSortDesc = () => {
-    if (!searchParams.has(SortParams.Sort) || searchParams.get(SortParams.Sort) === DEFAULT_SORT_VALUE) {
+    if (!searchParams.has(SortParams.Sort)) {
       searchParams.set(SortParams.Sort, SortState.Price);
     }
     searchParams.set(SortParams.Order, SortState.Desc);
@@ -45,11 +43,11 @@ function SortForm(): JSX.Element {
         <p className="title title--h5">Сортировать:</p>
         <div className="catalog-sort__type">
           <div className="catalog-sort__btn-text">
-            <input type="radio" id="sortPrice" name="sort" checked={searchParams.get(SortParams.Sort) === SortState.Price} onChange={handleSortByPrice} />
+            <input type="radio" id="sortPrice" name="sort" aria-label="По цене" checked={searchParams.get(SortParams.Sort) === SortState.Price} onChange={handleSortByPrice} />
             <label htmlFor="sortPrice">по цене</label>
           </div>
           <div className="catalog-sort__btn-text">
-            <input type="radio" id="sortPopular" name="sort" checked={searchParams.get(SortParams.Sort) === SortState.Rating} onChange={handleSortByPopular} />
+            <input type="radio" id="sortPopular" name="sort" aria-label="По популярности" checked={searchParams.get(SortParams.Sort) === SortState.Rating} onChange={handleSortByPopular} />
             <label htmlFor="sortPopular">по популярности</label>
           </div>
         </div>

@@ -1,4 +1,4 @@
-import {datatype, commerce, image, internet} from 'faker';
+import { datatype, commerce, image, internet } from 'faker';
 import { Camera } from '../types/camera';
 import { Promo } from '../types/promo';
 import { Review, ReviewPost } from '../types/review';
@@ -7,7 +7,7 @@ const makeFakeCameraInfo = (id: number): Camera => ({
   id,
   name: commerce.productName(),
   vendorCode: commerce.product(),
-  type:  commerce.product(),
+  type: commerce.product(),
   category: commerce.department(),
   description: commerce.productDescription(),
   level: commerce.color(),
@@ -37,7 +37,7 @@ export const makeFakeReview = (id: number): Review => ({
   advantage: commerce.product(),
   disadvantage: commerce.productAdjective(),
   review: commerce.productDescription(),
-  rating:  datatype.number(5),
+  rating: datatype.number(5),
   createAt: datatype.datetime().toString(),
   cameraId: datatype.number(),
 } as Review);
@@ -47,7 +47,7 @@ export const makeFakeNewReview = (): ReviewPost => ({
   advantage: commerce.product(),
   disadvantage: commerce.productAdjective(),
   review: commerce.productDescription(),
-  rating:  datatype.number(5),
+  rating: datatype.number(5),
   cameraId: datatype.number(),
 } as ReviewPost);
 
@@ -69,4 +69,9 @@ export const makeFakeReviews = (count: number): Review[] => {
   reviews.push(makeFakeReview(fakeCameraInfo.id));
   return reviews;
 };
+
+export const makeFakePriceRange = (): number[] => ([
+  datatype.number({ min: 100, max: 1990 }),
+  datatype.number({ min: 19900, max: 199000 })
+] as number[]);
 

@@ -1,7 +1,7 @@
 import './loading.css';
 import Stars from '../stars/stars';
 
-function ProductCardLoading(): JSX.Element {
+function ProductCardSpinner(): JSX.Element {
   return (
     <div className="product-card">
       <div className="product-card__img loading">
@@ -28,4 +28,4 @@ function ProductCardLoading(): JSX.Element {
   );
 }
 
-export default ProductCardLoading;
+export default ProductCardSpinner;

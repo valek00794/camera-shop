@@ -148,7 +148,7 @@ function FormSearch(): JSX.Element {
           }
         </ul>
       </form>
-      <button className="form-search__reset" type="reset" onClick={handleResetSearch}>
+      <button className="form-search__reset" type="reset" aria-label="Сброс" onClick={handleResetSearch} >
         <svg width="10" height="10" aria-hidden="true">
           <use xlinkHref="#icon-close"></use>
         </svg><span className="visually-hidden">Сбросить поиск</span>

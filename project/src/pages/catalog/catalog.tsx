@@ -10,7 +10,7 @@ import PaginationList from '../../components/pagination-list/pagination-list';
 import BreadcrumbsList from '../../components/breadcrumbs-list/breadcrumbs-list';
 import NotFound from '../../components/not-found/not-found';
 import Loading from '../../components/loading/loading';
-import ProductCardLoading from '../../components/product-card/product-card-loading';
+import ProductCardSpinner from '../../components/product-card/product-card-spinner';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { getCameras, getCamerasAmount, getCamerasDataLoading, getCamerasPriceRange, getPriceRangeDataLoading } from '../../store/app-data/selectors';
 import { CAMERAS_AMOUNT_SHOW_BY_PAGE, FilterCategory, FilterLevel, FilterParams, FilterType, SortParams, SortState } from '../../consts';
@@ -180,7 +180,7 @@ function Catalog(): JSX.Element {
                       }
                       {
                         isCamerasDataLoading &&
-                        cameras.map((camera) => <ProductCardLoading key={camera.id} />)
+                        cameras.map((camera) => <ProductCardSpinner key={camera.id} />)
                       }
                     </div>
                   }
