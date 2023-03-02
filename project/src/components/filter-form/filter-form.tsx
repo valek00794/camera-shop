@@ -368,6 +368,7 @@ function FilterForm(props: FilterFormProops): JSX.Element {
       <button
         className="btn catalog-filter__reset-btn"
         type="reset"
+        data-testid="reset"
         onClick={handleResetFillter}
       >Сбросить фильтры
       </button>
