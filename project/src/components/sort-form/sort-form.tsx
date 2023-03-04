@@ -5,36 +5,28 @@ import { SortParams, SortState } from '../../consts';
 function SortForm(): JSX.Element {
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const handleSortByPrice = () => {
-    if (!searchParams.has(SortParams.Order)) {
-      searchParams.set(SortParams.Order, SortState.Asc);
+  const setSortUrlParam = (mainParam: string, mainParamValue: string, autoSetParam: string, autoSetParamValue: string) => {
+    if (!searchParams.has(mainParam)) {
+      searchParams.set(mainParam, mainParamValue);
     }
-    searchParams.set(SortParams.Sort, SortState.Price);
+    searchParams.set(autoSetParam, autoSetParamValue);
     setSearchParams(searchParams);
+  };
+
+  const handleSortByPrice = () => {
+    setSortUrlParam(SortParams.Sort, SortState.Price, SortParams.Order, SortState.Asc);
   };
 
   const handleSortByPopular = () => {
-    if (!searchParams.has(SortParams.Order)) {
-      searchParams.set(SortParams.Order, SortState.Asc);
-    }
-    searchParams.set(SortParams.Sort, SortState.Rating);
-    setSearchParams(searchParams);
+    setSortUrlParam(SortParams.Sort, SortState.Rating, SortParams.Order, SortState.Asc);
   };
 
   const handleSortAsc = () => {
-    if (!searchParams.has(SortParams.Sort)) {
-      searchParams.set(SortParams.Sort, SortState.Price);
-    }
-    searchParams.set(SortParams.Order, SortState.Asc);
-    setSearchParams(searchParams);
+    setSortUrlParam(SortParams.Order, SortState.Asc, SortParams.Sort, SortState.Price);
   };
 
   const handleSortDesc = () => {
-    if (!searchParams.has(SortParams.Sort)) {
-      searchParams.set(SortParams.Sort, SortState.Price);
-    }
-    searchParams.set(SortParams.Order, SortState.Desc);
-    setSearchParams(searchParams);
+    setSortUrlParam(SortParams.Order, SortState.Desc, SortParams.Sort, SortState.Price);
   };
 
   return (

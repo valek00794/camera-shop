@@ -143,7 +143,7 @@ function FilterForm(props: FilterFormProops): JSX.Element {
   const handleSelectCamerasByPriceFrom = (evt: ChangeEvent<HTMLInputElement>) => {
     props.priceFromFieldFocusRef.current = false;
     if (
-      Number(evt.target.value) !== 0 &&
+      evt.target.value !== DEFAULT_PRICE_VALUE &&
       Number(evt.target.value) < Number(props.serverPriceFrom)
     ) {
       evt.target.value = props.serverPriceFrom;
@@ -151,7 +151,7 @@ function FilterForm(props: FilterFormProops): JSX.Element {
       refPriceFrom.current = evt.target.value;
     }
     if (
-      Number(evt.target.value) !== 0 &&
+      evt.target.value !== DEFAULT_PRICE_VALUE &&
       Number(evt.target.value) > Number(props.serverPriceTo)
     ) {
       evt.target.value = props.serverPriceTo;
@@ -159,7 +159,7 @@ function FilterForm(props: FilterFormProops): JSX.Element {
       refPriceFrom.current = evt.target.value;
     }
     if (
-      Number(evt.target.value) !== 0 &&
+      evt.target.value !== DEFAULT_PRICE_VALUE &&
       refPriceTo.current !== DEFAULT_PRICE_VALUE &&
       Number(evt.target.value) > Number(refPriceTo.current)
     ) {
@@ -187,7 +187,7 @@ function FilterForm(props: FilterFormProops): JSX.Element {
       refPriceTo.current = evt.target.value;
     }
     if (
-      Number(evt.target.value) !== 0 &&
+      evt.target.value !== DEFAULT_PRICE_VALUE &&
       Number(evt.target.value) < Number(props.serverPriceFrom)
     ) {
       evt.target.value = props.serverPriceFrom;
@@ -195,7 +195,7 @@ function FilterForm(props: FilterFormProops): JSX.Element {
       refPriceTo.current = evt.target.value;
     }
     if (
-      Number(evt.target.value) !== 0 &&
+      evt.target.value !== DEFAULT_PRICE_VALUE &&
       refPriceFrom.current !== DEFAULT_PRICE_VALUE &&
       Number(evt.target.value) < Number(refPriceFrom.current)
     ) {

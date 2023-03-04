@@ -4,7 +4,6 @@ import { createMemoryHistory } from 'history';
 import HistoryRouter from '../../components/history-route/history-route';
 import SortForm from './sort-form';
 import userEvent from '@testing-library/user-event';
-;
 
 const history = createMemoryHistory();
 describe('Component: SortForm', () => {

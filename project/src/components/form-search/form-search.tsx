@@ -19,8 +19,8 @@ function FormSearch(): JSX.Element {
   const availableSelectListElements: HTMLAnchorElement[] | null[] = [];
   const availableElementsRef = useRef(availableSelectListElements);
   foundCameras?.length ? availableElementsRef.current.length = foundCameras?.length : availableElementsRef.current.length = 0;
-  const startActiveElement = document.querySelector('.form-search__input') as HTMLAnchorElement;
-  const endActiveElement = document.querySelector('.form-search__reset') as HTMLAnchorElement;
+  const startActiveElementRef = useRef<HTMLInputElement>(null);
+  const endActiveElementRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     let startIndex = -1;
@@ -28,29 +28,29 @@ function FormSearch(): JSX.Element {
     let isMounted = true;
 
     const handleKeyPress = (evt: KeyboardEvent) => {
-      const currntActiveElement = document.activeElement as HTMLAnchorElement;
+      const currntActiveElement = document.activeElement as HTMLAnchorElement | HTMLButtonElement;
 
       if (evt.key === 'Escape') {
         handleResetSearch();
       }
 
       if (evt.key === 'Tab') {
-        if (!evt.shiftKey) {
-          if (currntActiveElement !== endActiveElement) {
+        if (evt.shiftKey) {
+          startIndex = availableElementsRef.current.findIndex((element) => element === currntActiveElement);
+        } else {
+          if (currntActiveElement === endActiveElementRef.current) {
+            startIndex = availableElementsRef.current.length;
+          } else {
             startIndex = availableElementsRef.current.findIndex((element) => element === currntActiveElement);
           }
         }
       }
-      if (evt.key === 'Tab') {
-        if (evt.shiftKey) {
-          startIndex = availableElementsRef.current.findIndex((element) => element === currntActiveElement) - 1;
-        }
-      }
+
       if (evt.key === 'ArrowUp' &&
         availableElementsRef.current[startIndex] !== null &&
         startIndex >= 0) {
-        if (startIndex === 0) {
-          startActiveElement.focus();
+        if (startIndex === 0 && startActiveElementRef.current !== null) {
+          startActiveElementRef.current.focus();
           startIndex = -1;
         }
         if (startIndex > 0) {
@@ -61,8 +61,8 @@ function FormSearch(): JSX.Element {
       if (evt.key === 'ArrowDown' &&
         availableElementsRef.current[startIndex] !== null &&
         startIndex <= availableElementsRef.current.length) {
-        if (startIndex === availableElementsRef.current.length - 1) {
-          endActiveElement.focus();
+        if (startIndex === availableElementsRef.current.length - 1 && endActiveElementRef.current !== null) {
+          endActiveElementRef.current.focus();
           startIndex = startIndex + 1;
         }
         if (startIndex < availableElementsRef.current.length - 1) {
@@ -73,7 +73,7 @@ function FormSearch(): JSX.Element {
     };
 
     const handleCloseSelectList = (evt: MouseEvent) => {
-      if (evt.target !== startActiveElement) {
+      if (evt.target !== startActiveElementRef.current) {
         handleResetSearch();
       }
     };
@@ -90,7 +90,7 @@ function FormSearch(): JSX.Element {
       window.removeEventListener('keyup', handleKeyPress);
       window.removeEventListener('click', handleCloseSelectList);
     };
-  }, [dispatch, endActiveElement, foundCameras?.length, isOpenSelectList, isSearchDataLoading, searchName, startActiveElement]);
+  }, [dispatch, foundCameras?.length, isOpenSelectList, isSearchDataLoading, searchName]);
 
   const handleInputSearch = (evt: ChangeEvent<HTMLInputElement>) => {
     setSearchName(evt.target.value);
@@ -122,6 +122,7 @@ function FormSearch(): JSX.Element {
             autoComplete="off"
             placeholder="Поиск по сайту"
             value={searchName}
+            ref={startActiveElementRef}
             onChange={handleInputSearch}
             onFocus={(evt) => evt.target.select()}
           />
@@ -148,7 +149,7 @@ function FormSearch(): JSX.Element {
           }
         </ul>
       </form>
-      <button className="form-search__reset" type="reset" aria-label="Сброс" onClick={handleResetSearch} >
+      <button className="form-search__reset" type="reset" aria-label="Сброс" onClick={handleResetSearch} ref={endActiveElementRef}>
         <svg width="10" height="10" aria-hidden="true">
           <use xlinkHref="#icon-close"></use>
         </svg><span className="visually-hidden">Сбросить поиск</span>
