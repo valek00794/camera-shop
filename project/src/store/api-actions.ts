@@ -1,35 +1,64 @@
-import { AxiosInstance } from 'axios';
+import axios, { AxiosInstance } from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 
-import { APIRoute, CAMERAS_AMOUNT_SHOW_BY_PAGE } from '../consts';
+import { APIRoute, CAMERAS_AMOUNT_SHOW_BY_PAGE, FilterParams, SortParams, SortState } from '../consts';
 
 import { AppDispatch, State } from '../types/state.js';
 import { Camera, CameraEmbedRevievs } from '../types/camera';
 import { Promo } from '../types/promo';
 import { Review, ReviewPost } from '../types/review';
 
-export const fetchCamerasAction = createAsyncThunk<Camera[], number, {
+export const fetchCamerasAction = createAsyncThunk<Camera[], [number, URLSearchParams], {
   dispatch: AppDispatch;
   state: State;
   extra: AxiosInstance;
 }>(
   'data/fetchCameras',
-  async (start, { extra: api }) => {
-    const { data, headers } = await api.get<Camera[]>(`${APIRoute.Cameras}?_start=${start}&_limit=${CAMERAS_AMOUNT_SHOW_BY_PAGE}`);
+  async ([start, searchParams], { extra: api }) => {
+    const { data, headers } = await api.get<Camera[]>(`${APIRoute.Cameras}?_start=${start}&_limit=${CAMERAS_AMOUNT_SHOW_BY_PAGE}`, {
+      params: {
+        _sort: searchParams.get(SortParams.Sort),
+        _order: searchParams.get(SortParams.Order),
+        category: searchParams.get(FilterParams.Category),
+        level: searchParams.getAll(FilterParams.Level),
+        type: searchParams.getAll(FilterParams.Type),
+        'price_gte': searchParams.getAll(FilterParams.PriceFrom),
+        'price_lte': searchParams.getAll(FilterParams.PriceTo),
+      }
+    });
     const respData = [...data];
     respData.length = Number(headers['x-total-count']);
     return respData;
   },
 );
 
-export const fetchCamerasAction2 = createAsyncThunk<Camera[], number, {
+export const fetchCamerasPriceRangeAction = createAsyncThunk<number[], undefined, {
   dispatch: AppDispatch;
   state: State;
   extra: AxiosInstance;
 }>(
-  'data/fetchCameras2',
-  async (start, { extra: api }) => {
-    const { data } = await api.get<Camera[]>(`${APIRoute.Cameras}?_start=${start}&_limit=${CAMERAS_AMOUNT_SHOW_BY_PAGE}`);
+  'data/fetchCamerasPriceRange',
+  async (_arg, { extra: api }) => {
+    const startitem = 0;
+    const countItems = 1;
+    const urls = [
+      `${APIRoute.Cameras}?_start=${startitem}&_limit=${countItems}&_sort=${SortState.Price}&_order=${SortState.Asc}`,
+      `${APIRoute.Cameras}?_start=${startitem}&_limit=${countItems}&_sort=${SortState.Price}&_order=${SortState.Desc}`,
+    ];
+    const requests = urls.map((url) => api.get<[Camera]>(url));
+    const [resp1, resp2] = await axios.all(requests);
+    return [resp1.data[0].price, resp2.data[0].price];
+  },
+);
+
+export const fetchSearchCamerasAction = createAsyncThunk<Camera[], string, {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}>(
+  'data/fetchSearchCameras',
+  async (searchString, { extra: api }) => {
+    const { data } = await api.get<Camera[]>(`${APIRoute.Cameras}?name_like=${searchString}`);
     return data;
   },
 );

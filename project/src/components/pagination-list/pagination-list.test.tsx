@@ -72,7 +72,7 @@ describe('Component: PaginationList', () => {
       <Provider store={store}>
         <HistoryRouter history={history}>
           <Routes>
-            <Route path="/catalog/page_:page" element={<PaginationList pages={pages} pageCount={pageCount}/>} />
+            <Route path="/catalog/page_:page" element={<PaginationList pages={pages} pageCount={pageCount} />} />
           </Routes>
         </HistoryRouter>
       </Provider>

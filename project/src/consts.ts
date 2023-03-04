@@ -12,8 +12,6 @@ export enum APIRoute {
   Promo = '/promo',
   Reviews = '/reviews',
   Similar = '/similar',
-  Coupons = '/coupons',
-  Orders = '/orders'
 }
 
 
@@ -36,3 +34,45 @@ export enum CameraNameIncludes {
   SearchString = 'Ретрокамера',
 }
 
+export enum SortParams {
+  Order = 'order',
+  Sort = 'sort',
+}
+
+export enum FilterParams {
+  Category = 'category',
+  Level = 'level',
+  Type = 'type',
+  PriceFrom = 'price_gte',
+  PriceTo = 'price_lte'
+}
+
+export enum SortState {
+  Price = 'price',
+  Rating = 'rating',
+  Asc = 'asc',
+  Desc = 'desc',
+}
+
+export enum FilterCategory {
+  Photo = 'Фотоаппарат',
+  Video = 'Видеокамера',
+}
+
+export enum FilterLevel {
+  Zero = 'Нулевой',
+  NonPro = 'Любительский',
+  Pro = 'Профессиональный',
+}
+
+export enum FilterType {
+  Digital = 'Цифровая',
+  Film = 'Плёночная',
+  Snapshot = 'Моментальная',
+  Collection = 'Коллекционная',
+}
+
+export const scrollToTopCatalogOptions: ScrollToOptions = {
+  top: 348,
+  behavior: 'smooth'
+};

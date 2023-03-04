@@ -24,7 +24,7 @@ function Banner(): JSX.Element {
 
     <div className="banner">
       {
-        !isPromoDataLoading &&
+        !isPromoDataLoading && promo !== null &&
         <>
           <picture>
             <source type="image/webp" srcSet={promo ? `/${promo?.previewImgWebp}, /${promo?.previewImgWebp2x}, 2x` : ''} />

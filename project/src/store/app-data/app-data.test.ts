@@ -32,6 +32,10 @@ const initialState = {
   similarCameras: [],
   isReviewSubmitSuccessful: false,
   isRequestFailed: false,
+  foundCameras: [],
+  priceRange:  [],
+  isPriceRangeDataLoading: false,
+  isSearchDataLoading: false,
 };
 
 

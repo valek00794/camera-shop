@@ -1,21 +1,19 @@
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useSearchParams } from 'react-router-dom';
 import classnames from 'classnames';
 
 import { scrollUp } from '../../utils/utils';
+import { scrollToTopCatalogOptions } from '../../consts';
 
 type PaginationListProps = {
   pageCount: number;
   pages: number[];
 }
 
-const scrollToOptions: ScrollToOptions = {
-  top: 348,
-  behavior: 'smooth'
-};
-
 function PaginationList(props: PaginationListProps): JSX.Element {
   const { page } = useParams();
+  const [searchParams,] = useSearchParams();
   const paramPageToNumber = Number(page);
+  const searchParamsString = searchParams.toString();
 
   const getPaginationLinkClassName = (pageNumber: number) =>
     classnames(
@@ -34,26 +32,26 @@ function PaginationList(props: PaginationListProps): JSX.Element {
           {
             isBtnBackVisible &&
             <li
-              onClick={() => scrollUp(scrollToOptions)}
+              onClick={() => scrollUp(scrollToTopCatalogOptions)}
               className="pagination__item"
             >
               <Link
                 className="pagination__link"
-                to={`/catalog/page_${paramPageToNumber - 1}`}
+                to={`/catalog/page_${paramPageToNumber - 1}?${searchParamsString}`}
               >Назад
               </Link>
             </li>
           }
           {
-            props.pages.map((pageNumber) =>(
+            props.pages.map((pageNumber) => (
               <li
-                onClick={() => scrollUp(scrollToOptions)}
+                onClick={() => scrollUp(scrollToTopCatalogOptions)}
                 key={pageNumber}
                 className="pagination__item"
               >
                 <Link
                   className={getPaginationLinkClassName(pageNumber)}
-                  to={`/catalog/page_${pageNumber}`}
+                  to={`/catalog/page_${pageNumber}?${searchParamsString}`}
                 >{pageNumber}
                 </Link>
               </li>
@@ -63,12 +61,12 @@ function PaginationList(props: PaginationListProps): JSX.Element {
           {
             isBtnNextVisible &&
             <li
-              onClick={() => scrollUp(scrollToOptions)}
+              onClick={() => scrollUp(scrollToTopCatalogOptions)}
               className="pagination__item"
             >
               <Link
                 className="pagination__link"
-                to={`/catalog/page_${paramPageToNumber + 1}`}
+                to={`/catalog/page_${paramPageToNumber + 1}?${searchParamsString}`}
               >Далее
               </Link>
             </li>

@@ -1,12 +1,14 @@
-import {createSlice} from '@reduxjs/toolkit';
-import {NameSpace} from '../../consts';
-import {AppData} from '../../types/state';
+import { createSlice } from '@reduxjs/toolkit';
+import { NameSpace } from '../../consts';
+import { AppData } from '../../types/state';
 import {
   fetchCamerasAction,
   fetchPromoAction,
   fetchCameraInfoWithReviewsAction,
   fetchSimilarCamerasAction,
   fetchPostReviewAction,
+  fetchSearchCamerasAction,
+  fetchCamerasPriceRangeAction,
 } from '../api-actions';
 
 export const initialState: AppData = {
@@ -20,6 +22,10 @@ export const initialState: AppData = {
   similarCameras: [],
   isReviewSubmitSuccessful: false,
   isRequestFailed: false,
+  foundCameras: [],
+  priceRange: [],
+  isPriceRangeDataLoading: false,
+  isSearchDataLoading: false,
 };
 
 export const appData = createSlice({
@@ -34,6 +40,13 @@ export const appData = createSlice({
       .addCase(fetchCamerasAction.fulfilled, (state, action) => {
         state.cameras = action.payload;
         state.isCamerasDataLoading = false;
+      })
+      .addCase(fetchCamerasPriceRangeAction.pending, (state) => {
+        state.isPriceRangeDataLoading = true;
+      })
+      .addCase(fetchCamerasPriceRangeAction.fulfilled, (state, action) => {
+        state.priceRange?.push(...action.payload);
+        state.isPriceRangeDataLoading = false;
       })
       .addCase(fetchPromoAction.pending, (state) => {
         state.isPromoDataLoading = true;
@@ -65,6 +78,14 @@ export const appData = createSlice({
       })
       .addCase(fetchPostReviewAction.rejected, (state) => {
         state.isReviewSubmitSuccessful = false;
+      })
+      .addCase(fetchSearchCamerasAction.pending, (state,) => {
+        state.isSearchDataLoading = true;
+        state.foundCameras = [];
+      })
+      .addCase(fetchSearchCamerasAction.fulfilled, (state, action) => {
+        state.foundCameras = action.payload;
+        state.isSearchDataLoading = false;
       });
   }
 });
