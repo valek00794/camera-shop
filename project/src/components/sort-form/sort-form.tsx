@@ -5,11 +5,11 @@ import { SortParams, SortState } from '../../consts';
 function SortForm(): JSX.Element {
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const setSortUrlParam = (mainParam: string, mainParamValue: string, autoSetParam: string, autoSetParamValue: string) => {
-    if (!searchParams.has(mainParam)) {
-      searchParams.set(mainParam, mainParamValue);
+  const setSortUrlParam = (param: string, paramValue: string, autoSetParam: string, autoSetParamValue: string) => {
+    searchParams.set(param, paramValue);
+    if (!searchParams.has(autoSetParam)) {
+      searchParams.set(autoSetParam, autoSetParamValue);
     }
-    searchParams.set(autoSetParam, autoSetParamValue);
     setSearchParams(searchParams);
   };
 

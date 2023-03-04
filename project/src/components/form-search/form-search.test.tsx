@@ -86,8 +86,9 @@ describe('Component: FormSearch', () => {
 
     );
     expect(screen.getByLabelText('Сброс')).toBeInTheDocument();
-    screen.getByLabelText('Сброс').onclick = fakeHandleReset;
+    await userEvent.type(screen.getByPlaceholderText('Поиск по сайту'), 'Sony imx766');
+    expect(screen.getByPlaceholderText('Поиск по сайту')).toHaveDisplayValue('Sony imx766');
     await userEvent.click(screen.getByLabelText('Сброс'));
-    expect(fakeHandleReset).toBeCalledTimes(1);
+    expect(screen.getByPlaceholderText('Поиск по сайту')).toHaveDisplayValue('');
   });
 });

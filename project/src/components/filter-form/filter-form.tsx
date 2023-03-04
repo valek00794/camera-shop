@@ -37,127 +37,108 @@ function FilterForm(props: FilterFormProops): JSX.Element {
     };
   }, [dispatch, searchParams]);
 
-  const handleSelectPhotoCameras = () => {
-    if (searchParams.get(FilterParams.Category) !== FilterCategory.Photo) {
-      searchParams.set(FilterParams.Category, FilterCategory.Photo);
+  const setSingleUrlParam = (param: string, paramValue: string) => {
+    if (searchParams.get(param) !== paramValue) {
+      searchParams.set(param, paramValue);
     } else {
-      removeValueByKeyFromSearchParams(searchParams, FilterParams.Category, FilterCategory.Photo);
+      removeValueByKeyFromSearchParams(searchParams, param, paramValue);
     }
     setSearchParams(searchParams);
+  };
+
+  const appendMultipleUrlParam = (params: string[], param: string, paramValue: string, dependentParam?: string, dependentParamValue?: string) => {
+    if (!params.includes(paramValue)) {
+      searchParams.append(param, paramValue);
+      if (dependentParam !== dependentParamValue && dependentParam && dependentParamValue) {
+        searchParams.set(dependentParam, dependentParamValue);
+      }
+    } else {
+      removeValueByKeyFromSearchParams(searchParams, param, paramValue);
+      if (typeParams.length === 1 && dependentParam && dependentParamValue) {
+        removeValueByKeyFromSearchParams(searchParams, dependentParam, dependentParamValue);
+      }
+    }
+    setSearchParams(searchParams);
+  };
+
+  const setInputParam = (param: string, paramValue: string) => {
+    searchParams.set(param, paramValue);
+    if (searchParams.get(param) === DEFAULT_PRICE_VALUE) {
+      searchParams.delete(param);
+    }
+    setSearchParams(searchParams);
+  };
+
+  const changeWrongInputParam = (param: string, value: string, inpetRef: React.MutableRefObject<string>) => {
+    if (
+      value !== DEFAULT_PRICE_VALUE &&
+      Number(value) < Number(props.serverPriceFrom)
+    ) {
+      value = props.serverPriceFrom;
+      searchParams.set(param, props.serverPriceFrom);
+      inpetRef.current = value;
+    }
+    if (
+      value !== DEFAULT_PRICE_VALUE &&
+      Number(value) > Number(props.serverPriceTo)
+    ) {
+      value = props.serverPriceTo;
+      searchParams.set(param, props.serverPriceTo);
+      inpetRef.current = value;
+    }
+  };
+
+  const handleSelectPhotoCameras = () => {
+    setSingleUrlParam(FilterParams.Category, FilterCategory.Photo);
   };
 
   const handleSelectVideoCameras = () => {
-    if (searchParams.get(FilterParams.Category) !== FilterCategory.Video) {
-      searchParams.set(FilterParams.Category, FilterCategory.Video);
-    } else {
-      removeValueByKeyFromSearchParams(searchParams, FilterParams.Category, FilterCategory.Video);
-    }
-    setSearchParams(searchParams);
+    setSingleUrlParam(FilterParams.Category, FilterCategory.Video);
   };
 
   const handleSelectDigitalTypeCameras = () => {
-    if (!typeParams.includes(FilterType.Digital)) {
-      searchParams.append(FilterParams.Type, FilterType.Digital);
-    } else {
-      removeValueByKeyFromSearchParams(searchParams, FilterParams.Type, FilterType.Digital);
-    }
-    setSearchParams(searchParams);
+    appendMultipleUrlParam(typeParams, FilterParams.Type, FilterType.Digital);
   };
 
   const handleSelectFilmTypeCameras = () => {
-    if (!typeParams.includes(FilterType.Film)) {
-      searchParams.append(FilterParams.Type, FilterType.Film);
-      if (searchParams.get(FilterParams.Category) !== FilterCategory.Photo) {
-        searchParams.append(FilterParams.Category, FilterCategory.Photo);
-      }
-    } else {
-      removeValueByKeyFromSearchParams(searchParams, FilterParams.Type, FilterType.Film);
-      if (typeParams.length === 1) {
-        removeValueByKeyFromSearchParams(searchParams, FilterParams.Category, FilterCategory.Photo);
-      }
-    }
-    setSearchParams(searchParams);
+    appendMultipleUrlParam(typeParams, FilterParams.Type, FilterType.Film, FilterParams.Category, FilterCategory.Photo);
   };
 
   const handleSelectSnapshotTypeCameras = () => {
-    if (!typeParams.includes(FilterType.Snapshot)) {
-      searchParams.append(FilterParams.Type, FilterType.Snapshot);
-      if (searchParams.get(FilterParams.Category) !== FilterCategory.Photo) {
-        searchParams.append(FilterParams.Category, FilterCategory.Photo);
-      }
-    } else {
-      removeValueByKeyFromSearchParams(searchParams, FilterParams.Type, FilterType.Snapshot);
-      if (typeParams.length === 1) {
-        removeValueByKeyFromSearchParams(searchParams, FilterParams.Category, FilterCategory.Photo);
-      }
-    }
-    setSearchParams(searchParams);
+    appendMultipleUrlParam(typeParams, FilterParams.Type, FilterType.Snapshot, FilterParams.Category, FilterCategory.Photo);
   };
 
   const handleSelectCollectionTypeCameras = () => {
-    if (!typeParams.includes(FilterType.Collection)) {
-      searchParams.append(FilterParams.Type, FilterType.Collection);
-    } else {
-      removeValueByKeyFromSearchParams(searchParams, FilterParams.Type, FilterType.Collection);
-    }
-    setSearchParams(searchParams);
+    appendMultipleUrlParam(typeParams, FilterParams.Type, FilterType.Collection);
   };
 
   const handleSelectZeroLevelCameras = () => {
-    if (!levelParams.includes(FilterLevel.Zero)) {
-      searchParams.append(FilterParams.Level, FilterLevel.Zero);
-    } else {
-      removeValueByKeyFromSearchParams(searchParams, FilterParams.Level, FilterLevel.Zero);
-    }
-    setSearchParams(searchParams);
+    appendMultipleUrlParam(levelParams, FilterParams.Level, FilterLevel.Zero);
   };
 
   const handleSelectNonProLevelCameras = () => {
-    if (!levelParams.includes(FilterLevel.NonPro)) {
-      searchParams.append(FilterParams.Level, FilterLevel.NonPro);
-    } else {
-      removeValueByKeyFromSearchParams(searchParams, FilterParams.Level, FilterLevel.NonPro);
-    }
-    setSearchParams(searchParams);
+    appendMultipleUrlParam(levelParams, FilterParams.Level, FilterLevel.NonPro);
   };
 
   const handleSelectProLevelCameras = () => {
-    if (!levelParams.includes(FilterLevel.Pro)) {
-      searchParams.append(FilterParams.Level, FilterLevel.Pro);
-    } else {
-      removeValueByKeyFromSearchParams(searchParams, FilterParams.Level, FilterLevel.Pro);
-    }
-    setSearchParams(searchParams);
+    appendMultipleUrlParam(levelParams, FilterParams.Level, FilterLevel.Pro);
   };
 
   const handleChangePriceFrom = (evt: ChangeEvent<HTMLInputElement>) => {
     props.priceFromFieldFocusRef.current = true;
-    searchParams.set(FilterParams.PriceFrom, evt.target.value);
+    setInputParam(FilterParams.PriceFrom, evt.target.value);
     refPriceFrom.current = evt.target.value;
-    if (searchParams.get(FilterParams.PriceFrom) === DEFAULT_PRICE_VALUE) {
-      searchParams.delete(FilterParams.PriceFrom);
-    }
-    setSearchParams(searchParams);
   };
 
-  const handleSelectCamerasByPriceFrom = (evt: ChangeEvent<HTMLInputElement>) => {
+  const handleChangePriceTo = (evt: ChangeEvent<HTMLInputElement>) => {
+    props.priceToFieldFocusRef.current = true;
+    setInputParam(FilterParams.PriceTo, evt.target.value);
+    refPriceTo.current = evt.target.value;
+  };
+
+  const handleCorrectToPriceFrom = (evt: ChangeEvent<HTMLInputElement>) => {
     props.priceFromFieldFocusRef.current = false;
-    if (
-      evt.target.value !== DEFAULT_PRICE_VALUE &&
-      Number(evt.target.value) < Number(props.serverPriceFrom)
-    ) {
-      evt.target.value = props.serverPriceFrom;
-      searchParams.set(FilterParams.PriceFrom, props.serverPriceFrom);
-      refPriceFrom.current = evt.target.value;
-    }
-    if (
-      evt.target.value !== DEFAULT_PRICE_VALUE &&
-      Number(evt.target.value) > Number(props.serverPriceTo)
-    ) {
-      evt.target.value = props.serverPriceTo;
-      searchParams.set(FilterParams.PriceFrom, props.serverPriceTo);
-      refPriceFrom.current = evt.target.value;
-    }
+    changeWrongInputParam(FilterParams.PriceFrom, evt.target.value, refPriceFrom);
     if (
       evt.target.value !== DEFAULT_PRICE_VALUE &&
       refPriceTo.current !== DEFAULT_PRICE_VALUE &&
@@ -169,33 +150,12 @@ function FilterForm(props: FilterFormProops): JSX.Element {
     setSearchParams(searchParams);
   };
 
-  const handleChangePriceTo = (evt: ChangeEvent<HTMLInputElement>) => {
-    props.priceToFieldFocusRef.current = true;
-    searchParams.set(FilterParams.PriceTo, evt.target.value);
-    refPriceTo.current = evt.target.value;
-    if (searchParams.get(FilterParams.PriceTo) === DEFAULT_PRICE_VALUE) {
-      searchParams.delete(FilterParams.PriceTo);
-    }
-    setSearchParams(searchParams);
-  };
-
-  const handleSelectCamerasByPriceTo = (evt: ChangeEvent<HTMLInputElement>) => {
+  const handleCorrectToPriceTo = (evt: ChangeEvent<HTMLInputElement>) => {
     props.priceToFieldFocusRef.current = false;
-    if (Number(evt.target.value) > Number(props.serverPriceTo)) {
-      evt.target.value = props.serverPriceTo;
-      searchParams.set(FilterParams.PriceTo, props.serverPriceTo);
-      refPriceTo.current = evt.target.value;
-    }
+    changeWrongInputParam(FilterParams.PriceTo, evt.target.value, refPriceTo);
     if (
       evt.target.value !== DEFAULT_PRICE_VALUE &&
-      Number(evt.target.value) < Number(props.serverPriceFrom)
-    ) {
-      evt.target.value = props.serverPriceFrom;
-      searchParams.set(FilterParams.PriceTo, props.serverPriceFrom);
-      refPriceTo.current = evt.target.value;
-    }
-    if (
-      evt.target.value !== DEFAULT_PRICE_VALUE &&
+      Number(evt.target.value) !== 0 &&
       refPriceFrom.current !== DEFAULT_PRICE_VALUE &&
       Number(evt.target.value) < Number(refPriceFrom.current)
     ) {
@@ -223,7 +183,7 @@ function FilterForm(props: FilterFormProops): JSX.Element {
                 type="number"
                 name="price"
                 placeholder={props.serverPriceFrom}
-                onBlur={handleSelectCamerasByPriceFrom}
+                onBlur={handleCorrectToPriceFrom}
                 onChange={handleChangePriceFrom}
                 value={searchParams.get(FilterParams.PriceFrom) || DEFAULT_PRICE_VALUE}
                 onKeyDown={(evt) => exceptInputRangeThisSymbols.includes(evt.key) && evt.preventDefault()}
@@ -237,7 +197,7 @@ function FilterForm(props: FilterFormProops): JSX.Element {
                 type="number"
                 name="priceUp"
                 placeholder={props.serverPriceTo}
-                onBlur={handleSelectCamerasByPriceTo}
+                onBlur={handleCorrectToPriceTo}
                 onChange={handleChangePriceTo}
                 value={searchParams.get(FilterParams.PriceTo) || DEFAULT_PRICE_VALUE}
                 onKeyDown={(evt) => exceptInputRangeThisSymbols.includes(evt.key) && evt.preventDefault()}
