@@ -5,7 +5,7 @@ import { SortParams, SortState } from '../../consts';
 function SortForm(): JSX.Element {
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const setSortUrlParam = (param: string, paramValue: string, autoSetParam: string, autoSetParamValue: string) => {
+  const setParams = (param: string, paramValue: string, autoSetParam: string, autoSetParamValue: string) => {
     searchParams.set(param, paramValue);
     if (!searchParams.has(autoSetParam)) {
       searchParams.set(autoSetParam, autoSetParamValue);
@@ -14,19 +14,19 @@ function SortForm(): JSX.Element {
   };
 
   const handleSortByPrice = () => {
-    setSortUrlParam(SortParams.Sort, SortState.Price, SortParams.Order, SortState.Asc);
+    setParams(SortParams.Sort, SortState.Price, SortParams.Order, SortState.Asc);
   };
 
   const handleSortByPopular = () => {
-    setSortUrlParam(SortParams.Sort, SortState.Rating, SortParams.Order, SortState.Asc);
+    setParams(SortParams.Sort, SortState.Rating, SortParams.Order, SortState.Asc);
   };
 
   const handleSortAsc = () => {
-    setSortUrlParam(SortParams.Order, SortState.Asc, SortParams.Sort, SortState.Price);
+    setParams(SortParams.Order, SortState.Asc, SortParams.Sort, SortState.Price);
   };
 
   const handleSortDesc = () => {
-    setSortUrlParam(SortParams.Order, SortState.Desc, SortParams.Sort, SortState.Price);
+    setParams(SortParams.Order, SortState.Desc, SortParams.Sort, SortState.Price);
   };
 
   return (

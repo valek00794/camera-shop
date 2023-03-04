@@ -37,7 +37,7 @@ function FilterForm(props: FilterFormProops): JSX.Element {
     };
   }, [dispatch, searchParams]);
 
-  const setSingleUrlParam = (param: string, paramValue: string) => {
+  const setSingleParam = (param: string, paramValue: string) => {
     if (searchParams.get(param) !== paramValue) {
       searchParams.set(param, paramValue);
     } else {
@@ -46,7 +46,7 @@ function FilterForm(props: FilterFormProops): JSX.Element {
     setSearchParams(searchParams);
   };
 
-  const appendMultipleUrlParam = (params: string[], param: string, paramValue: string, dependentParam?: string, dependentParamValue?: string) => {
+  const appendMultipleParam = (params: string[], param: string, paramValue: string, dependentParam?: string, dependentParamValue?: string) => {
     if (!params.includes(paramValue)) {
       searchParams.append(param, paramValue);
       if (dependentParam !== dependentParamValue && dependentParam && dependentParamValue) {
@@ -89,39 +89,39 @@ function FilterForm(props: FilterFormProops): JSX.Element {
   };
 
   const handleSelectPhotoCameras = () => {
-    setSingleUrlParam(FilterParams.Category, FilterCategory.Photo);
+    setSingleParam(FilterParams.Category, FilterCategory.Photo);
   };
 
   const handleSelectVideoCameras = () => {
-    setSingleUrlParam(FilterParams.Category, FilterCategory.Video);
+    setSingleParam(FilterParams.Category, FilterCategory.Video);
   };
 
   const handleSelectDigitalTypeCameras = () => {
-    appendMultipleUrlParam(typeParams, FilterParams.Type, FilterType.Digital);
+    appendMultipleParam(typeParams, FilterParams.Type, FilterType.Digital);
   };
 
   const handleSelectFilmTypeCameras = () => {
-    appendMultipleUrlParam(typeParams, FilterParams.Type, FilterType.Film, FilterParams.Category, FilterCategory.Photo);
+    appendMultipleParam(typeParams, FilterParams.Type, FilterType.Film, FilterParams.Category, FilterCategory.Photo);
   };
 
   const handleSelectSnapshotTypeCameras = () => {
-    appendMultipleUrlParam(typeParams, FilterParams.Type, FilterType.Snapshot, FilterParams.Category, FilterCategory.Photo);
+    appendMultipleParam(typeParams, FilterParams.Type, FilterType.Snapshot, FilterParams.Category, FilterCategory.Photo);
   };
 
   const handleSelectCollectionTypeCameras = () => {
-    appendMultipleUrlParam(typeParams, FilterParams.Type, FilterType.Collection);
+    appendMultipleParam(typeParams, FilterParams.Type, FilterType.Collection);
   };
 
   const handleSelectZeroLevelCameras = () => {
-    appendMultipleUrlParam(levelParams, FilterParams.Level, FilterLevel.Zero);
+    appendMultipleParam(levelParams, FilterParams.Level, FilterLevel.Zero);
   };
 
   const handleSelectNonProLevelCameras = () => {
-    appendMultipleUrlParam(levelParams, FilterParams.Level, FilterLevel.NonPro);
+    appendMultipleParam(levelParams, FilterParams.Level, FilterLevel.NonPro);
   };
 
   const handleSelectProLevelCameras = () => {
-    appendMultipleUrlParam(levelParams, FilterParams.Level, FilterLevel.Pro);
+    appendMultipleParam(levelParams, FilterParams.Level, FilterLevel.Pro);
   };
 
   const handleChangePriceFrom = (evt: ChangeEvent<HTMLInputElement>) => {
