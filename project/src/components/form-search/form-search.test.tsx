@@ -76,7 +76,6 @@ describe('Component: FormSearch', () => {
         isSearchDataLoading: false,
       },
     });
-    const fakeHandleReset = jest.fn();
     render(
       <Provider store={store}>
         <HistoryRouter history={history}>
