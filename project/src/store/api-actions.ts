@@ -58,8 +58,13 @@ export const fetchSearchCamerasAction = createAsyncThunk<Camera[], string, {
 }>(
   'data/fetchSearchCameras',
   async (searchString, { extra: api }) => {
-    const { data } = await api.get<Camera[]>(`${APIRoute.Cameras}?name_like=${searchString}`);
-    return data;
+    const urls = [
+      `${APIRoute.Cameras}?name_like=${searchString}`,
+      `${APIRoute.Cameras}?category_like=${searchString}`,
+    ];
+    const requests = urls.map((url) => api.get<Camera[]>(url));
+    const [resp1, resp2] = await axios.all(requests);
+    return resp1.data.length !== 0 ? resp1.data : resp2.data;
   },
 );
 

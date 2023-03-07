@@ -145,6 +145,7 @@ function FilterForm(props: FilterFormProops): JSX.Element {
       Number(evt.target.value) > Number(refPriceTo.current)
     ) {
       evt.target.value = '';
+      refPriceFrom.current = '';
       searchParams.delete(FilterParams.PriceFrom);
     }
     setSearchParams(searchParams);
@@ -160,6 +161,7 @@ function FilterForm(props: FilterFormProops): JSX.Element {
       Number(evt.target.value) < Number(refPriceFrom.current)
     ) {
       evt.target.value = '';
+      refPriceTo.current = '';
       searchParams.delete(FilterParams.PriceTo);
     }
     setSearchParams(searchParams);

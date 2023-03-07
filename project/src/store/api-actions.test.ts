@@ -64,9 +64,13 @@ describe('Async actions', () => {
   });
   it('2. should dispatch foundCameras when GET /cameras with name_like="string"', async () => {
     const searchString = 'Sony';
-    mockAPI
-      .onGet(`${APIRoute.Cameras}?name_like=${searchString}`)
-      .reply(200, mockCameras);
+    const urls = [
+      `${APIRoute.Cameras}?name_like=${searchString}`,
+      `${APIRoute.Cameras}?category_like=${searchString}`,
+    ];
+    urls.map((url) => mockAPI
+      .onGet(url)
+      .reply(200, mockCameras));
 
     const store = mockStore();
 
@@ -105,7 +109,7 @@ describe('Async actions', () => {
     ]);
   });
 
-  it('2. should dispatch cameraInfo when GET /cameras/:id?_embed=reviews', async () => {
+  it('4. should dispatch cameraInfo when GET /cameras/:id?_embed=reviews', async () => {
     mockAPI
       .onGet(`${APIRoute.Cameras}${String(mockCameraInfo.id)}?_embed=reviews`)
       .reply(200, { ...mockCameraInfo, reviews: mockReviews });
@@ -122,7 +126,7 @@ describe('Async actions', () => {
     ]);
   });
 
-  it('3. should dispatch promo when GET /promo', async () => {
+  it('5. should dispatch promo when GET /promo', async () => {
     mockAPI
       .onGet(APIRoute.Promo)
       .reply(200, mockPromo);
@@ -139,7 +143,7 @@ describe('Async actions', () => {
     ]);
   });
 
-  it('4. should dispatch similarCameras when GET /cameras/id/similar', async () => {
+  it('6. should dispatch similarCameras when GET /cameras/id/similar', async () => {
 
     mockAPI
       .onGet(APIRoute.Cameras + String(mockCameraInfo.id) + APIRoute.Similar)
@@ -158,7 +162,7 @@ describe('Async actions', () => {
   });
 
 
-  it('5. should dispatch favoriteOffers when POST /reviews/', async () => {
+  it('7. should dispatch favoriteOffers when POST /reviews/', async () => {
     mockAPI
       .onPost(APIRoute.Reviews)
       .reply(200, mockReviews);
