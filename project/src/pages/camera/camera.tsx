@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import classnames from 'classnames';
 import { Helmet } from 'react-helmet-async';
@@ -6,16 +6,17 @@ import FocusLock from 'react-focus-lock';
 
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { fetchCameraInfoWithReviewsAction, fetchSimilarCamerasAction } from '../../store/api-actions';
-import { getCameraInfo, getCameraInfoDataLoading, getResponseStatus, getSimilarCameras } from '../../store/app-data/selectors';
+import { getBasketItems, getCameraInfo, getCameraInfoDataLoading, getResponseStatus, getSimilarCameras } from '../../store/app-data/selectors';
 import BreadcrumbsList from '../../components/breadcrumbs-list/breadcrumbs-list';
 import SimilarList from '../../components/similar/similar-list';
 import Stars from '../../components/stars/stars';
 import ReviewsList from '../../components/reviews/reviews-list';
 import { getCameraTitle, scrollUp } from '../../utils/utils';
-import { ReviewListSetttings } from '../../consts';
+import { AppRoute, ReviewListSetttings } from '../../consts';
 import ReviewAdd from '../../components/reviews/review-add';
 import NotFound from '../../components/not-found/not-found';
 import Loading from '../../components/loading/loading';
+import CatalogAddItem from '../../components/catalog/catalog-add-item';
 
 const aboutCameraTabsTitle = {
   specifications: 'Характеристики',
@@ -31,6 +32,7 @@ function Camera(): JSX.Element {
   const dispatch = useAppDispatch();
   const { id, about } = useParams();
   const cameraInfo = useAppSelector(getCameraInfo);
+  const addToBasketCamera = useRef(cameraInfo);
   const similarCameras = useAppSelector(getSimilarCameras);
   const visibleReviewsCountState = useState(ReviewListSetttings.VisibleCount);
   const [, setVisibleReviewsCount] = visibleReviewsCountState;
@@ -39,6 +41,9 @@ function Camera(): JSX.Element {
   const isAboutTitleFound = about as keyof typeof aboutCameraTabsTitle in aboutCameraTabsTitle;
   const isCameraInfoDataLoading = useAppSelector(getCameraInfoDataLoading);
   const isRequestFailed = useAppSelector(getResponseStatus);
+  const activeAddItemState = useState(false);
+  const [, setIsActiveAddItem] = activeAddItemState;
+  const basketItemsCount = useAppSelector(getBasketItems);
 
   useEffect(() => {
     let isMounted = true;
@@ -98,11 +103,20 @@ function Camera(): JSX.Element {
                     <p className="rate__count"><span className="visually-hidden">Всего оценок:</span>{cameraInfo?.reviewCount}</p>
                   </div>
                   <p className="product__price"><span className="visually-hidden">Цена:</span>{cameraInfo?.price.toLocaleString()} ₽</p>
-                  <button className="btn btn--purple" type="button">
-                    <svg width="24" height="16" aria-hidden="true">
-                      <use xlinkHref="#icon-add-basket"></use>
-                    </svg>Добавить в корзину
-                  </button>
+                  {
+                    cameraInfo && basketItemsCount?.includes(cameraInfo) ?
+                      <Link className="btn btn--purple" to={AppRoute.Basket}>
+                        <svg width="24" height="16" aria-hidden="true">
+                          <use xlinkHref="#icon-basket"></use>
+                        </svg>В корзине
+                      </Link>
+                      :
+                      <button className="btn btn--purple" type="button" onClick={() => setIsActiveAddItem(true)}>
+                        <svg width="24" height="16" aria-hidden="true">
+                          <use xlinkHref="#icon-add-basket"></use>
+                        </svg>Добавить в корзину
+                      </button>
+                  }
                   <div className="tabs product__tabs">
                     <div className="tabs__controls product__tabs-controls">
                       <Link
@@ -179,6 +193,9 @@ function Camera(): JSX.Element {
           </svg>
         </button>
       </main>
+      <FocusLock>
+        <CatalogAddItem addToBasketCamera={addToBasketCamera} activeAddItemState={activeAddItemState} />
+      </FocusLock>
       <FocusLock>
         <ReviewAdd activeReviewAddState={activeReviewAddState} />
       </FocusLock>

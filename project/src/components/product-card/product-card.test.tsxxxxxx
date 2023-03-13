@@ -21,7 +21,6 @@ const store = mockStore({
 describe('Component: ProductCard', () => {
   it('1. should render correctly', () => {
     const history = createMemoryHistory();
-
     render(
       <Provider store={store}>
         <HistoryRouter history={history}>

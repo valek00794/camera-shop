@@ -1,6 +1,7 @@
 import { useParams, useSearchParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
-import { useEffect, useRef, } from 'react';
+import { useEffect, useRef, useState, } from 'react';
+import FocusLock from 'react-focus-lock';
 
 import Banner from '../../components/banner/banner';
 import FilterForm from '../../components/filter-form/filter-form';
@@ -16,6 +17,8 @@ import { getCameras, getCamerasAmount, getCamerasDataLoading, getCamerasPriceRan
 import { CAMERAS_AMOUNT_SHOW_BY_PAGE, FilterCategory, FilterLevel, FilterParams, FilterType, SortParams, SortState } from '../../consts';
 import { fetchCamerasAction } from '../../store/api-actions';
 import './catalog.css';
+import CatalogAddItem from '../../components/catalog/catalog-add-item';
+import { Camera } from '../../types/camera';
 
 const DEFAULT_PRICE_VALUE = '';
 
@@ -25,6 +28,9 @@ function Catalog(): JSX.Element {
   const priceFromFieldFocusRef = useRef(false);
   const priceToFieldFocusRef = useRef(false);
   const { page } = useParams();
+  const activeAddItemState = useState(false);
+  const [, setIsActiveAddItem] = activeAddItemState;
+  const addToBasketCamera = useRef<Camera | null>(null);
 
   const cameras = useAppSelector(getCameras);
   const camerasAmount = useAppSelector(getCamerasAmount);
@@ -176,7 +182,7 @@ function Catalog(): JSX.Element {
                     <div className="cards catalog__cards">
                       {
                         cameras.length > 0 && !isCamerasDataLoading &&
-                        cameras.map((camera) => <ProductCard key={camera.id} camera={camera} />)
+                        cameras.map((camera) => <ProductCard key={camera.id} camera={camera} setIsActiveAddItem={setIsActiveAddItem} addToBasketCamera={addToBasketCamera} />)
                       }
                       {
                         isCamerasDataLoading &&
@@ -194,6 +200,9 @@ function Catalog(): JSX.Element {
           </section>
         </div>
       </main>
+      <FocusLock>
+        <CatalogAddItem addToBasketCamera={addToBasketCamera} activeAddItemState={activeAddItemState} />
+      </FocusLock>
     </>
   );
 }

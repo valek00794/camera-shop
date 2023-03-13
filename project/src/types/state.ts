@@ -18,6 +18,7 @@ export type AppData = {
     priceRange: number[] | null;
     isPriceRangeDataLoading: boolean;
     isSearchDataLoading: boolean;
+    basketItems: Camera[] | null;
 };
 
 export type State = ReturnType<typeof store.getState>;

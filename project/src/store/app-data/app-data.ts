@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { NameSpace } from '../../consts';
 import { AppData } from '../../types/state';
+import { addToBasketAction } from '../action';
 import {
   fetchCamerasAction,
   fetchPromoAction,
@@ -26,6 +27,7 @@ export const initialState: AppData = {
   priceRange: [],
   isPriceRangeDataLoading: false,
   isSearchDataLoading: false,
+  basketItems: [],
 };
 
 export const appData = createSlice({
@@ -86,6 +88,9 @@ export const appData = createSlice({
       .addCase(fetchSearchCamerasAction.fulfilled, (state, action) => {
         state.foundCameras = action.payload;
         state.isSearchDataLoading = false;
+      })
+      .addCase(addToBasketAction, (state, action) => {
+        state.basketItems?.push(action.payload);
       });
   }
 });
