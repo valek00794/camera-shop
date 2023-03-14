@@ -1,8 +1,13 @@
 import {createAction} from '@reduxjs/toolkit';
 
-import { Camera } from '../types/camera';
+import { BasketCamera } from '../types/camera';
 
-export const addToBasketAction = createAction('ADD_TO_BASKET', (camera : Camera) => ({
+export const addToBasketAction = createAction('ADD_TO_BASKET', (camera : BasketCamera) => ({
   payload: camera,
 }));
+
+export const changeCountInBasketAction = createAction('CHANGE_COUNT_BASKET', (camera : BasketCamera) => ({
+  payload: camera,
+}));
+
 

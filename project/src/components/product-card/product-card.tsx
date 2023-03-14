@@ -42,7 +42,7 @@ function ProductCard(props: ProductCardProps): JSX.Element {
       </div>
       <div className="product-card__buttons">
         {
-          basketItems.includes(props.camera) ?
+          basketItems.some((item) => props.camera.id === item.id) ?
             <Link className="btn btn--purple-border product-card__btn product-card__btn--in-cart" to={AppRoute.Basket}>
               <svg width="16" height="16" aria-hidden="true">
                 <use xlinkHref="#icon-basket"></use>

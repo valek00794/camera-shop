@@ -25,7 +25,7 @@ function CatalogAddItem(props: CatalogAddItemProps): JSX.Element {
 
   const handleAddToBasket = () => {
     if (camera !== null) {
-      dispatch(addToBasketAction(camera));
+      dispatch(addToBasketAction({...camera, count: 1}));
       setIsActiveAddItem(false);
       setIsActiveAddItemSuccess(true);
     }

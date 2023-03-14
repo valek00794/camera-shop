@@ -103,8 +103,8 @@ function Camera(): JSX.Element {
                   </div>
                   <p className="product__price"><span className="visually-hidden">Цена:</span>{cameraInfo?.price.toLocaleString()} ₽</p>
                   {
-                    cameraInfo !== null && basketItems.includes(cameraInfo) ?
-                      <Link className="btn btn--purple" to={AppRoute.Basket}>
+                    cameraInfo !== null && basketItems.some((item) => cameraInfo.id === item.id) ?
+                      <Link className="btn btn--purple-border product-card__btn product-card__btn--in-cart" to={AppRoute.Basket}>
                         <svg width="24" height="16" aria-hidden="true">
                           <use xlinkHref="#icon-basket"></use>
                         </svg>В корзине

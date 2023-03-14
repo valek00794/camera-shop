@@ -9,6 +9,7 @@ const crumbTitles = {
   '/': 'Главная',
   '/catalog': 'Каталог',
   '/catalog/page_:page': 'Страница',
+  '/catalog/basket': 'Корзина',
   '/catalog/:id/': 'Товар',
   '/catalog/:id/description/': 'Описание',
   '/catalog/:id/specifications/': 'Характеристики',

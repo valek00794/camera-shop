@@ -4,7 +4,7 @@ export enum AppRoute {
   Catalog = '/catalog/page_:page',
   Camera = '/catalog/:id',
   DefaultCamera = '/catalog/:id/:about',
-  Basket = '/basket',
+  Basket = '/catalog/basket',
   Error = '*',
 }
 

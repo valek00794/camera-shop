@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { NameSpace } from '../../consts';
 import { AppData } from '../../types/state';
-import { addToBasketAction } from '../action';
+import { addToBasketAction, changeCountInBasketAction } from '../action';
 import {
   fetchCamerasAction,
   fetchPromoAction,
@@ -90,10 +90,13 @@ export const appData = createSlice({
         state.isSearchDataLoading = false;
       })
       .addCase(addToBasketAction, (state, action) => {
-        if (!state.basketItems?.includes(action.payload)) {
-          state.basketItems?.push(action.payload);
+        state.basketItems?.push(action.payload);
+      })
+      .addCase(changeCountInBasketAction, (state, action) => {
+        const indexItem = state.basketItems?.findIndex((item) => action.payload.id === item.id);
+        if (indexItem > -1) {
+          state.basketItems?.splice(indexItem, 1, action.payload);
         }
-
       });
   }
 });
