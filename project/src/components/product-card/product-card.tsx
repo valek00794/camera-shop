@@ -15,7 +15,6 @@ type ProductCardProps = {
 
 function ProductCard(props: ProductCardProps): JSX.Element {
   const basketItems = useAppSelector(getBasketItems);
-  console.log(basketItems, props.camera);
   const handleCatalogAddItem = () => {
     props.setIsActiveAddItem(true);
     props.addToBasketCamera.current = props.camera;
