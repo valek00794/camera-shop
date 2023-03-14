@@ -1,5 +1,5 @@
 import {store} from '../store/index';
-import { Camera } from './camera';
+import { BasketCamera, Camera } from './camera';
 import { Promo } from './promo';
 import { Review } from './review';
 
@@ -18,7 +18,7 @@ export type AppData = {
     priceRange: number[] | null;
     isPriceRangeDataLoading: boolean;
     isSearchDataLoading: boolean;
-    basketItems: Camera[] | null;
+    basketItems: BasketCamera[];
 };
 
 export type State = ReturnType<typeof store.getState>;

@@ -11,13 +11,13 @@ import { getCameraTitle } from '../../utils/utils';
 import CatalogAddItemSuccess from './catalog-add-item-success';
 
 type CatalogAddItemProps = {
-  addToBasketCamera: React.MutableRefObject<Camera | null>;
+  addToBasketCamera: Camera | null;
   activeAddItemState: [boolean, React.Dispatch<React.SetStateAction<boolean>>];
 }
 
 function CatalogAddItem(props: CatalogAddItemProps): JSX.Element {
   const dispatch = useDispatch();
-  const camera = props.addToBasketCamera.current && props.addToBasketCamera.current;
+  const camera = props.addToBasketCamera;
   const [isActiveAddItem, setIsActiveAddItem] = props.activeAddItemState;
   const [isActiveAddItemSuccess, setIsActiveAddItemSuccess] = useState(false);
   const isModalOpen = isActiveAddItem || isActiveAddItemSuccess;
@@ -33,7 +33,7 @@ function CatalogAddItem(props: CatalogAddItemProps): JSX.Element {
 
   useEffect(() => {
     const modalOverlay = document.querySelector('.modal__overlay');
-    document.body.classList.toggle('modal-open', isModalOpen);
+    //document.body.classList.toggle('modal-open', isModalOpen);
 
     const handleCloseModalBuy = () => {
       setIsActiveAddItem(false);
@@ -79,7 +79,7 @@ function CatalogAddItem(props: CatalogAddItemProps): JSX.Element {
                     srcSet={camera !== null ? `/${camera.previewImgWebp}, /${camera.previewImgWebp2x}, 2x` : ''}
                   />
                   <img
-                    src="img/content/img9.jpg"
+                    src={camera !== null ? `/${camera.previewImg}` : ''}
                     srcSet={camera !== null ? `/${camera.previewImg2x}, 2x` : ''} width="140" height="120" alt={camera !== null ? camera.name : ''}
                   />
                 </picture>

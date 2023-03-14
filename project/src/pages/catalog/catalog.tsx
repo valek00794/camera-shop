@@ -201,7 +201,7 @@ function Catalog(): JSX.Element {
         </div>
       </main>
       <FocusLock>
-        <CatalogAddItem addToBasketCamera={addToBasketCamera} activeAddItemState={activeAddItemState} />
+        <CatalogAddItem addToBasketCamera={addToBasketCamera.current} activeAddItemState={activeAddItemState} />
       </FocusLock>
     </>
   );

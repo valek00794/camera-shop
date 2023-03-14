@@ -36,7 +36,7 @@ const initialState = {
   priceRange:  [],
   isPriceRangeDataLoading: false,
   isSearchDataLoading: false,
-  basketItems: null,
+  basketItems: [],
 };
 
 

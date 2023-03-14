@@ -90,7 +90,10 @@ export const appData = createSlice({
         state.isSearchDataLoading = false;
       })
       .addCase(addToBasketAction, (state, action) => {
-        state.basketItems?.push(action.payload);
+        if (!state.basketItems?.includes(action.payload)) {
+          state.basketItems?.push(action.payload);
+        }
+
       });
   }
 });

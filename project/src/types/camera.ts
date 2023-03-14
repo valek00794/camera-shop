@@ -18,3 +18,5 @@ export type Camera = {
 };
 
 export type CameraEmbedRevievs = Pick<Camera, keyof Camera> & {reviews?: Pick<Review, keyof Review>[]};
+
+export type BasketCamera = Pick<Camera, keyof Camera> & {count?: number}

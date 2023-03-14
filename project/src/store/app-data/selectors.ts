@@ -21,7 +21,7 @@ export const getReviewSubmitSuccessful = (state: State): boolean => state[NameSp
 export const getResponseStatus = (state: State): boolean => state[NameSpace.Data].isRequestFailed;
 export const getFoundCameras = (state: State): Camera[] | null => state[NameSpace.Data].foundCameras;
 export const getSearchDataLoading = (state: State): boolean => state[NameSpace.Data].isSearchDataLoading;
-export const getBasketItems = (state: State): Camera[] | null => state[NameSpace.Data].basketItems;
+export const getBasketItems = (state: State): Camera[] => state[NameSpace.Data].basketItems;
 
 export const getSortCameraReviews = () => createSelector(
   getCameraReviews,

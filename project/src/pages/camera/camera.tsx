@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import classnames from 'classnames';
 import { Helmet } from 'react-helmet-async';
@@ -32,7 +32,6 @@ function Camera(): JSX.Element {
   const dispatch = useAppDispatch();
   const { id, about } = useParams();
   const cameraInfo = useAppSelector(getCameraInfo);
-  const addToBasketCamera = useRef(cameraInfo);
   const similarCameras = useAppSelector(getSimilarCameras);
   const visibleReviewsCountState = useState(ReviewListSetttings.VisibleCount);
   const [, setVisibleReviewsCount] = visibleReviewsCountState;
@@ -43,7 +42,7 @@ function Camera(): JSX.Element {
   const isRequestFailed = useAppSelector(getResponseStatus);
   const activeAddItemState = useState(false);
   const [, setIsActiveAddItem] = activeAddItemState;
-  const basketItemsCount = useAppSelector(getBasketItems);
+  const basketItems = useAppSelector(getBasketItems);
 
   useEffect(() => {
     let isMounted = true;
@@ -104,7 +103,7 @@ function Camera(): JSX.Element {
                   </div>
                   <p className="product__price"><span className="visually-hidden">Цена:</span>{cameraInfo?.price.toLocaleString()} ₽</p>
                   {
-                    cameraInfo && basketItemsCount?.includes(cameraInfo) ?
+                    cameraInfo !== null && basketItems.includes(cameraInfo) ?
                       <Link className="btn btn--purple" to={AppRoute.Basket}>
                         <svg width="24" height="16" aria-hidden="true">
                           <use xlinkHref="#icon-basket"></use>
@@ -194,7 +193,7 @@ function Camera(): JSX.Element {
         </button>
       </main>
       <FocusLock>
-        <CatalogAddItem addToBasketCamera={addToBasketCamera} activeAddItemState={activeAddItemState} />
+        <CatalogAddItem addToBasketCamera={cameraInfo} activeAddItemState={activeAddItemState} />
       </FocusLock>
       <FocusLock>
         <ReviewAdd activeReviewAddState={activeReviewAddState} />
