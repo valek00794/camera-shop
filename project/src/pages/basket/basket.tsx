@@ -9,7 +9,6 @@ import { getBasketItems } from '../../store/app-data/selectors';
 function Basket(): JSX.Element {
   const basketItems = useAppSelector(getBasketItems);
 
-
   useEffect(() => {
     let isMounted = true;
     if (isMounted) {
@@ -66,7 +65,6 @@ function Basket(): JSX.Element {
           </section>
         </div>
       </main>
-
     </>
   );
 }

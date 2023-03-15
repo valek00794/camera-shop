@@ -20,11 +20,6 @@ const getFakeVisibleReviewsCountState = () => {
   return result.current;
 };
 
-const getFakeActiveReviewAddState = () => {
-  const { result } = renderHook(() => useState(false));
-  return result.current;
-};
-
 describe('Component: ReviewsList', () => {
   it('1. should render correctly if reviews is empty', () => {
     const history = createMemoryHistory();
@@ -35,7 +30,7 @@ describe('Component: ReviewsList', () => {
     render(
       <Provider store={store}>
         <HistoryRouter history={history}>
-          <ReviewsList visibleReviewsCountState={getFakeVisibleReviewsCountState()} activeReviewAddState={getFakeActiveReviewAddState()}/>
+          <ReviewsList visibleReviewsCountState={getFakeVisibleReviewsCountState()} />
         </HistoryRouter>
       </Provider>
 
@@ -55,7 +50,7 @@ describe('Component: ReviewsList', () => {
     render(
       <Provider store={store}>
         <HistoryRouter history={history}>
-          <ReviewsList visibleReviewsCountState={getFakeVisibleReviewsCountState()} activeReviewAddState={getFakeActiveReviewAddState()}/>
+          <ReviewsList visibleReviewsCountState={getFakeVisibleReviewsCountState()} />
         </HistoryRouter>
       </Provider>
 
@@ -74,7 +69,7 @@ describe('Component: ReviewsList', () => {
     render(
       <Provider store={store}>
         <HistoryRouter history={history}>
-          <ReviewsList visibleReviewsCountState={getFakeVisibleReviewsCountState()} activeReviewAddState={getFakeActiveReviewAddState()}/>
+          <ReviewsList visibleReviewsCountState={getFakeVisibleReviewsCountState()} />
         </HistoryRouter>
       </Provider>
 
@@ -92,7 +87,7 @@ describe('Component: ReviewsList', () => {
     render(
       <Provider store={store}>
         <HistoryRouter history={history}>
-          <ReviewsList visibleReviewsCountState={getFakeVisibleReviewsCountState()} activeReviewAddState={getFakeActiveReviewAddState()}/>
+          <ReviewsList visibleReviewsCountState={getFakeVisibleReviewsCountState()}/>
         </HistoryRouter>
       </Provider>
 

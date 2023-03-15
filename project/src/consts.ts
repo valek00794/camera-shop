@@ -77,3 +77,15 @@ export const scrollToTopCatalogOptions: ScrollToOptions = {
   top: 348,
   behavior: 'smooth'
 };
+
+export const scrollToTopOptions: ScrollToOptions = {
+  top: 0,
+  behavior: 'smooth'
+};
+
+export const scrollToReviewOptions: ScrollToOptions = {
+  top: 1175,
+  behavior: 'smooth'
+};
+
+export const DEFAULT_RATING_VALUE = 0;

@@ -1,7 +1,6 @@
 import { useParams, useSearchParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { useEffect, useRef, useState, } from 'react';
-import FocusLock from 'react-focus-lock';
 
 import Banner from '../../components/banner/banner';
 import FilterForm from '../../components/filter-form/filter-form';
@@ -19,6 +18,8 @@ import { fetchCamerasAction } from '../../store/api-actions';
 import './catalog.css';
 import CatalogAddItem from '../../components/catalog/catalog-add-item';
 import { Camera } from '../../types/camera';
+import Modal from '../../components/modal/modal';
+import CatalogAddItemSuccess from '../../components/catalog/catalog-add-item-success';
 
 const DEFAULT_PRICE_VALUE = '';
 
@@ -29,8 +30,19 @@ function Catalog(): JSX.Element {
   const priceToFieldFocusRef = useRef(false);
   const { page } = useParams();
   const activeAddItemState = useState(false);
-  const [, setIsActiveAddItem] = activeAddItemState;
+  const [isActiveAddItem, setIsActiveAddItem] = activeAddItemState;
+  const activeAddItemSuccessState = useState(false);
+  const [isActiveAddItemSuccess, setIsActiveAddItemSuccess] = activeAddItemSuccessState;
+  const isModalOpenBuy = isActiveAddItem || isActiveAddItemSuccess;
+  const modalWindowRef = useRef<JSX.Element | null>(null);
   const addToBasketCamera = useRef<Camera | null>(null);
+
+  if (isActiveAddItem) {
+    modalWindowRef.current = <CatalogAddItem addToBasketCamera={addToBasketCamera.current} activeAddItemState={activeAddItemState} activeAddItemSuccessState={activeAddItemSuccessState} />;
+  }
+  if (isActiveAddItemSuccess) {
+    modalWindowRef.current = <CatalogAddItemSuccess setIsActiveAddItemSuccess={setIsActiveAddItemSuccess} />;
+  }
 
   const cameras = useAppSelector(getCameras);
   const camerasAmount = useAppSelector(getCamerasAmount);
@@ -142,6 +154,11 @@ function Catalog(): JSX.Element {
     return <NotFound />;
   }
 
+  const handleCloseModalBuy = () => {
+    setIsActiveAddItem(false);
+    setIsActiveAddItemSuccess(false);
+  };
+
   return (
     <>
       <Helmet>
@@ -182,7 +199,14 @@ function Catalog(): JSX.Element {
                     <div className="cards catalog__cards">
                       {
                         cameras.length > 0 && !isCamerasDataLoading &&
-                        cameras.map((camera) => <ProductCard key={camera.id} camera={camera} setIsActiveAddItem={setIsActiveAddItem} addToBasketCamera={addToBasketCamera} />)
+                        cameras.map((camera) => (
+                          <ProductCard
+                            key={camera.id}
+                            camera={camera}
+                            setIsActiveAddItem={setIsActiveAddItem}
+                            addToBasketCamera={addToBasketCamera}
+                          />
+                        ))
                       }
                       {
                         isCamerasDataLoading &&
@@ -200,9 +224,12 @@ function Catalog(): JSX.Element {
           </section>
         </div>
       </main>
-      <FocusLock>
-        <CatalogAddItem addToBasketCamera={addToBasketCamera.current} activeAddItemState={activeAddItemState} />
-      </FocusLock>
+      {
+        isModalOpenBuy &&
+        <Modal isModalOpen={isModalOpenBuy} onCloseModal={handleCloseModalBuy}>
+          {modalWindowRef.current}
+        </Modal>
+      }
     </>
   );
 }

@@ -3,9 +3,15 @@ import { useState } from 'react';
 import { SimilarListVisibleSetttings } from '../../consts';
 import { useAppSelector } from '../../hooks';
 import { getSimilarCameras } from '../../store/app-data/selectors';
+import { Camera } from '../../types/camera';
 import SimilarCard from './similar-card';
 
-function SimilarList(): JSX.Element {
+type SimilarListProps = {
+  setIsActiveAddItem: React.Dispatch<React.SetStateAction<boolean>>;
+  addToBasketCamera: React.MutableRefObject<Camera | null>;
+}
+
+function SimilarList(props: SimilarListProps): JSX.Element {
   const firstVisibleSimilarState = useState(SimilarListVisibleSetttings.FirstElement);
   const [firstVisibleSimilarElement, setFirstVisibleSimilarElement] = firstVisibleSimilarState;
   const similarCameras = useAppSelector(getSimilarCameras);
@@ -24,6 +30,8 @@ function SimilarList(): JSX.Element {
                 firstVisibleSimilarState={firstVisibleSimilarState}
                 key={camera.id}
                 camera={camera}
+                setIsActiveAddItem={props.setIsActiveAddItem}
+                addToBasketCamera={props.addToBasketCamera}
               />)
           }
         </div>

@@ -27,7 +27,7 @@ describe('Component: ReviewAdd', () => {
     render(
       <Provider store={store}>
         <HistoryRouter history={history}>
-          <ReviewAdd activeReviewAddState={activeReviewAddState}/>
+          <ReviewAdd activeReviewAddState={activeReviewAddState} activeReviewAddSuccessState={activeReviewAddState} />
         </HistoryRouter>
       </Provider>
 
@@ -48,7 +48,7 @@ describe('Component: ReviewAdd', () => {
     render(
       <Provider store={store}>
         <HistoryRouter history={history}>
-          <ReviewAdd activeReviewAddState={activeReviewAddState}/>
+          <ReviewAdd activeReviewAddState={activeReviewAddState} activeReviewAddSuccessState={activeReviewAddState} />
         </HistoryRouter>
       </Provider>
 
@@ -68,7 +68,7 @@ describe('Component: ReviewAdd', () => {
     render(
       <Provider store={store}>
         <HistoryRouter history={history}>
-          <ReviewAdd activeReviewAddState={activeReviewAddState}/>
+          <ReviewAdd activeReviewAddState={activeReviewAddState} activeReviewAddSuccessState={activeReviewAddState} />
         </HistoryRouter>
       </Provider>
 
@@ -88,7 +88,7 @@ describe('Component: ReviewAdd', () => {
     render(
       <Provider store={store}>
         <HistoryRouter history={history}>
-          <ReviewAdd activeReviewAddState={activeReviewAddState}/>
+          <ReviewAdd activeReviewAddState={activeReviewAddState} activeReviewAddSuccessState={activeReviewAddState} />
         </HistoryRouter>
       </Provider>
 
@@ -109,7 +109,7 @@ describe('Component: ReviewAdd', () => {
     render(
       <Provider store={store}>
         <HistoryRouter history={history}>
-          <ReviewAdd activeReviewAddState={activeReviewAddState} />
+          <ReviewAdd activeReviewAddState={activeReviewAddState} activeReviewAddSuccessState={activeReviewAddState} />
         </HistoryRouter>
       </Provider>
     );
