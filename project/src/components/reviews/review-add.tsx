@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState } from 'react';
+import { Fragment, useEffect } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
 
@@ -12,6 +12,7 @@ import { DEFAULT_RATING_VALUE, scrollToReviewOptions } from '../../consts';
 type ReviewAddProps = {
   activeReviewAddState: [boolean, React.Dispatch<React.SetStateAction<boolean>>];
   activeReviewAddSuccessState: [boolean, React.Dispatch<React.SetStateAction<boolean>>];
+  ratingValueState: [number, React.Dispatch<React.SetStateAction<number>>];
 }
 
 const ratingTitle = {
@@ -27,7 +28,7 @@ function ReviewAdd(props: ReviewAddProps): JSX.Element {
   const dispatch = useAppDispatch();
   const [, setIsActiveReviewAdd] = props.activeReviewAddState;
   const [, setIsActiveReviewAddSuccess] = props.activeReviewAddSuccessState;
-  const [ratingValue, setRatingValue] = useState(DEFAULT_RATING_VALUE);
+  const [isRatingValue, setRatingValue] = props.ratingValueState;
   const isReviewSubmitSuccessful = useAppSelector(getReviewSubmitSuccessful);
 
   const {
@@ -97,7 +98,7 @@ function ReviewAdd(props: ReviewAddProps): JSX.Element {
                     ))
                   }
                 </div>
-                <div className="rate__progress"><span className="rate__stars">{ratingValue}</span> <span>/</span> <span className="rate__all-stars">5</span>
+                <div className="rate__progress"><span className="rate__stars">{isRatingValue}</span> <span>/</span> <span className="rate__all-stars">5</span>
                 </div>
               </div>
               <p className="rate__message">{errors?.rating?.message}</p>

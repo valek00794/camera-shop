@@ -5,7 +5,7 @@ import FocusLock from 'react-focus-lock';
 type ModalProps = {
   children: JSX.Element | null;
   isModalOpen: boolean;
-  onCloseModal: () => void;
+  onCloseModal?: () => void;
 
 }
 
@@ -14,7 +14,7 @@ function Modal(props: ModalProps): JSX.Element {
     let isMounted = true;
     const modalOverlay = document.querySelector('.modal__overlay');
     const onUpEsc = (evt: KeyboardEvent) => {
-      if (evt.key === 'Escape' && props.isModalOpen) {
+      if (evt.key === 'Escape' && props.isModalOpen && props.onCloseModal) {
         props.onCloseModal();
       }
     };
@@ -22,12 +22,12 @@ function Modal(props: ModalProps): JSX.Element {
     if (isMounted) {
       window.addEventListener('keyup', onUpEsc);
       props.isModalOpen && document.body.classList.add('modal-open');
-      props.isModalOpen && modalOverlay && modalOverlay.addEventListener('click', props.onCloseModal);
+      props.isModalOpen && props.onCloseModal && modalOverlay && modalOverlay.addEventListener('click', props.onCloseModal);
     }
     return () => {
       isMounted = false;
       window.removeEventListener('keyup', onUpEsc);
-      modalOverlay && modalOverlay.removeEventListener('click', props.onCloseModal);
+      modalOverlay && props.onCloseModal && modalOverlay.removeEventListener('click', props.onCloseModal);
       props.isModalOpen && document.body.classList.remove('modal-open');
     };
   }, [props]);

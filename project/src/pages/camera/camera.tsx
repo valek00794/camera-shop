@@ -11,13 +11,15 @@ import SimilarList from '../../components/similar/similar-list';
 import Stars from '../../components/stars/stars';
 import ReviewsList from '../../components/reviews/reviews-list';
 import { getCameraTitle, scrollUp } from '../../utils/utils';
-import { AppRoute, ReviewListSetttings, scrollToTopOptions } from '../../consts';
+import { AppRoute, DEFAULT_RATING_VALUE, ReviewListSetttings, scrollToReviewOptions, scrollToTopOptions } from '../../consts';
 import NotFound from '../../components/not-found/not-found';
 import Loading from '../../components/loading/loading';
 import CatalogAddItem from '../../components/catalog/catalog-add-item';
 import Modal from '../../components/modal/modal';
 import CatalogAddItemSuccess from '../../components/catalog/catalog-add-item-success';
 import { Camera } from '../../types/camera';
+import ReviewAdd from '../../components/reviews/review-add';
+import ReviewAddSuccess from '../../components/reviews/review-add-success';
 
 const aboutCameraTabsTitle = {
   specifications: 'Характеристики',
@@ -41,15 +43,54 @@ function CameraInfo(): JSX.Element {
   const activeAddItemSuccessState = useState(false);
   const [isActiveAddItem, setIsActiveAddItem] = activeAddItemState;
   const [isActiveAddItemSuccess, setIsActiveAddItemSuccess] = activeAddItemSuccessState;
-  const isModalOpenBuy = isActiveAddItem || isActiveAddItemSuccess;
   const addToBasketCamera = useRef<Camera | null>(cameraInfo);
   const modalWindowRef = useRef<JSX.Element | null>(null);
+  const isModalOpenRef = useRef<boolean>(false);
+  const handleModelRef = useRef<() => void>();
+
+  const activeReviewAddState = useState(false);
+  const [isActiveReviewAdd, setIsActiveReviewAdd] = activeReviewAddState;
+
+  const activeReviewAddSuccessState = useState(false);
+  const [isActiveReviewAddSuccess, setIsActiveReviewAddSuccess] = activeReviewAddSuccessState;
+  const ratingValueState = useState(DEFAULT_RATING_VALUE);
+  const [, setRatingValue] = ratingValueState;
+
+  const handleCloseModalBuy = () => {
+    setIsActiveAddItem(false);
+    setIsActiveAddItemSuccess(false);
+    isModalOpenRef.current = false;
+  };
+
+  const handleCloseModalReview = () => {
+    setIsActiveReviewAdd(false);
+    setIsActiveReviewAddSuccess(false);
+    scrollUp(scrollToReviewOptions);
+    setRatingValue(DEFAULT_RATING_VALUE);
+    isModalOpenRef.current = false;
+  };
+
+
+  if (isActiveReviewAdd) {
+    modalWindowRef.current = <ReviewAdd activeReviewAddState={activeReviewAddState} activeReviewAddSuccessState={activeReviewAddSuccessState} ratingValueState={ratingValueState}/>;
+    handleModelRef.current = handleCloseModalReview;
+    isModalOpenRef.current = isActiveReviewAdd;
+  }
+  if (isActiveReviewAddSuccess) {
+    modalWindowRef.current = <ReviewAddSuccess activeReviewAddSuccessState={activeReviewAddSuccessState} />;
+    handleModelRef.current = handleCloseModalReview;
+    isModalOpenRef.current = isActiveReviewAddSuccess;
+  }
 
   if (isActiveAddItem) {
     modalWindowRef.current = <CatalogAddItem addToBasketCamera={addToBasketCamera.current} activeAddItemState={activeAddItemState} activeAddItemSuccessState={activeAddItemSuccessState} />;
+    handleModelRef.current = handleCloseModalBuy;
+    isModalOpenRef.current = isActiveAddItem;
   }
   if (isActiveAddItemSuccess) {
     modalWindowRef.current = <CatalogAddItemSuccess setIsActiveAddItemSuccess={setIsActiveAddItemSuccess} />;
+    handleModelRef.current = handleCloseModalBuy;
+    isModalOpenRef.current = isActiveAddItemSuccess;
   }
 
   useEffect(() => {
@@ -73,16 +114,10 @@ function CameraInfo(): JSX.Element {
     return <NotFound />;
   }
 
-  const handleCloseModalBuy = () => {
-    setIsActiveAddItem(false);
-    setIsActiveAddItemSuccess(false);
-  };
-
   const handleAddToBasket = () => {
     addToBasketCamera.current = cameraInfo;
     setIsActiveAddItem(true);
   };
-
 
   const getProductTabsClassName = (aboutTabsTitle: string) => classnames(
     'tabs__element',
@@ -202,6 +237,7 @@ function CameraInfo(): JSX.Element {
               <div className="container">
                 <ReviewsList
                   visibleReviewsCountState={visibleReviewsCountState}
+                  setIsActiveReviewAdd={setIsActiveReviewAdd}
                 />
               </div>
             </section>
@@ -213,7 +249,7 @@ function CameraInfo(): JSX.Element {
           </svg>
         </button>
       </main>
-      <Modal isModalOpen={isModalOpenBuy} onCloseModal={handleCloseModalBuy}>
+      <Modal isModalOpen={isModalOpenRef.current} onCloseModal={handleModelRef.current}>
         {modalWindowRef.current}
       </Modal>
     </>
