@@ -33,7 +33,7 @@ function CatalogAddItem(props: CatalogAddItemProps): JSX.Element {
 
   useEffect(() => {
     const modalOverlay = document.querySelector('.modal__overlay');
-    //document.body.classList.toggle('modal-open', isModalOpen);
+    document.body.classList.toggle('modal-open', isModalOpen);
 
     const handleCloseModalBuy = () => {
       setIsActiveAddItem(false);
@@ -49,7 +49,7 @@ function CatalogAddItem(props: CatalogAddItemProps): JSX.Element {
     let isMounted = true;
     if (isMounted) {
       window.addEventListener('keyup', onUpEsc);
-      modalOverlay && modalOverlay.addEventListener('click', handleCloseModalBuy);
+      isModalOpen && modalOverlay && modalOverlay.addEventListener('click', handleCloseModalBuy);
     }
     return () => {
       isMounted = false;

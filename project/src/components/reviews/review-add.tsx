@@ -53,7 +53,7 @@ function ReviewAdd(props: ReviewAddProps): JSX.Element {
     const modalOverlay = document.querySelector('.modal__overlay');
     document.body.classList.toggle('modal-open', isModalOpen);
 
-    const handleCloseModal = () => {
+    const handleCloseModalRew = () => {
       setIsActiveReviewAdd(false);
       setIsActiveReviewAddSuccess(false);
       scrollUp(scrollToOptions);
@@ -62,7 +62,7 @@ function ReviewAdd(props: ReviewAddProps): JSX.Element {
 
     const onUpEsc = (evt: KeyboardEvent) => {
       if (evt.key === 'Escape' && isModalOpen) {
-        handleCloseModal();
+        handleCloseModalRew();
       }
     };
 
@@ -75,12 +75,12 @@ function ReviewAdd(props: ReviewAddProps): JSX.Element {
         setRatingValue(DEFAULT_RATING_VALUE);
       }
       window.addEventListener('keyup', onUpEsc);
-      modalOverlay && modalOverlay.addEventListener('click', handleCloseModal);
+      isModalOpen && modalOverlay && modalOverlay.addEventListener('click', handleCloseModalRew);
     }
     return () => {
       isMounted = false;
       window.removeEventListener('keyup', onUpEsc);
-      modalOverlay && modalOverlay.removeEventListener('click', handleCloseModal);
+      modalOverlay && modalOverlay.removeEventListener('click', handleCloseModalRew);
     };
   }, [isReviewSubmitSuccessful, isSubmitSuccessful, reset, setIsActiveReviewAdd, isModalOpen, setIsActiveReviewAddSuccess]);
 
