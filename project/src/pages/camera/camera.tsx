@@ -193,10 +193,10 @@ function Camera(): JSX.Element {
         </button>
       </main>
       <FocusLock>
-        <CatalogAddItem addToBasketCamera={cameraInfo} activeAddItemState={activeAddItemState} />
+        <ReviewAdd activeReviewAddState={activeReviewAddState} />
       </FocusLock>
       <FocusLock>
-        <ReviewAdd activeReviewAddState={activeReviewAddState} />
+        <CatalogAddItem addToBasketCamera={cameraInfo} activeAddItemState={activeAddItemState} />
       </FocusLock>
     </>
   );
