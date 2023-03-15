@@ -224,12 +224,9 @@ function Catalog(): JSX.Element {
           </section>
         </div>
       </main>
-      {
-        isModalOpenBuy &&
-        <Modal isModalOpen={isModalOpenBuy} onCloseModal={handleCloseModalBuy}>
-          {modalWindowRef.current}
-        </Modal>
-      }
+      <Modal isModalOpen={isModalOpenBuy} onCloseModal={handleCloseModalBuy}>
+        {modalWindowRef.current}
+      </Modal>
     </>
   );
 }

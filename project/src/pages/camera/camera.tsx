@@ -63,7 +63,7 @@ function CameraInfo(): JSX.Element {
     return () => {
       isMounted = false;
     };
-  }, [dispatch, id, isModalOpenBuy, setVisibleReviewsCount]);
+  }, [dispatch, id, setVisibleReviewsCount]);
 
   if (isCameraInfoDataLoading) {
     return <Loading />;
@@ -213,13 +213,9 @@ function CameraInfo(): JSX.Element {
           </svg>
         </button>
       </main>
-      {
-        isModalOpenBuy &&
-        <Modal isModalOpen={isModalOpenBuy} onCloseModal={handleCloseModalBuy}>
-          {modalWindowRef.current}
-        </Modal>
-      }
-
+      <Modal isModalOpen={isModalOpenBuy} onCloseModal={handleCloseModalBuy}>
+        {modalWindowRef.current}
+      </Modal>
     </>
   );
 }

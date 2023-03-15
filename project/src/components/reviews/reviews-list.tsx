@@ -67,13 +67,9 @@ function ReviewsList(props: ReviewsListProps): JSX.Element {
           </button>
         </div>
       }
-      {
-        isModalOpenRewiew &&
-        <Modal isModalOpen={isModalOpenRewiew} onCloseModal={handleCloseModalReview}>
-          {modalWindowRef.current}
-        </Modal>
-      }
-
+      <Modal isModalOpen={isModalOpenRewiew} onCloseModal={handleCloseModalReview}>
+        {modalWindowRef.current}
+      </Modal>
     </>
   );
 }

@@ -22,7 +22,7 @@ function Modal(props: ModalProps): JSX.Element {
     if (isMounted) {
       window.addEventListener('keyup', onUpEsc);
       props.isModalOpen && document.body.classList.add('modal-open');
-      modalOverlay && modalOverlay.addEventListener('click', props.onCloseModal);
+      props.isModalOpen && modalOverlay && modalOverlay.addEventListener('click', props.onCloseModal);
     }
     return () => {
       isMounted = false;
