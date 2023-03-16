@@ -10,4 +10,8 @@ export const changeCountInBasketAction = createAction('CHANGE_COUNT_BASKET', (ca
   payload: camera,
 }));
 
+export const removeFromBasketAction = createAction('DEL_FROM_BASKET', (id : number) => ({
+  payload: id,
+}));
+
 

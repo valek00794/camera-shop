@@ -19,6 +19,7 @@ export type AppData = {
     isPriceRangeDataLoading: boolean;
     isSearchDataLoading: boolean;
     basketItems: BasketCamera[];
+    discount: number | null;
 };
 
 export type State = ReturnType<typeof store.getState>;

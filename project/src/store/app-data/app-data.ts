@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { NameSpace } from '../../consts';
 import { AppData } from '../../types/state';
-import { addToBasketAction, changeCountInBasketAction } from '../action';
+import { addToBasketAction, changeCountInBasketAction, removeFromBasketAction } from '../action';
 import {
   fetchCamerasAction,
   fetchPromoAction,
@@ -10,6 +10,7 @@ import {
   fetchPostReviewAction,
   fetchSearchCamerasAction,
   fetchCamerasPriceRangeAction,
+  fetchPostCouponAction,
 } from '../api-actions';
 
 export const initialState: AppData = {
@@ -28,6 +29,7 @@ export const initialState: AppData = {
   isPriceRangeDataLoading: false,
   isSearchDataLoading: false,
   basketItems: [],
+  discount: null,
 };
 
 export const appData = createSlice({
@@ -97,6 +99,15 @@ export const appData = createSlice({
         if (indexItem > -1) {
           state.basketItems?.splice(indexItem, 1, action.payload);
         }
+      })
+      .addCase(removeFromBasketAction, (state, action) => {
+        const indexItem = state.basketItems?.findIndex((item) => action.payload === item.id);
+        if (indexItem > -1) {
+          state.basketItems?.splice(indexItem, 1);
+        }
+      })
+      .addCase(fetchPostCouponAction.fulfilled, (state, action) => {
+        state.discount = action.payload;
       });
   }
 });
