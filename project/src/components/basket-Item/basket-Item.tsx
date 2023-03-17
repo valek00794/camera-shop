@@ -1,12 +1,11 @@
-/* eslint-disable no-console */
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { changeCountInBasketAction } from '../../store/action';
+
+import { addToBasketOrIncCountAction, decCountItemBasketAction } from '../../store/action';
 import { BasketCamera } from '../../types/camera';
 import { getCameraTitle } from '../../utils/utils';
 import Modal from '../modal/modal';
 import BasketItemRemove from './basket-item-remove';
-
 
 type BasketItemProps = {
   item: BasketCamera;
@@ -24,18 +23,18 @@ function BasketItem(props: BasketItemProps): JSX.Element {
 
   const handleDecCount = () => {
     setItemCount(isItemCount - 1);
-    dispatch(changeCountInBasketAction({ ...props.item, count: isItemCount - 1 }));
+    dispatch(decCountItemBasketAction(props.item));
   };
   const handleIncCount = () => {
     setItemCount(isItemCount + 1);
-    dispatch(changeCountInBasketAction({ ...props.item, count: isItemCount + 1 }));
+    dispatch(addToBasketOrIncCountAction(props.item));
   };
 
   const handleChagneCount = (evt: React.ChangeEvent<HTMLInputElement>) => {
     const newCountItem = Number(evt.target.value);
     if (newCountItem >= ItemsCount.Min && newCountItem <= ItemsCount.Max) {
       setItemCount(newCountItem);
-      dispatch(changeCountInBasketAction({ ...props.item, count: newCountItem }));
+      dispatch(addToBasketOrIncCountAction({ ...props.item, count: newCountItem }));
     }
   };
 

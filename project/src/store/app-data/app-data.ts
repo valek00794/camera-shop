@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { NameSpace } from '../../consts';
 import { AppData } from '../../types/state';
-import { addToBasketAction, changeCountInBasketAction, removeFromBasketAction } from '../action';
+import { addToBasketOrIncCountAction, decCountItemBasketAction, removeFromBasketAction } from '../action';
 import {
   fetchCamerasAction,
   fetchPromoAction,
@@ -91,17 +91,22 @@ export const appData = createSlice({
         state.foundCameras = action.payload;
         state.isSearchDataLoading = false;
       })
-      .addCase(addToBasketAction, (state, action) => {
-        state.basketItems?.push(action.payload);
-      })
-      .addCase(changeCountInBasketAction, (state, action) => {
+      .addCase(addToBasketOrIncCountAction, (state, action) => {
         const indexItem = state.basketItems?.findIndex((item) => action.payload.id === item.id);
         if (indexItem > -1) {
-          state.basketItems?.splice(indexItem, 1, action.payload);
+          state.basketItems?.splice(indexItem, 1, { ...action.payload, count: action.payload.count + 1 });
+        } else {
+          state.basketItems?.push({ ...action.payload, count: 1 });
+        }
+      })
+      .addCase(decCountItemBasketAction, (state, action) => {
+        const indexItem = state.basketItems?.findIndex((item) => action.payload.id === item.id);
+        if (indexItem > -1) {
+          state.basketItems?.splice(indexItem, 1, { ...action.payload, count: action.payload.count - 1 });
         }
       })
       .addCase(removeFromBasketAction, (state, action) => {
-        const indexItem = state.basketItems?.findIndex((item) => action.payload === item.id);
+        const indexItem = state.basketItems?.findIndex((item) => action.payload.id === item.id);
         if (indexItem > -1) {
           state.basketItems?.splice(indexItem, 1);
         }

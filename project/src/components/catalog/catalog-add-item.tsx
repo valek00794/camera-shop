@@ -1,5 +1,5 @@
 import { useDispatch } from 'react-redux/es/hooks/useDispatch';
-import { addToBasketAction } from '../../store/action';
+import { addToBasketOrIncCountAction } from '../../store/action';
 import { Camera } from '../../types/camera';
 import { getCameraTitle } from '../../utils/utils';
 
@@ -17,7 +17,7 @@ function CatalogAddItem(props: CatalogAddItemProps): JSX.Element {
 
   const handleAddToBasket = () => {
     if (camera !== null) {
-      dispatch(addToBasketAction({ ...camera, count: 1 }));
+      dispatch(addToBasketOrIncCountAction({ ...camera, count: 1 }));
       setIsActiveAddItem(false);
     }
     setIsActiveAddItemSuccess(true);

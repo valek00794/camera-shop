@@ -11,7 +11,7 @@ function BasketItemRemove(props: BasketItemRemoveProps): JSX.Element {
   const dispatch = useDispatch();
 
   const handleRemoveItem = () => {
-    dispatch(removeFromBasketAction(props.item.id));
+    dispatch(removeFromBasketAction(props.item));
   };
 
   return (

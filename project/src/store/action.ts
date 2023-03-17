@@ -2,16 +2,14 @@ import {createAction} from '@reduxjs/toolkit';
 
 import { BasketCamera } from '../types/camera';
 
-export const addToBasketAction = createAction('ADD_TO_BASKET', (camera : BasketCamera) => ({
+export const addToBasketOrIncCountAction = createAction('ADD_OR_INC_TO_BASKET', (camera : BasketCamera) => ({
   payload: camera,
 }));
 
-export const changeCountInBasketAction = createAction('CHANGE_COUNT_BASKET', (camera : BasketCamera) => ({
+export const decCountItemBasketAction = createAction('DEC_FROM_BASKET', (camera : BasketCamera) => ({
   payload: camera,
 }));
 
-export const removeFromBasketAction = createAction('DEL_FROM_BASKET', (id : number) => ({
-  payload: id,
+export const removeFromBasketAction = createAction('DEL_FROM_BASKET', (camera : BasketCamera) => ({
+  payload: camera,
 }));
-
-

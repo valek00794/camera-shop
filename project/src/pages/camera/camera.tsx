@@ -5,13 +5,13 @@ import { Helmet } from 'react-helmet-async';
 
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { fetchCameraInfoWithReviewsAction, fetchSimilarCamerasAction } from '../../store/api-actions';
-import { getBasketItems, getCameraInfo, getCameraInfoDataLoading, getResponseStatus, getSimilarCameras } from '../../store/app-data/selectors';
+import { getCameraInfo, getCameraInfoDataLoading, getResponseStatus, getSimilarCameras } from '../../store/app-data/selectors';
 import BreadcrumbsList from '../../components/breadcrumbs-list/breadcrumbs-list';
 import SimilarList from '../../components/similar/similar-list';
 import Stars from '../../components/stars/stars';
 import ReviewsList from '../../components/reviews/reviews-list';
 import { getCameraTitle, scrollUp } from '../../utils/utils';
-import { AppRoute, ReviewListSetttings, scrollToTopOptions } from '../../consts';
+import { ReviewListSetttings, scrollToTopOptions } from '../../consts';
 import NotFound from '../../components/not-found/not-found';
 import Loading from '../../components/loading/loading';
 import CatalogAddItem from '../../components/catalog/catalog-add-item';
@@ -36,7 +36,6 @@ function CameraInfo(): JSX.Element {
   const isAboutTitleFound = about as keyof typeof aboutCameraTabsTitle in aboutCameraTabsTitle;
   const isCameraInfoDataLoading = useAppSelector(getCameraInfoDataLoading);
   const isRequestFailed = useAppSelector(getResponseStatus);
-  const basketItems = useAppSelector(getBasketItems);
   const activeAddItemState = useState(false);
   const activeAddItemSuccessState = useState(false);
   const [isActiveAddItem, setIsActiveAddItem] = activeAddItemState;
@@ -121,20 +120,11 @@ function CameraInfo(): JSX.Element {
                     <p className="rate__count"><span className="visually-hidden">Всего оценок:</span>{cameraInfo?.reviewCount}</p>
                   </div>
                   <p className="product__price"><span className="visually-hidden">Цена:</span>{cameraInfo?.price.toLocaleString()} ₽</p>
-                  {
-                    cameraInfo !== null && basketItems.some((item) => cameraInfo.id === item.id) ?
-                      <Link className="btn btn--purple-border product-card__btn product-card__btn--in-cart" to={AppRoute.Basket}>
-                        <svg width="24" height="16" aria-hidden="true">
-                          <use xlinkHref="#icon-basket"></use>
-                        </svg>В корзине
-                      </Link>
-                      :
-                      <button className="btn btn--purple" type="button" onClick={handleAddToBasket}>
-                        <svg width="24" height="16" aria-hidden="true">
-                          <use xlinkHref="#icon-add-basket"></use>
-                        </svg>Добавить в корзину
-                      </button>
-                  }
+                  <button className="btn btn--purple" type="button" onClick={handleAddToBasket}>
+                    <svg width="24" height="16" aria-hidden="true">
+                      <use xlinkHref="#icon-add-basket"></use>
+                    </svg>Добавить в корзину
+                  </button>
                   <div className="tabs product__tabs">
                     <div className="tabs__controls product__tabs-controls">
                       <Link
