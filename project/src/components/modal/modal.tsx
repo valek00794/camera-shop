@@ -1,5 +1,5 @@
 import classnames from 'classnames';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import FocusLock from 'react-focus-lock';
 
 type ModalProps = {
@@ -10,9 +10,10 @@ type ModalProps = {
 }
 
 function Modal(props: ModalProps): JSX.Element {
+  const modalElementRef = useRef<HTMLInputElement>(null);
   useEffect(() => {
     let isMounted = true;
-    const modalOverlay = document.querySelector('.modal__overlay');
+    const modalOverlay = modalElementRef.current;
     const onUpEsc = (evt: KeyboardEvent) => {
       if (evt.key === 'Escape' && props.isModalOpen) {
         props.onCloseModal();
@@ -27,7 +28,7 @@ function Modal(props: ModalProps): JSX.Element {
     return () => {
       isMounted = false;
       window.removeEventListener('keyup', onUpEsc);
-      modalOverlay && modalOverlay.removeEventListener('click', props.onCloseModal);
+      props.isModalOpen && modalOverlay && modalOverlay.removeEventListener('click', props.onCloseModal);
       props.isModalOpen && document.body.classList.remove('modal-open');
     };
   }, [props]);
@@ -39,13 +40,17 @@ function Modal(props: ModalProps): JSX.Element {
 
   return (
     <div className={getModalBlockClassName}>
-      <div className="modal__wrapper">
-        <div className="modal__overlay" data-testid="close-overlay"></div>
-        <FocusLock>
-          {props.children}
-        </FocusLock>
-      </div>
+      {
+        props.isModalOpen &&
+        <div className="modal__wrapper">
+          <div className="modal__overlay" data-testid="close-overlay" ref={modalElementRef}></div>
+          <FocusLock>
+            {props.children}
+          </FocusLock>
+        </div>
+      }
     </div>
+
   );
 }
 
