@@ -1,7 +1,11 @@
-import axios, {AxiosInstance, AxiosResponse, AxiosError} from 'axios';
-import {toast} from 'react-toastify';
-import {StatusCodes} from 'http-status-codes';
+import axios, { AxiosInstance, AxiosResponse, AxiosError } from 'axios';
+import { toast } from 'react-toastify';
+import { StatusCodes } from 'http-status-codes';
 
+type Messages = {
+  error: string;
+  messages?: [string];
+}
 
 const ErrorStatusCodeMapping: Record<number, boolean> = {
   [StatusCodes.BAD_REQUEST]: true,
@@ -17,6 +21,8 @@ const ERROR_RESPONSE_MESSAGES = {
   404: 'Упс! Ничего не найдено'
 };
 
+const CHECK_COUPON_ERROR_MESSAGE = 'Invalid Value';
+
 const BACKEND_URL = 'https://camera-shop.accelerator.pages.academy/';
 
 const REQUEST_TIMEOUT = 5000;
@@ -29,8 +35,11 @@ export const createAPI = (): AxiosInstance => {
 
   api.interceptors.response.use(
     (response) => response,
-    (error: AxiosError<{error: string}>) => {
-      if (error.response && shouldDisplayError(error.response)) {
+    (error: AxiosError<{ error: string }>) => {
+      if (
+        error.response && shouldDisplayError(error.response) &&
+        !(error.response.data as Messages).messages?.includes(CHECK_COUPON_ERROR_MESSAGE)
+      ) {
         toast.error(`${error.response.status} - ${ERROR_RESPONSE_MESSAGES[error.response.status as keyof typeof ERROR_RESPONSE_MESSAGES]}`, {
           position: 'top-center',
           autoClose: 5000,

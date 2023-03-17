@@ -23,6 +23,9 @@ export const getFoundCameras = (state: State): Camera[] | null => state[NameSpac
 export const getSearchDataLoading = (state: State): boolean => state[NameSpace.Data].isSearchDataLoading;
 export const getBasketItems = (state: State): BasketCamera[] => state[NameSpace.Data].basketItems;
 export const getDiscount = (state: State): number | null => state[NameSpace.Data].discount;
+export const getValidCouponStatus = (state: State): boolean=> state[NameSpace.Data].isValidCopupon;
+export const getCouponCkeckStatus = (state: State): boolean=> state[NameSpace.Data].isCouponCheking;
+export const getCouponString = (state: State): string=> state[NameSpace.Data].couponString;
 
 export const getBasketItemsCount = () => createSelector(
   getBasketItems,

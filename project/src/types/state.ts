@@ -20,6 +20,9 @@ export type AppData = {
     isSearchDataLoading: boolean;
     basketItems: BasketCamera[];
     discount: number | null;
+    isValidCopupon: boolean;
+    isCouponCheking: boolean;
+    couponString: string;
 };
 
 export type State = ReturnType<typeof store.getState>;

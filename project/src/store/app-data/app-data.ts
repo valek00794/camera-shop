@@ -30,6 +30,9 @@ export const initialState: AppData = {
   isSearchDataLoading: false,
   basketItems: [],
   discount: null,
+  couponString: '',
+  isCouponCheking: false,
+  isValidCopupon: false,
 };
 
 export const appData = createSlice({
@@ -111,8 +114,20 @@ export const appData = createSlice({
           state.basketItems?.splice(indexItem, 1);
         }
       })
+      .addCase(fetchPostCouponAction.pending, (state) => {
+        state.isValidCopupon = false;
+        state.isCouponCheking = false;
+      })
       .addCase(fetchPostCouponAction.fulfilled, (state, action) => {
         state.discount = action.payload;
+        state.isValidCopupon = true;
+        state.isCouponCheking = true;
+        state.couponString = action.meta.arg;
+      })
+      .addCase(fetchPostCouponAction.rejected, (state) => {
+        state.isValidCopupon = false;
+        state.isCouponCheking = true;
+        state.couponString = '';
       });
   }
 });

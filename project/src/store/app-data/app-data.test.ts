@@ -38,6 +38,9 @@ const initialState = {
   isSearchDataLoading: false,
   basketItems: [],
   discount: null,
+  isCouponCheking: false,
+  isValidCopupon: true,
+  couponString: '',
 };
 
 
