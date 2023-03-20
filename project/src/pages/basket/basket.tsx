@@ -2,57 +2,81 @@ import classnames from 'classnames';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
-import BasketItem from '../../components/basket-Item/basket-Item';
 
+import BasketItem from '../../components/basket-Item/basket-Item';
+import BasketSuccess from '../../components/basket-Item/basket-success';
 import BreadcrumbsList from '../../components/breadcrumbs-list/breadcrumbs-list';
+import Modal from '../../components/modal/modal';
 import { AppRoute } from '../../consts';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { fetchPostCouponAction } from '../../store/api-actions';
-import { getBasketItems, getBasketItemsDiscountSum, getBasketItemsSum, getCouponCkeckStatus, getCouponString, getValidCouponStatus } from '../../store/app-data/selectors';
+import { clearBasketAction } from '../../store/action';
+import { fetchPostCouponAction, fetchPostOrderAction } from '../../store/api-actions';
+import { getBasketItems, getBasketItemsDiscountSum, getBasketItemsIDs, getBasketItemsSum, getCouponCkeckStatus, getCouponString, getOrderPostSuccessful, getValidCouponStatus } from '../../store/app-data/selectors';
 
 const DEFAULT_SUM = 0;
 
 function Basket(): JSX.Element {
   const dispatch = useAppDispatch();
   const basketItems = useAppSelector(getBasketItems);
+  const basketItemsIDs = useAppSelector(getBasketItemsIDs);
   const isValidCopupon = useAppSelector(getValidCouponStatus);
   const isCouponCheck = useAppSelector(getCouponCkeckStatus);
-  const couponString = useAppSelector(getCouponString);
+  const appliedCoupon = useAppSelector(getCouponString);
   const basketItemsSum = useAppSelector(getBasketItemsSum());
+  const isOrderPostSuccessful = useAppSelector(getOrderPostSuccessful);
   const basketItemsDiscountSum = useAppSelector(getBasketItemsDiscountSum());
   const sumToPay = basketItemsDiscountSum && basketItemsSum ? basketItemsSum - basketItemsDiscountSum : basketItemsSum;
   const isEpmtyBasket = basketItems.length === 0;
-
-  const [isCoupon, setCoupon] = useState('');
+  const [typedCoupon, setTypedCoupon] = useState('');
+  const [isModalOrderSuccessOpen, setModalOrderSuccessOpen] = useState(false);
 
   useEffect(() => {
     let isMounted = true;
     if (isMounted) {
       window.scrollTo(0, 0);
+      if (isOrderPostSuccessful) {
+        setModalOrderSuccessOpen(true);
+        dispatch(clearBasketAction());
+      }
     }
     return () => {
       isMounted = false;
     };
-  }, []);
+  }, [dispatch, isEpmtyBasket, isOrderPostSuccessful]);
 
-  const handleChangeCouponString = (evt: React.ChangeEvent<HTMLInputElement>) => {
-    setCoupon(evt.target.value);
+  const handleChangeTypedCoupon = (evt: React.ChangeEvent<HTMLInputElement>) => {
+    setTypedCoupon(evt.target.value.trim());
+  };
+  const handleCouponString = (evt: React.ChangeEvent<HTMLInputElement>) => {
+    setTypedCoupon(evt.target.value.replace(/\s/g, ''));
   };
 
   const handleApplyCoupon = (evt: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     evt.preventDefault();
-    dispatch(fetchPostCouponAction(isCoupon === '' ? couponString : isCoupon));
+    dispatch(fetchPostCouponAction(typedCoupon === '' && appliedCoupon !== null ? appliedCoupon : typedCoupon));
+  };
+
+  const handlePostOrder = () => {
+    const orderPost = {
+      camerasIds: basketItemsIDs,
+      coupon: appliedCoupon,
+    };
+    dispatch(fetchPostOrderAction(orderPost));
+  };
+
+  const handleCloseModal = () => {
+    setModalOrderSuccessOpen(false);
   };
 
   const getDiscountFieldClassName = classnames(
     'basket__summary-value ',
-    { 'basket__summary-value--bonus': isValidCopupon },
+    { 'basket__summary-value--bonus': isValidCopupon && !isEpmtyBasket },
   );
 
   return (
     <>
       <Helmet>
-        <title>{'Basket'}</title>
+        <title>{'Корзина товаров'}</title>
       </Helmet>
       <main>
         <div className="page-content">
@@ -88,13 +112,14 @@ function Basket(): JSX.Element {
                             type="text"
                             name="promo"
                             placeholder="Введите промокод"
-                            value={isCoupon === '' ? couponString : isCoupon}
-                            onChange={(evt) => handleChangeCouponString(evt)}
+                            value={typedCoupon === '' && appliedCoupon !== null ? appliedCoupon : typedCoupon}
+                            onChange={(evt) => handleChangeTypedCoupon(evt)}
+                            onBlur={handleCouponString}
                             disabled={isEpmtyBasket}
                           />
                         </label>
                         {
-                          !isValidCopupon && isCouponCheck && !isEpmtyBasket && isCoupon !== '' &&
+                          !isValidCopupon && isCouponCheck && !isEpmtyBasket && typedCoupon !== '' &&
                           <p className="custom-input__error">Промокод неверный</p>
                         }
                         {
@@ -102,7 +127,12 @@ function Basket(): JSX.Element {
                           <p className="custom-input__success">Промокод принят!</p>
                         }
                       </div>
-                      <button className="btn" type="submit" onClick={(evt) => handleApplyCoupon(evt)} disabled={isEpmtyBasket || (isCoupon === '' && couponString === '')}>Применить
+                      <button
+                        className="btn"
+                        type="submit"
+                        onClick={(evt) => handleApplyCoupon(evt)}
+                        disabled={isEpmtyBasket || (typedCoupon === '' && appliedCoupon === '')}
+                      >Применить
                       </button>
                     </form>
                   </div>
@@ -120,7 +150,7 @@ function Basket(): JSX.Element {
                     <span className="basket__summary-text basket__summary-text--total">К оплате:</span>
                     <span className="basket__summary-value basket__summary-value--total">{isEpmtyBasket ? DEFAULT_SUM : sumToPay?.toLocaleString()}  ₽</span>
                   </p>
-                  <button className="btn btn--purple" type="submit" disabled={isEpmtyBasket}>Оформить заказ
+                  <button className="btn btn--purple" type="submit" disabled={isEpmtyBasket} onClick={handlePostOrder}>Оформить заказ
                   </button>
                 </div>
               </div>
@@ -128,6 +158,9 @@ function Basket(): JSX.Element {
           </section>
         </div>
       </main>
+      <Modal isModalOpen={isModalOrderSuccessOpen} onCloseModal={handleCloseModal}>
+        <BasketSuccess onCloseModal={handleCloseModal} />
+      </Modal>
     </>
   );
 }

@@ -1,9 +1,12 @@
-import { CameraNameIncludes } from '../consts';
+import { CameraNameIncludes, FilterCategory, FilterType, TypeDeclension } from '../consts';
 import { Camera } from '../types/camera';
 
 export const scrollUp = (scrollToOptions: ScrollToOptions) => window.scrollTo(scrollToOptions);
 
-export const getCameraTitle = (cameraInfo: Camera | null) => cameraInfo?.name.includes(CameraNameIncludes.SearchString) ? cameraInfo.name : cameraInfo && `${cameraInfo.category} ${cameraInfo.name}`;
+export const getCameraTitle = (cameraInfo: Camera | null) =>
+  cameraInfo?.name.includes(CameraNameIncludes.SearchString) ?
+    cameraInfo.name :
+    cameraInfo && `${cameraInfo.category} ${cameraInfo.name}`;
 
 export const getHumanizeDateDayMounth = (date: string) =>
   new Date(date).toLocaleString('ru', {
@@ -24,4 +27,21 @@ export const removeValueByKeyFromSearchParams = (params: URLSearchParams, key: s
     }
   }
   return params;
+};
+
+export const getCameraTypeTitle = (cameraInfo: Camera | null) => {
+  if (cameraInfo?.category === FilterCategory.Photo) {
+    switch (cameraInfo?.type) {
+      case FilterType.Digital:
+        return `${TypeDeclension.Digital} ${FilterCategory.Photo.toLocaleLowerCase()}`;
+      case FilterType.Film:
+        return `${TypeDeclension.Film} ${FilterCategory.Photo.toLocaleLowerCase()}`;
+      case FilterType.Snapshot:
+        return `${TypeDeclension.Snapshot} ${FilterCategory.Photo.toLocaleLowerCase()}`;
+      case FilterType.Collection:
+        return `${TypeDeclension.Collection} ${FilterCategory.Photo.toLocaleLowerCase()}`;
+    }
+  } else {
+    return cameraInfo && `${cameraInfo?.type} ${cameraInfo?.category.toLocaleLowerCase()}`;
+  }
 };

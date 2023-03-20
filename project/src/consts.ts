@@ -13,7 +13,8 @@ export enum APIRoute {
   Promo = '/promo',
   Reviews = '/reviews',
   Similar = '/similar',
-  Coupons = '/coupons'
+  Coupons = '/coupons',
+  Orders = '/orders'
 }
 
 
@@ -72,6 +73,13 @@ export enum FilterType {
   Film = 'Плёночная',
   Snapshot = 'Моментальная',
   Collection = 'Коллекционная',
+}
+
+export enum TypeDeclension {
+  Digital = 'Цифровой',
+  Film = 'Плёночный',
+  Snapshot = 'Моментальный',
+  Collection = 'Коллекционный',
 }
 
 export const scrollToTopCatalogOptions: ScrollToOptions = {

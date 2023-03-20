@@ -1,7 +1,7 @@
 import { useDispatch } from 'react-redux/es/hooks/useDispatch';
 import { addToBasketOrIncCountAction } from '../../store/action';
 import { Camera } from '../../types/camera';
-import { getCameraTitle } from '../../utils/utils';
+import { getCameraTitle, getCameraTypeTitle } from '../../utils/utils';
 
 type CatalogAddItemProps = {
   addToBasketCamera: Camera | null;
@@ -46,7 +46,7 @@ function CatalogAddItem(props: CatalogAddItemProps): JSX.Element {
               <span className="basket-item__article">Артикул:</span>
               <span className="basket-item__number">{camera && camera.vendorCode}</span>
             </li>
-            <li className="basket-item__list-item">{camera && camera.type} {camera && camera.category}</li>
+            <li className="basket-item__list-item">{getCameraTypeTitle(camera)}</li>
             <li className="basket-item__list-item">{camera && camera.level} уровень</li>
           </ul>
           <p className="basket-item__price"><span className="visually-hidden">Цена:</span>{camera && camera.price.toLocaleString()} ₽</p>

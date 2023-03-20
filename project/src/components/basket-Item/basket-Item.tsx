@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 import { addToBasketOrIncCountAction, decCountItemBasketAction } from '../../store/action';
 import { BasketCamera } from '../../types/camera';
-import { getCameraTitle } from '../../utils/utils';
+import { getCameraTitle, getCameraTypeTitle } from '../../utils/utils';
 import Modal from '../modal/modal';
 import BasketItemRemove from './basket-item-remove';
 
@@ -46,23 +47,25 @@ function BasketItem(props: BasketItemProps): JSX.Element {
     <>
       <li className="basket-item" key={props.item.id}>
         <div className="basket-item__img">
-          <picture>
-            <source
-              type="image/webp"
-              srcSet={`/${props.item.previewImgWebp}, /${props.item.previewImgWebp2x}, 2x`}
-            />
-            <img
-              src={`/${props.item.previewImg}`}
-              srcSet={`/${props.item.previewImg2x}, 2x`} width="140" height="120" alt={props.item.name}
-            />
-          </picture>
+          <Link to={`/catalog/${props.item.id}`}>
+            <picture>
+              <source
+                type="image/webp"
+                srcSet={`/${props.item.previewImgWebp}, /${props.item.previewImgWebp2x}, 2x`}
+              />
+              <img
+                src={`/${props.item.previewImg}`}
+                srcSet={`/${props.item.previewImg2x}, 2x`} width="140" height="120" alt={props.item.name}
+              />
+            </picture>
+          </Link>
         </div>
         <div className="basket-item__description">
-          <p className="basket-item__title">{getCameraTitle(props.item)}</p>
+          <p className="basket-item__title"><Link to={`/catalog/${props.item.id}`}>{getCameraTitle(props.item)}</Link></p>
           <ul className="basket-item__list">
             <li className="basket-item__list-item"><span className="basket-item__article">Артикул:</span> <span className="basket-item__number">{props.item.vendorCode}</span>
             </li>
-            <li className="basket-item__list-item">{`${props.item.type} ${props.item.category}`}</li>
+            <li className="basket-item__list-item">{getCameraTypeTitle(props.item)}</li>
             <li className="basket-item__list-item">{props.item.level} уровень</li>
           </ul>
         </div>
@@ -89,7 +92,7 @@ function BasketItem(props: BasketItemProps): JSX.Element {
         </button>
       </li>
       <Modal isModalOpen={isModalDelOpen} onCloseModal={handleCloseModalRemove}>
-        <BasketItemRemove item={props.item} onCloseModal={handleCloseModalRemove}/>
+        <BasketItemRemove item={props.item} onCloseModal={handleCloseModalRemove} />
       </Modal>
     </>
   );

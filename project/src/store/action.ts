@@ -13,3 +13,5 @@ export const decCountItemBasketAction = createAction('DEC_FROM_BASKET', (camera 
 export const removeFromBasketAction = createAction('DEL_FROM_BASKET', (camera : BasketCamera) => ({
   payload: camera,
 }));
+
+export const clearBasketAction = createAction('CLEAR_BASKET');

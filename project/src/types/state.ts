@@ -22,7 +22,8 @@ export type AppData = {
     discount: number | null;
     isValidCopupon: boolean;
     isCouponCheking: boolean;
-    couponString: string;
+    couponString: string | null;
+    isOrderPostSuccessful: boolean;
 };
 
 export type State = ReturnType<typeof store.getState>;

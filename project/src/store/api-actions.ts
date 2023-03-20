@@ -7,6 +7,7 @@ import { AppDispatch, State } from '../types/state.js';
 import { Camera, CameraEmbedRevievs } from '../types/camera';
 import { Promo } from '../types/promo';
 import { Review, ReviewPost } from '../types/review';
+import { OrderPost } from '../types/order';
 
 export const fetchCamerasAction = createAsyncThunk<Camera[], [number, URLSearchParams], {
   dispatch: AppDispatch;
@@ -130,6 +131,18 @@ export const fetchPostCouponAction = createAsyncThunk<number, string, {
   'data/applyCoupon',
   async (coupon, { extra: api }) => {
     const { data } = await api.post<number>(APIRoute.Coupons, { coupon });
+    return data;
+  },
+);
+
+export const fetchPostOrderAction = createAsyncThunk<string, OrderPost, {
+  dispatch: AppDispatch;
+  state: State;
+  extra: AxiosInstance;
+}>(
+  'data/postOrder',
+  async (order, { extra: api }) => {
+    const { data } = await api.post<string>(APIRoute.Orders, { ...order });
     return data;
   },
 );

@@ -41,6 +41,7 @@ const initialState = {
   isCouponCheking: false,
   isValidCopupon: true,
   couponString: '',
+  isOrderPostSuccessful: false,
 };
 
 

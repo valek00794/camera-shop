@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { NameSpace } from '../../consts';
 import { AppData } from '../../types/state';
-import { addToBasketOrIncCountAction, decCountItemBasketAction, removeFromBasketAction } from '../action';
+import { addToBasketOrIncCountAction, clearBasketAction, decCountItemBasketAction, removeFromBasketAction } from '../action';
 import {
   fetchCamerasAction,
   fetchPromoAction,
@@ -11,6 +11,7 @@ import {
   fetchSearchCamerasAction,
   fetchCamerasPriceRangeAction,
   fetchPostCouponAction,
+  fetchPostOrderAction,
 } from '../api-actions';
 
 export const initialState: AppData = {
@@ -30,9 +31,10 @@ export const initialState: AppData = {
   isSearchDataLoading: false,
   basketItems: [],
   discount: null,
-  couponString: '',
+  couponString: null,
   isCouponCheking: false,
   isValidCopupon: false,
+  isOrderPostSuccessful: false,
 };
 
 export const appData = createSlice({
@@ -128,6 +130,20 @@ export const appData = createSlice({
         state.isValidCopupon = false;
         state.isCouponCheking = true;
         state.couponString = '';
+      })
+      .addCase(fetchPostOrderAction.fulfilled, (state) => {
+        state.isOrderPostSuccessful = true;
+      })
+      .addCase(fetchPostOrderAction.rejected, (state) => {
+        state.isOrderPostSuccessful = false;
+      })
+      .addCase(clearBasketAction, (state) => {
+        state.isOrderPostSuccessful = false;
+        state.basketItems = [];
+        state.discount = null;
+        state.couponString = null;
+        state.isCouponCheking = false;
+        state.isValidCopupon = false;
       });
   }
 });
