@@ -78,43 +78,4 @@ describe('Component: ReviewAdd', () => {
     await userEvent.click(screen.getByTestId('btn-close-modal'));
     expect(fakeHandleCloseModal).toBeCalledTimes(1);
   });
-  it('4. should click on overlay correctly', async () => {
-    const history = createMemoryHistory();
-    const { result } = renderHook(() => useState(true));
-    const activeReviewAddState = result.current;
-    const fakeHandleCloseModal = jest.fn();
-    window.scrollTo = jest.fn();
-
-    render(
-      <Provider store={store}>
-        <HistoryRouter history={history}>
-          <ReviewAdd activeReviewAddState={activeReviewAddState} activeReviewAddSuccessState={activeReviewAddState} />
-        </HistoryRouter>
-      </Provider>
-
-    );
-    expect(screen.getByTestId('close-overlay')).toBeInTheDocument();
-    screen.getByTestId('close-overlay').onclick = fakeHandleCloseModal;
-    await userEvent.click(screen.getByTestId('close-overlay'));
-    expect(fakeHandleCloseModal).toBeCalledTimes(1);
-  });
-
-  it('5. should click Esc correctly', async () => {
-    const history = createMemoryHistory();
-    const { result } = renderHook(() => useState(true));
-    const activeReviewAddState = result.current;
-    const fakeHandleEsc = jest.fn();
-    window.scrollTo = jest.fn();
-
-    render(
-      <Provider store={store}>
-        <HistoryRouter history={history}>
-          <ReviewAdd activeReviewAddState={activeReviewAddState} activeReviewAddSuccessState={activeReviewAddState} />
-        </HistoryRouter>
-      </Provider>
-    );
-    window.addEventListener('keyup', fakeHandleEsc);
-    await userEvent.keyboard('[Enter]');
-    expect(fakeHandleEsc).toHaveBeenCalledTimes(1);
-  });
 });

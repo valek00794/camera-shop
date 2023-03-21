@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 
-import { addToBasketOrIncCountAction, decCountItemBasketAction } from '../../store/action';
+import { decCountItemBasketAction, addToBasketOrIncCountAction } from '../../store/action';
 import { BasketCamera } from '../../types/camera';
 import { getCameraTitle, getCameraTypeTitle } from '../../utils/utils';
 import Modal from '../modal/modal';
@@ -35,7 +35,7 @@ function BasketItem(props: BasketItemProps): JSX.Element {
     const newCountItem = Number(evt.target.value);
     if (newCountItem >= ItemsCount.Min && newCountItem <= ItemsCount.Max) {
       setItemCount(newCountItem);
-      dispatch(addToBasketOrIncCountAction({ ...props.item, count: newCountItem }));
+      dispatch(addToBasketOrIncCountAction({ ...props.item, count: newCountItem - 1 }));
     }
   };
 

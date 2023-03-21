@@ -30,6 +30,7 @@ describe('Component: Camera', () => {
         isCameraInfoDataLoading: true,
         similarCameras: fakeSimilarCameras,
         reviews: fakeReviews,
+        basketItems: [],
       },
     });
 
@@ -53,6 +54,7 @@ describe('Component: Camera', () => {
         isCameraInfoDataLoading: false,
         similarCameras: fakeSimilarCameras,
         reviews: fakeReviews,
+        basketItems: [],
       },
     });
     const fakeLink = '/catalog/user-put-in-addres-bar';
@@ -79,6 +81,7 @@ describe('Component: Camera', () => {
         isCameraInfoDataLoading: false,
         similarCameras: fakeSimilarCameras,
         reviews: fakeReviews,
+        basketItems: [],
       },
     });
     const fakeLink = `/catalog/${fakeCameraInfo.id}/user-put-in-addres-bar`;
@@ -105,6 +108,7 @@ describe('Component: Camera', () => {
         isCameraInfoDataLoading: false,
         similarCameras: fakeSimilarCameras,
         reviews: fakeReviews,
+        basketItems: [],
       },
     });
     const fakeLink = `/catalog/${fakeCameraInfo.id}/description`;
@@ -137,6 +141,7 @@ describe('Component: Camera', () => {
         isCameraInfoDataLoading: false,
         similarCameras: fakeSimilarCameras,
         reviews: fakeReviews,
+        basketItems: [],
       },
     });
     const fakeLink = `/catalog/${fakeCameraInfo.id}/description`;
@@ -170,6 +175,7 @@ describe('Component: Camera', () => {
         isCameraInfoDataLoading: false,
         similarCameras: [],
         reviews: [],
+        basketItems: [],
       },
     });
     const fakeLink = `/catalog/${fakeCameraInfo.id}/specifications`;

@@ -11,7 +11,7 @@ import Header from './header';
 const mockStore = configureMockStore([thunk]);
 
 const store = mockStore({
-  DATA: {},
+  DATA: {basketItems: []},
 });
 
 describe('Component: Header', () => {

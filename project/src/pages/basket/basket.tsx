@@ -3,8 +3,8 @@ import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 
-import BasketItem from '../../components/basket-Item/basket-Item';
-import BasketSuccess from '../../components/basket-Item/basket-success';
+import BasketItem from '../../components/basket/basket-Item';
+import BasketSuccess from '../../components/basket/basket-success';
 import BreadcrumbsList from '../../components/breadcrumbs-list/breadcrumbs-list';
 import Modal from '../../components/modal/modal';
 import { AppRoute } from '../../consts';
