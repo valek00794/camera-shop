@@ -106,7 +106,7 @@ export const appData = createSlice({
             state.basketItems?.splice(indexItem, 1, { ...action.payload.camera, count: replacementItemCount + 1 });
           }
         } else {
-          state.basketItems?.push({ ...action.payload.camera, count: 1 });
+          state.basketItems?.push(action.payload.camera);
         }
       })
       .addCase(decCountItemBasketAction, (state, action) => {

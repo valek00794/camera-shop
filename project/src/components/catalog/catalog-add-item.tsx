@@ -1,4 +1,4 @@
-import { useDispatch } from 'react-redux/es/hooks/useDispatch';
+import { useDispatch } from 'react-redux';
 import { addToBasketOrIncCountAction } from '../../store/action';
 import { Camera } from '../../types/camera';
 import { getCameraTitle, getCameraTypeTitle } from '../../utils/utils';

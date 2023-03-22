@@ -133,14 +133,20 @@ describe('Reducer: appData', () => {
 
   it('9.1. should update basketItems before add to basket', () => {
     const state = initialState;
-    expect(appData.reducer(state, { type: addToBasketOrIncCountAction, payload: fakeBasketCamera }))
+    expect(appData.reducer(state, { type: addToBasketOrIncCountAction, payload: { camera: { ...fakeBasketCamera, count: 1 } }}))
       .toEqual({ ...state, basketItems: [{ ...fakeBasketCamera, count: 1 }] });
   });
 
   it('9.2. should update basketItems before inc count', () => {
     const state = { ...initialState, basketItems: [{ ...fakeBasketCamera, count: 1 }] };
-    expect(appData.reducer(state, { type: addToBasketOrIncCountAction, payload: { ...fakeBasketCamera, count: 1 } }))
+    expect(appData.reducer(state, { type: addToBasketOrIncCountAction, payload: { camera: { ...fakeBasketCamera, count: 1 } }}))
       .toEqual({ ...state, basketItems: [{ ...fakeBasketCamera, count: 2 }] });
+  });
+
+  it('9.3. should update basketItems before set count', () => {
+    const state = { ...initialState, basketItems: [{ ...fakeBasketCamera, count: 5 }] };
+    expect(appData.reducer(state, { type: addToBasketOrIncCountAction, payload: { camera: { ...fakeBasketCamera }, count: 55 }}))
+      .toEqual({ ...state, basketItems: [{ ...fakeBasketCamera, count: 55 }] });
   });
 
   it('10. should update basketItems before dec count', () => {
