@@ -97,11 +97,16 @@ export const appData = createSlice({
         state.isSearchDataLoading = false;
       })
       .addCase(addToBasketOrIncCountAction, (state, action) => {
-        const indexItem = state.basketItems?.findIndex((item) => action.payload.id === item.id);
+        const indexItem = state.basketItems?.findIndex((item) => action.payload.camera.id === item.id);
         if (indexItem > -1) {
-          state.basketItems?.splice(indexItem, 1, { ...action.payload, count: action.payload.count + 1 });
+          if (action.payload.count) {
+            state.basketItems?.splice(indexItem, 1, { ...action.payload.camera, count: action.payload.count });
+          } else {
+            const replacementItemCount = state.basketItems[indexItem].count;
+            state.basketItems?.splice(indexItem, 1, { ...action.payload.camera, count: replacementItemCount + 1 });
+          }
         } else {
-          state.basketItems?.push({ ...action.payload, count: 1 });
+          state.basketItems?.push({ ...action.payload.camera, count: 1 });
         }
       })
       .addCase(decCountItemBasketAction, (state, action) => {

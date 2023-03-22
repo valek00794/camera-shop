@@ -35,7 +35,7 @@ function BasketItem(props: BasketItemProps): JSX.Element {
     const newCountItem = Number(evt.target.value);
     if (newCountItem >= ItemsCount.Min && newCountItem <= ItemsCount.Max) {
       setItemCount(newCountItem);
-      dispatch(addToBasketOrIncCountAction({ ...props.item, count: newCountItem - 1 }));
+      dispatch(addToBasketOrIncCountAction(props.item, newCountItem));
     }
   };
 
