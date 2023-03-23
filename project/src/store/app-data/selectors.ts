@@ -29,7 +29,7 @@ export const getCouponCkeckStatus = (state: State): boolean => state[NameSpace.D
 export const getCouponString = (state: State): string => state[NameSpace.Data].couponString;
 export const getOrderPostSuccessful = (state: State): boolean => state[NameSpace.Data].isOrderPostSuccessful;
 
-export const getBasketItemsCount = () => createSelector(
+export const getBasketItemsCount = createSelector(
   getBasketItems,
   (items) => {
     if (items.length) {
@@ -37,7 +37,7 @@ export const getBasketItemsCount = () => createSelector(
     }
   });
 
-export const getBasketItemsSum = () => createSelector(
+export const getBasketItemsSum = createSelector(
   getBasketItems,
   (items) => {
     if (items.length) {
@@ -45,7 +45,7 @@ export const getBasketItemsSum = () => createSelector(
     }
   });
 
-export const getBasketItemsDiscountSum = () => createSelector(
+export const getBasketItemsDiscountSum = createSelector(
   getBasketItems, getDiscount,
   (items, discount) => {
     if (discount && items.length) {
@@ -55,7 +55,7 @@ export const getBasketItemsDiscountSum = () => createSelector(
 );
 
 
-export const getSortCameraReviews = () => createSelector(
+export const getSortCameraReviews = createSelector(
   getCameraReviews,
   (reviews) =>
     reviews?.slice().sort((reviewA, reviewB) => Date.parse(reviewB.createAt) - Date.parse(reviewA.createAt)));

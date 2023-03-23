@@ -5,7 +5,7 @@ import { getBasketItemsCount } from '../../store/app-data/selectors';
 import FormSearch from '../form-search/form-search';
 
 function Header(): JSX.Element {
-  const basketItemsCount = useAppSelector(getBasketItemsCount());
+  const basketItemsCount = useAppSelector(getBasketItemsCount);
 
   return (
     <>

@@ -17,7 +17,7 @@ function ReviewsList(props: ReviewsListProps): JSX.Element {
   const [visibleReviewsCount, setVisibleReviewsCount] = props.visibleReviewsCountState;
   const activeReviewAddState = useState(false);
   const [isActiveReviewAdd, setIsActiveReviewAdd] = activeReviewAddState;
-  const cameraSortReviews = useAppSelector(getSortCameraReviews());
+  const cameraSortReviews = useAppSelector(getSortCameraReviews);
   const cameraReviewsByCount = cameraSortReviews?.slice(0, visibleReviewsCount);
   const activeReviewAddSuccessState = useState(false);
   const [isActiveReviewAddSuccess, setIsActiveReviewAddSuccess] = activeReviewAddSuccessState;

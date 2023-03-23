@@ -41,7 +41,6 @@ export const getCameraTypeTitle = (cameraInfo: Camera | null) => {
       case FilterType.Collection:
         return `${TypeDeclension.Collection} ${FilterCategory.Photo.toLocaleLowerCase()}`;
     }
-  } else {
-    return cameraInfo && `${cameraInfo?.type} ${cameraInfo?.category.toLocaleLowerCase()}`;
   }
+  return cameraInfo && `${cameraInfo?.type} ${cameraInfo?.category.toLocaleLowerCase()}`;
 };

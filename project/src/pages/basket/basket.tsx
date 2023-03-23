@@ -24,26 +24,20 @@ function Basket(): JSX.Element {
   const isValidCopupon = useAppSelector(getValidCouponStatus);
   const isCouponCheck = useAppSelector(getCouponCkeckStatus);
   const appliedCoupon = useAppSelector(getCouponString);
-  const basketItemsSum = useAppSelector(getBasketItemsSum());
+  const basketItemsSum = useAppSelector(getBasketItemsSum);
   const isOrderPostSuccessful = useAppSelector(getOrderPostSuccessful);
-  const basketItemsDiscountSum = useAppSelector(getBasketItemsDiscountSum());
+  const basketItemsDiscountSum = useAppSelector(getBasketItemsDiscountSum);
   const sumToPay = basketItemsDiscountSum && basketItemsSum ? basketItemsSum - basketItemsDiscountSum : basketItemsSum;
   const isEpmtyBasket = basketItems.length === 0;
   const [typedCoupon, setTypedCoupon] = useState('');
   const [isModalOrderSuccessOpen, setModalOrderSuccessOpen] = useState(false);
 
   useEffect(() => {
-    let isMounted = true;
-    if (isMounted) {
-      window.scrollTo(0, 0);
-      if (isOrderPostSuccessful) {
-        setModalOrderSuccessOpen(true);
-        dispatch(clearBasketAction());
-      }
+    window.scrollTo(0, 0);
+    if (isOrderPostSuccessful) {
+      setModalOrderSuccessOpen(true);
+      dispatch(clearBasketAction());
     }
-    return () => {
-      isMounted = false;
-    };
   }, [dispatch, isEpmtyBasket, isOrderPostSuccessful]);
 
   const handleChangeTypedCoupon = (evt: React.ChangeEvent<HTMLInputElement>) => {
