@@ -3,11 +3,11 @@ import { removeFromBasketAction } from '../../store/action';
 import { BasketCamera } from '../../types/camera';
 import { getCameraTitle } from '../../utils/utils';
 
-type BasketItemRemoveProps = {
+type BasketItemRemoveModalProps = {
   item: BasketCamera;
   onCloseModal: () => void;
 }
-function BasketItemRemove(props: BasketItemRemoveProps): JSX.Element {
+function BasketItemRemoveModal(props: BasketItemRemoveModalProps): JSX.Element {
   const dispatch = useDispatch();
 
   const handleRemoveItem = () => {
@@ -46,7 +46,7 @@ function BasketItemRemove(props: BasketItemRemoveProps): JSX.Element {
         <button className="btn btn--transparent modal__btn modal__btn--half-width" onClick={props.onCloseModal}>Продолжить покупки
         </button>
       </div>
-      <button className="cross-btn" type="button" aria-label="Закрыть попап">
+      <button className="cross-btn" type="button" aria-label="Закрыть попап" onClick={props.onCloseModal}>
         <svg width="10" height="10" aria-hidden="true">
           <use xlinkHref="#icon-close"></use>
         </svg>
@@ -56,4 +56,4 @@ function BasketItemRemove(props: BasketItemRemoveProps): JSX.Element {
   );
 }
 
-export default BasketItemRemove;
+export default BasketItemRemoveModal;

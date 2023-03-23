@@ -9,7 +9,7 @@ import { ReviewPost } from '../../types/review';
 import { scrollUp } from '../../utils/utils';
 import { DEFAULT_RATING_VALUE, scrollToReviewOptions } from '../../consts';
 
-type ReviewAddProps = {
+type ReviewAddModalProps = {
   activeReviewAddState: [boolean, React.Dispatch<React.SetStateAction<boolean>>];
   activeReviewAddSuccessState: [boolean, React.Dispatch<React.SetStateAction<boolean>>];
 }
@@ -22,7 +22,7 @@ const ratingTitle = {
   5: 'Отлично'
 };
 
-function ReviewAdd(props: ReviewAddProps): JSX.Element {
+function ReviewAddModal(props: ReviewAddModalProps): JSX.Element {
   const { id } = useParams();
   const dispatch = useAppDispatch();
   const [, setIsActiveReviewAdd] = props.activeReviewAddState;
@@ -201,4 +201,4 @@ function ReviewAdd(props: ReviewAddProps): JSX.Element {
   );
 }
 
-export default ReviewAdd;
+export default ReviewAddModal;

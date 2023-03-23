@@ -1,11 +1,11 @@
 import { Link } from 'react-router-dom';
 import { AppRoute } from '../../consts';
 
-type BasketSuccessProps = {
+type BasketOrderSuccessModalProps = {
   onCloseModal: () => void;
 }
 
-function BasketSuccess(props: BasketSuccessProps): JSX.Element {
+function BasketOrderSuccessModal(props:BasketOrderSuccessModalProps): JSX.Element {
   return (
     <div className="modal__content">
       <p className="title title--h4">Спасибо за покупку</p>
@@ -25,4 +25,4 @@ function BasketSuccess(props: BasketSuccessProps): JSX.Element {
   );
 }
 
-export default BasketSuccess;
+export default BasketOrderSuccessModal;

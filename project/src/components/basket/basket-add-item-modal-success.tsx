@@ -1,11 +1,11 @@
 import { Link, useParams } from 'react-router-dom';
 import { AppRoute } from '../../consts';
 
-type CatalogAddItemSuccessProps = {
+type BasketAddItemSuccessModalProps = {
   setIsActiveAddItemSuccess: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-function CatalogAddItemSuccess(props: CatalogAddItemSuccessProps): JSX.Element {
+function BasketAddItemSuccessModal(props: BasketAddItemSuccessModalProps): JSX.Element {
   const { page } = useParams();
   return (
     <div className="modal__content">
@@ -37,4 +37,4 @@ function CatalogAddItemSuccess(props: CatalogAddItemSuccessProps): JSX.Element {
   );
 }
 
-export default CatalogAddItemSuccess;
+export default BasketAddItemSuccessModal;

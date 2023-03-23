@@ -3,13 +3,13 @@ import { addToBasketOrIncCountAction } from '../../store/action';
 import { Camera } from '../../types/camera';
 import { getCameraTitle, getCameraTypeTitle } from '../../utils/utils';
 
-type CatalogAddItemProps = {
+type BasketAddItemModalProps = {
   addToBasketCamera: Camera | null;
   activeAddItemState: [boolean, React.Dispatch<React.SetStateAction<boolean>>];
   activeAddItemSuccessState: [boolean, React.Dispatch<React.SetStateAction<boolean>>];
 }
 
-function CatalogAddItem(props: CatalogAddItemProps): JSX.Element {
+function BasketAddItemModal(props: BasketAddItemModalProps): JSX.Element {
   const dispatch = useDispatch();
   const camera = props.addToBasketCamera;
   const [, setIsActiveAddItem] = props.activeAddItemState;
@@ -68,4 +68,4 @@ function CatalogAddItem(props: CatalogAddItemProps): JSX.Element {
   );
 }
 
-export default CatalogAddItem;
+export default BasketAddItemModal;

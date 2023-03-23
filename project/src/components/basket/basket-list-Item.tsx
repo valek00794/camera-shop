@@ -6,9 +6,9 @@ import { decCountItemBasketAction, addToBasketOrIncCountAction } from '../../sto
 import { BasketCamera } from '../../types/camera';
 import { getCameraTitle, getCameraTypeTitle } from '../../utils/utils';
 import Modal from '../modal/modal';
-import BasketItemRemove from './basket-item-remove';
+import BasketItemRemoveModal from './basket-item-remove-modal';
 
-type BasketItemProps = {
+type BasketListItemProps = {
   item: BasketCamera;
 }
 
@@ -17,7 +17,7 @@ enum ItemsCount {
   Max = 99
 }
 
-function BasketItem(props: BasketItemProps): JSX.Element {
+function BasketListItem(props: BasketListItemProps): JSX.Element {
   const dispatch = useDispatch();
   const [isItemCount, setItemCount] = useState(props.item.count);
   const [isModalDelOpen, setModalDelOpen] = useState(false);
@@ -92,10 +92,10 @@ function BasketItem(props: BasketItemProps): JSX.Element {
         </button>
       </li>
       <Modal isModalOpen={isModalDelOpen} onCloseModal={handleCloseModalRemove}>
-        <BasketItemRemove item={props.item} onCloseModal={handleCloseModalRemove} />
+        <BasketItemRemoveModal item={props.item} onCloseModal={handleCloseModalRemove} />
       </Modal>
     </>
   );
 }
 
-export default BasketItem;
+export default BasketListItem;

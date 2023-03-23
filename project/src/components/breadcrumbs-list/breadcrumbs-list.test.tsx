@@ -10,13 +10,12 @@ import HistoryRouter from '../../components/history-route/history-route';
 import BreadcrumbsList from './breadcrumbs-list';
 import { AppRoute } from '../../consts';
 
-
 const mockStore = configureMockStore([thunk]);
 
 const fakeCameras = makeFakeCameras(20);
 
 const store = mockStore({
-  DATA: { cameras: fakeCameras, cameraInfo: fakeCameraInfo,},
+  DATA: { cameras: fakeCameras, cameraInfo: fakeCameraInfo, basketItems: [] },
 });
 
 describe('Component: BreadcrumbsList', () => {
@@ -79,6 +78,25 @@ describe('Component: BreadcrumbsList', () => {
     expect(screen.getByText(/Каталог/i)).toBeInTheDocument();
     expect(screen.getByText(`${fakeCameraInfo.category} ${fakeCameraInfo.name}`)).toBeInTheDocument();
     expect(screen.getByText(/Характеристики/i)).toBeInTheDocument();
+  });
+  it('4. should render correctly  on Basket page', () => {
+    const history = createMemoryHistory();
+
+    const fakeLink = '/catalog/basket';
+    history.push(fakeLink);
+    render(
+      <Provider store={store}>
+        <HistoryRouter history={history}>
+          <Routes>
+            <Route path={AppRoute.Basket} element={<BreadcrumbsList />} />
+          </Routes>
+        </HistoryRouter>
+      </Provider>
+
+    );
+    expect(screen.getByText(/Главная/i)).toBeInTheDocument();
+    expect(screen.getByText(/Каталог/i)).toBeInTheDocument();
+    expect(screen.getByText(/Корзина/i)).toBeInTheDocument();
   });
 
 });

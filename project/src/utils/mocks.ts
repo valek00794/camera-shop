@@ -80,7 +80,7 @@ export const makeFakeDiscount = (): number => (
   datatype.number({ min: 1, max: 20 }));
 
 export const makeFakeCouponString = (): string => (
-  commerce.productName());
+  commerce.product());
 
 export const makeFakeOrder = (): OrderPost => ({
   camerasIds: [datatype.number(), datatype.number()],

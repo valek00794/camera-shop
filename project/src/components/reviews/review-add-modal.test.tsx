@@ -7,8 +7,8 @@ import userEvent from '@testing-library/user-event';
 
 import { createMemoryHistory } from 'history';
 import { makeFakeReview } from '../../utils/mocks';
-import HistoryRouter from '../../components/history-route/history-route';
-import ReviewAdd from './review-add';
+import HistoryRouter from '../history-route/history-route';
+import ReviewAddModal from './review-add-modal';
 
 const mockStore = configureMockStore([thunk]);
 
@@ -18,7 +18,7 @@ const store = mockStore({
   DATA: { review: fakeReview },
 });
 
-describe('Component: ReviewAdd', () => {
+describe('Component: ReviewAddModal', () => {
   it('1. should render correctly', () => {
     const history = createMemoryHistory();
     const { result } = renderHook(() => useState(true));
@@ -27,7 +27,7 @@ describe('Component: ReviewAdd', () => {
     render(
       <Provider store={store}>
         <HistoryRouter history={history}>
-          <ReviewAdd activeReviewAddState={activeReviewAddState} activeReviewAddSuccessState={activeReviewAddState} />
+          <ReviewAddModal activeReviewAddState={activeReviewAddState} activeReviewAddSuccessState={activeReviewAddState} />
         </HistoryRouter>
       </Provider>
 
@@ -48,7 +48,7 @@ describe('Component: ReviewAdd', () => {
     render(
       <Provider store={store}>
         <HistoryRouter history={history}>
-          <ReviewAdd activeReviewAddState={activeReviewAddState} activeReviewAddSuccessState={activeReviewAddState} />
+          <ReviewAddModal activeReviewAddState={activeReviewAddState} activeReviewAddSuccessState={activeReviewAddState} />
         </HistoryRouter>
       </Provider>
 
@@ -68,7 +68,7 @@ describe('Component: ReviewAdd', () => {
     render(
       <Provider store={store}>
         <HistoryRouter history={history}>
-          <ReviewAdd activeReviewAddState={activeReviewAddState} activeReviewAddSuccessState={activeReviewAddState} />
+          <ReviewAddModal activeReviewAddState={activeReviewAddState} activeReviewAddSuccessState={activeReviewAddState} />
         </HistoryRouter>
       </Provider>
 

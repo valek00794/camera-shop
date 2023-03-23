@@ -16,10 +16,10 @@ import { getCameras, getCamerasAmount, getCamerasDataLoading, getCamerasPriceRan
 import { CAMERAS_AMOUNT_SHOW_BY_PAGE, FilterCategory, FilterLevel, FilterParams, FilterType, SortParams, SortState } from '../../consts';
 import { fetchCamerasAction } from '../../store/api-actions';
 import './catalog.css';
-import CatalogAddItem from '../../components/catalog/catalog-add-item';
+import BasketAddItemModal from '../../components/basket/basket-add-item-modal';
 import { Camera } from '../../types/camera';
 import Modal from '../../components/modal/modal';
-import CatalogAddItemSuccess from '../../components/catalog/catalog-add-item-success';
+import BasketAddItemSuccessModal from '../../components/basket/basket-add-item-modal-success';
 
 const DEFAULT_PRICE_VALUE = '';
 
@@ -38,10 +38,10 @@ function Catalog(): JSX.Element {
   const addToBasketCamera = useRef<Camera | null>(null);
 
   if (isActiveAddItem) {
-    modalWindowRef.current = <CatalogAddItem addToBasketCamera={addToBasketCamera.current} activeAddItemState={activeAddItemState} activeAddItemSuccessState={activeAddItemSuccessState} />;
+    modalWindowRef.current = <BasketAddItemModal addToBasketCamera={addToBasketCamera.current} activeAddItemState={activeAddItemState} activeAddItemSuccessState={activeAddItemSuccessState} />;
   }
   if (isActiveAddItemSuccess) {
-    modalWindowRef.current = <CatalogAddItemSuccess setIsActiveAddItemSuccess={setIsActiveAddItemSuccess} />;
+    modalWindowRef.current = <BasketAddItemSuccessModal setIsActiveAddItemSuccess={setIsActiveAddItemSuccess} />;
   }
 
   const cameras = useAppSelector(getCameras);

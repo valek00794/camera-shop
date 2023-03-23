@@ -5,8 +5,8 @@ import { useAppSelector } from '../../hooks';
 import { getSortCameraReviews } from '../../store/app-data/selectors';
 import { scrollUp } from '../../utils/utils';
 import Modal from '../modal/modal';
-import ReviewAdd from './review-add';
-import ReviewAddSuccess from './review-add-success';
+import ReviewAddModal from './review-add-modal';
+import ReviewAddSuccess from './review-add-success-modal';
 import ReviewCard from './review-card';
 
 type ReviewsListProps = {
@@ -27,7 +27,7 @@ function ReviewsList(props: ReviewsListProps): JSX.Element {
   const handleShowMoreReviews = () => setVisibleReviewsCount(visibleReviewsCount + ReviewListSetttings.VisibleCount);
 
   if (isActiveReviewAdd) {
-    modalWindowRef.current = <ReviewAdd activeReviewAddState={activeReviewAddState} activeReviewAddSuccessState={activeReviewAddSuccessState} />;
+    modalWindowRef.current = <ReviewAddModal activeReviewAddState={activeReviewAddState} activeReviewAddSuccessState={activeReviewAddSuccessState} />;
   }
   if (isActiveReviewAddSuccess) {
     modalWindowRef.current = <ReviewAddSuccess activeReviewAddSuccessState={activeReviewAddSuccessState} />;

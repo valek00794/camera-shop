@@ -3,8 +3,8 @@ import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 
-import BasketItem from '../../components/basket/basket-Item';
-import BasketSuccess from '../../components/basket/basket-success';
+import BasketListItem from '../../components/basket/basket-list-Item';
+import BasketOrderSuccessModal from '../../components/basket/basket-order-success-modal';
 import BreadcrumbsList from '../../components/breadcrumbs-list/breadcrumbs-list';
 import Modal from '../../components/modal/modal';
 import { AppRoute } from '../../consts';
@@ -59,9 +59,10 @@ function Basket(): JSX.Element {
   const handlePostOrder = () => {
     const orderPost = {
       camerasIds: basketItemsIDs,
-      coupon: appliedCoupon,
+      coupon: appliedCoupon === '' ? null : appliedCoupon,
     };
     dispatch(fetchPostOrderAction(orderPost));
+    setTypedCoupon('');
   };
 
   const handleCloseModal = () => {
@@ -97,7 +98,7 @@ function Basket(): JSX.Element {
                   </div>
                 }
                 {
-                  basketItems?.map((item) => <BasketItem key={item.id} item={item} />)
+                  basketItems?.map((item) => <BasketListItem key={item.id} item={item} />)
                 }
 
               </ul>
@@ -140,15 +141,15 @@ function Basket(): JSX.Element {
                 <div className="basket__summary-order">
                   <p className="basket__summary-item">
                     <span className="basket__summary-text">Всего:</span>
-                    <span className="basket__summary-value">{isEpmtyBasket ? DEFAULT_SUM : basketItemsSum?.toLocaleString()} ₽</span>
+                    <span className="basket__summary-value" data-testid="basket-sum">{isEpmtyBasket ? DEFAULT_SUM : basketItemsSum?.toLocaleString()} ₽</span>
                   </p>
                   <p className="basket__summary-item">
                     <span className="basket__summary-text">Скидка:</span>
-                    <span className={getDiscountFieldClassName}>{isEpmtyBasket || !basketItemsDiscountSum || !isValidCopupon ? DEFAULT_SUM : basketItemsDiscountSum?.toLocaleString()} ₽</span>
+                    <span className={getDiscountFieldClassName} data-testid="basket-discount">{isEpmtyBasket || !basketItemsDiscountSum || !isValidCopupon ? DEFAULT_SUM : basketItemsDiscountSum?.toLocaleString()} ₽</span>
                   </p>
                   <p className="basket__summary-item">
                     <span className="basket__summary-text basket__summary-text--total">К оплате:</span>
-                    <span className="basket__summary-value basket__summary-value--total">{isEpmtyBasket ? DEFAULT_SUM : sumToPay?.toLocaleString()}  ₽</span>
+                    <span className="basket__summary-value basket__summary-value--total" data-testid="basket-total">{isEpmtyBasket ? DEFAULT_SUM : sumToPay?.toLocaleString()} ₽</span>
                   </p>
                   <button className="btn btn--purple" type="submit" disabled={isEpmtyBasket} onClick={handlePostOrder}>Оформить заказ
                   </button>
@@ -159,7 +160,7 @@ function Basket(): JSX.Element {
         </div>
       </main>
       <Modal isModalOpen={isModalOrderSuccessOpen} onCloseModal={handleCloseModal}>
-        <BasketSuccess onCloseModal={handleCloseModal} />
+        <BasketOrderSuccessModal onCloseModal={handleCloseModal} />
       </Modal>
     </>
   );

@@ -14,9 +14,9 @@ import { getCameraTitle, scrollUp } from '../../utils/utils';
 import { ReviewListSetttings, scrollToTopOptions } from '../../consts';
 import NotFound from '../../components/not-found/not-found';
 import Loading from '../../components/loading/loading';
-import CatalogAddItem from '../../components/catalog/catalog-add-item';
+import BasketAddItemModal from '../../components/basket/basket-add-item-modal';
 import Modal from '../../components/modal/modal';
-import CatalogAddItemSuccess from '../../components/catalog/catalog-add-item-success';
+import BasketAddItemModalSuccess from '../../components/basket/basket-add-item-modal-success';
 import { Camera } from '../../types/camera';
 
 const aboutCameraTabsTitle = {
@@ -45,10 +45,10 @@ function CameraInfo(): JSX.Element {
   const modalWindowRef = useRef<JSX.Element | null>(null);
 
   if (isActiveAddItem) {
-    modalWindowRef.current = <CatalogAddItem addToBasketCamera={addToBasketCamera.current} activeAddItemState={activeAddItemState} activeAddItemSuccessState={activeAddItemSuccessState} />;
+    modalWindowRef.current = <BasketAddItemModal addToBasketCamera={addToBasketCamera.current} activeAddItemState={activeAddItemState} activeAddItemSuccessState={activeAddItemSuccessState} />;
   }
   if (isActiveAddItemSuccess) {
-    modalWindowRef.current = <CatalogAddItemSuccess setIsActiveAddItemSuccess={setIsActiveAddItemSuccess} />;
+    modalWindowRef.current = <BasketAddItemModalSuccess setIsActiveAddItemSuccess={setIsActiveAddItemSuccess} />;
   }
 
   useEffect(() => {

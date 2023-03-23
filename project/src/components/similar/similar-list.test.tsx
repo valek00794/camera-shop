@@ -1,13 +1,14 @@
-import { render, screen } from '@testing-library/react';
+import { render, renderHook, screen } from '@testing-library/react';
 import { configureMockStore } from '@jedmao/redux-mock-store';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import userEvent from '@testing-library/user-event';
 
 import { createMemoryHistory } from 'history';
-import { makeFakeCameras } from '../../utils/mocks';
-import HistoryRouter from '../../components/history-route/history-route';
+import { fakeCameraInfo, makeFakeCameras } from '../../utils/mocks';
+import HistoryRouter from '../history-route/history-route';
 import SimilarList from './similar-list';
+import { useRef, useState } from 'react';
 
 const mockStore = configureMockStore([thunk]);
 
@@ -15,7 +16,7 @@ const history = createMemoryHistory();
 const fakeSmilarCameras = makeFakeCameras(4);
 
 const store = mockStore({
-  DATA: { similarCameras: fakeSmilarCameras },
+  DATA: { similarCameras: fakeSmilarCameras, basketItems: [] },
 });
 
 const [
@@ -31,13 +32,25 @@ const [
     `${fakeSmilarCameras[3].category} ${fakeSmilarCameras[3].name}`
   ];
 
+const getFakeActiveAddItemState = () => {
+  const { result } = renderHook(() => useState(false));
+  return result.current;
+};
+
+const getFakeAddToBasketCameraState = () => {
+  const { result } = renderHook(() => useRef(fakeCameraInfo));
+  return result.current;
+};
 
 describe('Component: SimilarList', () => {
   it('1. should render correctly', () => {
     render(
       <Provider store={store}>
         <HistoryRouter history={history}>
-          <SimilarList />
+          <SimilarList
+            addToBasketCamera={getFakeAddToBasketCameraState()}
+            setIsActiveAddItem={getFakeActiveAddItemState()[1]}
+          />
         </HistoryRouter>
       </Provider>
 
@@ -52,7 +65,10 @@ describe('Component: SimilarList', () => {
     render(
       <Provider store={store}>
         <HistoryRouter history={history}>
-          <SimilarList />
+          <SimilarList
+            addToBasketCamera={getFakeAddToBasketCameraState()}
+            setIsActiveAddItem={getFakeActiveAddItemState()[1]}
+          />
         </HistoryRouter>
       </Provider>
     );
@@ -68,7 +84,10 @@ describe('Component: SimilarList', () => {
     render(
       <Provider store={store}>
         <HistoryRouter history={history}>
-          <SimilarList />
+          <SimilarList
+            addToBasketCamera={getFakeAddToBasketCameraState()}
+            setIsActiveAddItem={getFakeActiveAddItemState()[1]}
+          />
         </HistoryRouter>
       </Provider>
     );
