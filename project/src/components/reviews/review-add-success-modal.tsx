@@ -11,11 +11,11 @@ const scrollToOptions: ScrollToOptions[] = [
   }
 ];
 
-  type ReviewAddSuccessProps = {
+  type ReviewAddSuccessModalProps = {
     activeReviewAddSuccessState: [boolean, React.Dispatch<React.SetStateAction<boolean>>];
   }
 
-function ReviewAddSuccess(props: ReviewAddSuccessProps): JSX.Element {
+function ReviewAddSuccessModal(props: ReviewAddSuccessModalProps): JSX.Element {
   const [, setIsActiveReviewAddSuccess] = props.activeReviewAddSuccessState;
   const [scrollToTop, scrollToReviews] = scrollToOptions;
   return (
@@ -57,4 +57,4 @@ function ReviewAddSuccess(props: ReviewAddSuccessProps): JSX.Element {
   );
 }
 
-export default ReviewAddSuccess;
+export default ReviewAddSuccessModal;

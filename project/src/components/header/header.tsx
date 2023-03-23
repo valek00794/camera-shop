@@ -1,7 +1,11 @@
 import { Link, NavLink, Outlet } from 'react-router-dom';
+import { AppRoute } from '../../consts';
+import { useAppSelector } from '../../hooks';
+import { getBasketItemsCount } from '../../store/app-data/selectors';
 import FormSearch from '../form-search/form-search';
 
 function Header(): JSX.Element {
+  const basketItemsCount = useAppSelector(getBasketItemsCount());
 
   return (
     <>
@@ -30,14 +34,19 @@ function Header(): JSX.Element {
             </ul>
           </nav>
           <FormSearch />
-          <Link className="header__basket-link" to="#">
+          <Link className="header__basket-link" to={AppRoute.Basket}>
             <svg width="16" height="16" aria-hidden="true">
               <use xlinkHref="#icon-basket"></use>
             </svg>
+            {
+              basketItemsCount &&
+              <span className="header__basket-count">{basketItemsCount}</span>
+            }
+
           </Link>
         </div>
       </header>
-      <div style={{minHeight: '100vh'}}>
+      <div style={{ minHeight: '100vh' }}>
         <Outlet />
       </div>
     </>

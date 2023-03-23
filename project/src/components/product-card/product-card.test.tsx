@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { render, renderHook, screen } from '@testing-library/react';
 import { configureMockStore } from '@jedmao/redux-mock-store';
 import userEvent from '@testing-library/user-event';
 import { Provider } from 'react-redux';
@@ -6,26 +6,35 @@ import thunk from 'redux-thunk';
 import { Route, Routes } from 'react-router-dom';
 
 import { createMemoryHistory } from 'history';
-import { fakeCameraInfo, makeFakeCameras } from '../../utils/mocks';
-import HistoryRouter from '../../components/history-route/history-route';
+import { fakeCameraInfo, makeFakeBasketCamera } from '../../utils/mocks';
+import HistoryRouter from '../history-route/history-route';
 import ProductCard from './product-card';
+import { useRef, useState } from 'react';
 
 const mockStore = configureMockStore([thunk]);
 
-const fakeSmilarCameras = makeFakeCameras(4);
+const fakeBasketItem = makeFakeBasketCamera(1);
 
 const store = mockStore({
-  DATA: { similarCameras: fakeSmilarCameras },
+  DATA: { basketItems: [] },
 });
+
+const getFakeActiveAddItemState = () => {
+  const { result } = renderHook(() => useState(false));
+  return result.current;
+};
+const getFakeAddToBasketCameraState = () => {
+  const { result } = renderHook(() => useRef(fakeCameraInfo));
+  return result.current;
+};
 
 describe('Component: ProductCard', () => {
   it('1. should render correctly', () => {
     const history = createMemoryHistory();
-
     render(
       <Provider store={store}>
         <HistoryRouter history={history}>
-          <ProductCard camera={fakeCameraInfo}/>
+          <ProductCard camera={fakeCameraInfo} setIsActiveAddItem={getFakeActiveAddItemState()[1]} addToBasketCamera={getFakeAddToBasketCameraState()} />
         </HistoryRouter>
       </Provider>
 
@@ -43,7 +52,7 @@ describe('Component: ProductCard', () => {
     render(
       <Provider store={store}>
         <HistoryRouter history={history}>
-          <ProductCard camera={fakeCameraInfo} />
+          <ProductCard camera={fakeCameraInfo} setIsActiveAddItem={getFakeActiveAddItemState()[1]} addToBasketCamera={getFakeAddToBasketCameraState()} />
         </HistoryRouter>
       </Provider>
 
@@ -61,7 +70,7 @@ describe('Component: ProductCard', () => {
     render(
       <Provider store={store}>
         <HistoryRouter history={history}>
-          <ProductCard camera={fakeCameraInfo} />
+          <ProductCard camera={fakeCameraInfo} setIsActiveAddItem={getFakeActiveAddItemState()[1]} addToBasketCamera={getFakeAddToBasketCameraState()} />
           <Routes>
             <Route
               path={fakeLink}
@@ -83,7 +92,7 @@ describe('Component: ProductCard', () => {
     render(
       <Provider store={store}>
         <HistoryRouter history={history}>
-          <ProductCard camera={fakeCameraInfo} />
+          <ProductCard camera={fakeCameraInfo} setIsActiveAddItem={getFakeActiveAddItemState()[1]} addToBasketCamera={getFakeAddToBasketCameraState()} />
         </HistoryRouter>
       </Provider>
 
@@ -92,5 +101,28 @@ describe('Component: ProductCard', () => {
     screen.getByText('Купить').onclick = fakeHandleBuy;
     await userEvent.click(screen.getByText('Купить'));
     expect(fakeHandleBuy).toBeCalledTimes(1);
+  });
+  it('5. should click render correctly if basket includes item and navigate to basket', async () => {
+    const history = createMemoryHistory();
+    const storeBasketIncludes = mockStore({
+      DATA: { basketItems: [{ ...fakeBasketItem, count: 1 }] },
+    });
+    render(
+      <Provider store={storeBasketIncludes}>
+        <HistoryRouter history={history}>
+          <Routes>
+            <Route
+              path={'/catalog/basket'}
+              element={<h1>This is basket page</h1>}
+            />
+          </Routes>
+          <ProductCard camera={fakeCameraInfo} setIsActiveAddItem={getFakeActiveAddItemState()[1]} addToBasketCamera={getFakeAddToBasketCameraState()} />
+        </HistoryRouter>
+      </Provider>
+
+    );
+    expect(screen.getByText('В корзине')).toBeInTheDocument();
+    await userEvent.click(screen.getByText('В корзине'));
+    expect(screen.getByText(/This is basket page/i)).toBeInTheDocument();
   });
 });

@@ -1,7 +1,7 @@
 import { createSelector } from 'reselect';
 
 import { NameSpace } from '../../consts';
-import { Camera } from '../../types/camera';
+import { BasketCamera, Camera } from '../../types/camera';
 import { Promo } from '../../types/promo';
 import { Review } from '../../types/review';
 import { State } from '../../types/state';
@@ -21,6 +21,39 @@ export const getReviewSubmitSuccessful = (state: State): boolean => state[NameSp
 export const getResponseStatus = (state: State): boolean => state[NameSpace.Data].isRequestFailed;
 export const getFoundCameras = (state: State): Camera[] | null => state[NameSpace.Data].foundCameras;
 export const getSearchDataLoading = (state: State): boolean => state[NameSpace.Data].isSearchDataLoading;
+export const getBasketItems = (state: State): BasketCamera[] => state[NameSpace.Data].basketItems;
+export const getBasketItemsIDs = (state: State): number[] => state[NameSpace.Data].basketItems.map((item) => item.id);
+export const getDiscount = (state: State): number | null => state[NameSpace.Data].discount;
+export const getValidCouponStatus = (state: State): boolean => state[NameSpace.Data].isValidCopupon;
+export const getCouponCkeckStatus = (state: State): boolean => state[NameSpace.Data].isCouponCheking;
+export const getCouponString = (state: State): string | null => state[NameSpace.Data].couponString;
+export const getOrderPostSuccessful = (state: State): boolean => state[NameSpace.Data].isOrderPostSuccessful;
+
+export const getBasketItemsCount = () => createSelector(
+  getBasketItems,
+  (items) => {
+    if (items.length) {
+      return items.map((item) => item.count).reduce((reviewA, reviewB) => reviewA + reviewB);
+    }
+  });
+
+export const getBasketItemsSum = () => createSelector(
+  getBasketItems,
+  (items) => {
+    if (items.length) {
+      return items.map((item) => item.count * item.price).reduce((reviewA, reviewB) => reviewA + reviewB);
+    }
+  });
+
+export const getBasketItemsDiscountSum = () => createSelector(
+  getBasketItems, getDiscount,
+  (items, discount) => {
+    if (discount && items.length) {
+      return items.map((item) => item.count * item.price).reduce((reviewA, reviewB) => reviewA + reviewB) * discount / 100;
+    }
+  }
+);
+
 
 export const getSortCameraReviews = () => createSelector(
   getCameraReviews,

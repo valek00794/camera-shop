@@ -1,5 +1,5 @@
 import {store} from '../store/index';
-import { Camera } from './camera';
+import { BasketCamera, Camera } from './camera';
 import { Promo } from './promo';
 import { Review } from './review';
 
@@ -18,6 +18,12 @@ export type AppData = {
     priceRange: number[] | null;
     isPriceRangeDataLoading: boolean;
     isSearchDataLoading: boolean;
+    basketItems: BasketCamera[];
+    discount: number | null;
+    isValidCopupon: boolean;
+    isCouponCheking: boolean;
+    couponString: string | null;
+    isOrderPostSuccessful: boolean;
 };
 
 export type State = ReturnType<typeof store.getState>;

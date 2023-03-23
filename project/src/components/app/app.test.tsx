@@ -31,10 +31,11 @@ const store = mockStore({
     cameraInfo: fakeCameraInfo,
     similarCameras: fakeSimilarCameras,
     reviews: fakeReviews,
-    foundCameras: fakeCameras.slice(3),
+    foundCameras: [],
     priceRange: [fakeCameras[0].price, fakeCameras[fakeCameras.length - 1].price ],
     isPriceRangeDataLoading: false,
     isSearchDataLoading: false,
+    basketItems: [],
   },
 });
 
@@ -74,7 +75,16 @@ describe('Application Routing', () => {
     expect(screen.getByText(/Характеристики/i)).toBeInTheDocument();
 
   });
-  it('4. should render NotFound when user navigate to non-existent route', () => {
+  it('4. should render Basket when user navigate to /catalog/basket', () => {
+    history.push('/catalog/basket');
+    window.scrollTo = jest.fn();
+
+    render(fakeApp);
+    expect(screen.getByText(/Ваша корзина пуста, перейдите в каталог чтобы начать покупки/i)).toBeInTheDocument();
+    expect(screen.getByText(/Оформить заказ/i)).toBeInTheDocument();
+
+  });
+  it('5. should render NotFound when user navigate to non-existent route', () => {
     history.push('/non-existent-route');
 
     render(fakeApp);

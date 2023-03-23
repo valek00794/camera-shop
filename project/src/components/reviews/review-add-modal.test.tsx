@@ -7,8 +7,8 @@ import userEvent from '@testing-library/user-event';
 
 import { createMemoryHistory } from 'history';
 import { makeFakeReview } from '../../utils/mocks';
-import HistoryRouter from '../../components/history-route/history-route';
-import ReviewAdd from './review-add';
+import HistoryRouter from '../history-route/history-route';
+import ReviewAddModal from './review-add-modal';
 
 const mockStore = configureMockStore([thunk]);
 
@@ -18,7 +18,7 @@ const store = mockStore({
   DATA: { review: fakeReview },
 });
 
-describe('Component: ReviewAdd', () => {
+describe('Component: ReviewAddModal', () => {
   it('1. should render correctly', () => {
     const history = createMemoryHistory();
     const { result } = renderHook(() => useState(true));
@@ -27,7 +27,7 @@ describe('Component: ReviewAdd', () => {
     render(
       <Provider store={store}>
         <HistoryRouter history={history}>
-          <ReviewAdd activeReviewAddState={activeReviewAddState}/>
+          <ReviewAddModal activeReviewAddState={activeReviewAddState} activeReviewAddSuccessState={activeReviewAddState} />
         </HistoryRouter>
       </Provider>
 
@@ -48,7 +48,7 @@ describe('Component: ReviewAdd', () => {
     render(
       <Provider store={store}>
         <HistoryRouter history={history}>
-          <ReviewAdd activeReviewAddState={activeReviewAddState}/>
+          <ReviewAddModal activeReviewAddState={activeReviewAddState} activeReviewAddSuccessState={activeReviewAddState} />
         </HistoryRouter>
       </Provider>
 
@@ -68,7 +68,7 @@ describe('Component: ReviewAdd', () => {
     render(
       <Provider store={store}>
         <HistoryRouter history={history}>
-          <ReviewAdd activeReviewAddState={activeReviewAddState}/>
+          <ReviewAddModal activeReviewAddState={activeReviewAddState} activeReviewAddSuccessState={activeReviewAddState} />
         </HistoryRouter>
       </Provider>
 
@@ -77,44 +77,5 @@ describe('Component: ReviewAdd', () => {
     screen.getByTestId('btn-close-modal').onclick = fakeHandleCloseModal;
     await userEvent.click(screen.getByTestId('btn-close-modal'));
     expect(fakeHandleCloseModal).toBeCalledTimes(1);
-  });
-  it('4. should click on overlay correctly', async () => {
-    const history = createMemoryHistory();
-    const { result } = renderHook(() => useState(true));
-    const activeReviewAddState = result.current;
-    const fakeHandleCloseModal = jest.fn();
-    window.scrollTo = jest.fn();
-
-    render(
-      <Provider store={store}>
-        <HistoryRouter history={history}>
-          <ReviewAdd activeReviewAddState={activeReviewAddState}/>
-        </HistoryRouter>
-      </Provider>
-
-    );
-    expect(screen.getByTestId('close-overlay')).toBeInTheDocument();
-    screen.getByTestId('close-overlay').onclick = fakeHandleCloseModal;
-    await userEvent.click(screen.getByTestId('close-overlay'));
-    expect(fakeHandleCloseModal).toBeCalledTimes(1);
-  });
-
-  it('5. should click Esc correctly', async () => {
-    const history = createMemoryHistory();
-    const { result } = renderHook(() => useState(true));
-    const activeReviewAddState = result.current;
-    const fakeHandleEsc = jest.fn();
-    window.scrollTo = jest.fn();
-
-    render(
-      <Provider store={store}>
-        <HistoryRouter history={history}>
-          <ReviewAdd activeReviewAddState={activeReviewAddState} />
-        </HistoryRouter>
-      </Provider>
-    );
-    window.addEventListener('keyup', fakeHandleEsc);
-    await userEvent.keyboard('[Enter]');
-    expect(fakeHandleEsc).toHaveBeenCalledTimes(1);
   });
 });

@@ -1,5 +1,6 @@
 import { datatype, commerce, image, internet } from 'faker';
-import { Camera } from '../types/camera';
+import { BasketCamera, Camera } from '../types/camera';
+import { OrderPost } from '../types/order';
 import { Promo } from '../types/promo';
 import { Review, ReviewPost } from '../types/review';
 
@@ -74,4 +75,32 @@ export const makeFakePriceRange = (): number[] => ([
   datatype.number({ min: 100, max: 1990 }),
   datatype.number({ min: 19900, max: 199000 })
 ] as number[]);
+
+export const makeFakeDiscount = (): number => (
+  datatype.number({ min: 1, max: 20 }));
+
+export const makeFakeCouponString = (): string => (
+  commerce.product());
+
+export const makeFakeOrder = (): OrderPost => ({
+  camerasIds: [datatype.number(), datatype.number()],
+  coupon: commerce.productName(),
+} as OrderPost);
+
+export const makeFakeBasketCamera = (id: number): BasketCamera => ({
+  id,
+  name: commerce.productName(),
+  vendorCode: commerce.product(),
+  type: commerce.product(),
+  category: commerce.department(),
+  description: commerce.productDescription(),
+  level: commerce.color(),
+  rating: datatype.number(5),
+  price: Number(commerce.price()),
+  previewImg: image.imageUrl(),
+  previewImg2x: image.imageUrl(),
+  previewImgWebp: image.imageUrl(),
+  previewImgWebp2x: image.imageUrl(),
+  reviewCount: datatype.number(),
+} as BasketCamera);
 

@@ -28,7 +28,8 @@ describe('Component: Catalog', () => {
         cameras: fakeCameras,
         promo: fakePromo,
         priceRange: fakePriceRange,
-        isPriceRangeDataLoading: false
+        isPriceRangeDataLoading: false,
+        basketItems: [],
       },
     });
     history.push('/catalog/page_1');

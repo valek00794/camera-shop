@@ -12,6 +12,8 @@ import {
   fetchPostReviewAction,
   fetchSearchCamerasAction,
   fetchCamerasPriceRangeAction,
+  fetchPostCouponAction,
+  fetchPostOrderAction,
 } from './api-actions';
 
 import { State } from '../types/state';
@@ -23,6 +25,8 @@ import {
   makeFakePromo,
   makeFakeReviews,
   makeFakeNewReview,
+  makeFakeDiscount,
+  makeFakeOrder,
 } from '../utils/mocks';
 
 const mockCameraInfo = fakeCameraInfo;
@@ -31,6 +35,8 @@ const mockPromo = makeFakePromo();
 const mockReviews = makeFakeReviews(10);
 const mockSimilarCameras = makeFakeCameras(10);
 const mockNewReview = makeFakeNewReview();
+const mockDiscount = makeFakeDiscount();
+const mockOrder = makeFakeOrder();
 
 describe('Async actions', () => {
   const api = createAPI();
@@ -176,6 +182,40 @@ describe('Async actions', () => {
     expect(actions).toEqual([
       fetchPostReviewAction.pending.type,
       fetchPostReviewAction.fulfilled.type,
+    ]);
+  });
+
+  it('8. should dispatch discount when POST /coupons', async () => {
+    mockAPI
+      .onPost(APIRoute.Coupons)
+      .reply(200, mockDiscount);
+
+    const store = mockStore();
+
+    await store.dispatch(fetchPostCouponAction('CouponString'));
+
+    const actions = store.getActions().map(({ type }) => type);
+
+    expect(actions).toEqual([
+      fetchPostCouponAction.pending.type,
+      fetchPostCouponAction.fulfilled.type,
+    ]);
+  });
+
+  it('9. should dispatch discount when POST /orders', async () => {
+    mockAPI
+      .onPost(APIRoute.Orders)
+      .reply(200);
+
+    const store = mockStore();
+
+    await store.dispatch(fetchPostOrderAction(mockOrder));
+
+    const actions = store.getActions().map(({ type }) => type);
+
+    expect(actions).toEqual([
+      fetchPostOrderAction.pending.type,
+      fetchPostOrderAction.fulfilled.type,
     ]);
   });
 });

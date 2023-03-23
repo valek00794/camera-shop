@@ -1,6 +1,7 @@
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom';
 
 import { AppRoute } from '../../consts';
+import Basket from '../../pages/basket/basket';
 import Camera from '../../pages/camera/camera';
 import Catalog from '../../pages/catalog/catalog';
 import Footer from '../footer/footer';
@@ -24,6 +25,7 @@ function App(): JSX.Element {
           }
           />
           <Route path={AppRoute.DefaultCamera} element={<Camera />} />
+          <Route path={AppRoute.Basket} element={<Basket />} />
           <Route path={AppRoute.Error} element={<NotFound />} />
         </Route>
       </Routes>

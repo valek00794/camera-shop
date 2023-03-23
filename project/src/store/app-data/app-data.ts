@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { NameSpace } from '../../consts';
 import { AppData } from '../../types/state';
+import { addToBasketOrIncCountAction, clearBasketAction, decCountItemBasketAction, removeFromBasketAction } from '../action';
 import {
   fetchCamerasAction,
   fetchPromoAction,
@@ -9,6 +10,8 @@ import {
   fetchPostReviewAction,
   fetchSearchCamerasAction,
   fetchCamerasPriceRangeAction,
+  fetchPostCouponAction,
+  fetchPostOrderAction,
 } from '../api-actions';
 
 export const initialState: AppData = {
@@ -26,6 +29,12 @@ export const initialState: AppData = {
   priceRange: [],
   isPriceRangeDataLoading: false,
   isSearchDataLoading: false,
+  basketItems: [],
+  discount: null,
+  couponString: null,
+  isCouponCheking: false,
+  isValidCopupon: false,
+  isOrderPostSuccessful: false,
 };
 
 export const appData = createSlice({
@@ -86,6 +95,60 @@ export const appData = createSlice({
       .addCase(fetchSearchCamerasAction.fulfilled, (state, action) => {
         state.foundCameras = action.payload;
         state.isSearchDataLoading = false;
+      })
+      .addCase(addToBasketOrIncCountAction, (state, action) => {
+        const indexItem = state.basketItems?.findIndex((item) => action.payload.camera.id === item.id);
+        if (indexItem > -1) {
+          if (action.payload.count) {
+            state.basketItems?.splice(indexItem, 1, { ...action.payload.camera, count: action.payload.count });
+          } else {
+            const replacementItemCount = state.basketItems[indexItem].count;
+            state.basketItems?.splice(indexItem, 1, { ...action.payload.camera, count: replacementItemCount + 1 });
+          }
+        } else {
+          state.basketItems?.push(action.payload.camera);
+        }
+      })
+      .addCase(decCountItemBasketAction, (state, action) => {
+        const indexItem = state.basketItems?.findIndex((item) => action.payload.id === item.id);
+        if (indexItem > -1) {
+          state.basketItems?.splice(indexItem, 1, { ...action.payload, count: action.payload.count - 1 });
+        }
+      })
+      .addCase(removeFromBasketAction, (state, action) => {
+        const indexItem = state.basketItems?.findIndex((item) => action.payload.id === item.id);
+        if (indexItem > -1) {
+          state.basketItems?.splice(indexItem, 1);
+        }
+      })
+      .addCase(fetchPostCouponAction.pending, (state) => {
+        state.isValidCopupon = false;
+        state.isCouponCheking = false;
+      })
+      .addCase(fetchPostCouponAction.fulfilled, (state, action) => {
+        state.discount = action.payload;
+        state.isValidCopupon = true;
+        state.isCouponCheking = true;
+        state.couponString = action.meta.arg;
+      })
+      .addCase(fetchPostCouponAction.rejected, (state) => {
+        state.isValidCopupon = false;
+        state.isCouponCheking = true;
+        state.couponString = '';
+      })
+      .addCase(fetchPostOrderAction.fulfilled, (state) => {
+        state.isOrderPostSuccessful = true;
+      })
+      .addCase(fetchPostOrderAction.rejected, (state) => {
+        state.isOrderPostSuccessful = false;
+      })
+      .addCase(clearBasketAction, (state) => {
+        state.isOrderPostSuccessful = false;
+        state.basketItems = [];
+        state.discount = null;
+        state.couponString = null;
+        state.isCouponCheking = false;
+        state.isValidCopupon = false;
       });
   }
 });

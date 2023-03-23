@@ -1,20 +1,44 @@
-import { ReviewListSetttings } from '../../consts';
+import { useRef, useState } from 'react';
+
+import { ReviewListSetttings, scrollToReviewOptions } from '../../consts';
 import { useAppSelector } from '../../hooks';
 import { getSortCameraReviews } from '../../store/app-data/selectors';
+import { scrollUp } from '../../utils/utils';
+import Modal from '../modal/modal';
+import ReviewAddModal from './review-add-modal';
+import ReviewAddSuccess from './review-add-success-modal';
 import ReviewCard from './review-card';
 
 type ReviewsListProps = {
   visibleReviewsCountState: [ReviewListSetttings, React.Dispatch<React.SetStateAction<ReviewListSetttings>>];
-  activeReviewAddState: [boolean, React.Dispatch<React.SetStateAction<boolean>>];
 }
 
 function ReviewsList(props: ReviewsListProps): JSX.Element {
   const [visibleReviewsCount, setVisibleReviewsCount] = props.visibleReviewsCountState;
-  const [, setIsActiveReviewAdd] = props.activeReviewAddState;
+  const activeReviewAddState = useState(false);
+  const [isActiveReviewAdd, setIsActiveReviewAdd] = activeReviewAddState;
   const cameraSortReviews = useAppSelector(getSortCameraReviews());
   const cameraReviewsByCount = cameraSortReviews?.slice(0, visibleReviewsCount);
+  const activeReviewAddSuccessState = useState(false);
+  const [isActiveReviewAddSuccess, setIsActiveReviewAddSuccess] = activeReviewAddSuccessState;
+  const isModalOpenRewiew = isActiveReviewAdd || isActiveReviewAddSuccess;
+  const modalWindowRef = useRef<JSX.Element | null>(null);
 
   const handleShowMoreReviews = () => setVisibleReviewsCount(visibleReviewsCount + ReviewListSetttings.VisibleCount);
+
+  if (isActiveReviewAdd) {
+    modalWindowRef.current = <ReviewAddModal activeReviewAddState={activeReviewAddState} activeReviewAddSuccessState={activeReviewAddSuccessState} />;
+  }
+  if (isActiveReviewAddSuccess) {
+    modalWindowRef.current = <ReviewAddSuccess activeReviewAddSuccessState={activeReviewAddSuccessState} />;
+  }
+
+
+  const handleCloseModalReview = () => {
+    setIsActiveReviewAdd(false);
+    setIsActiveReviewAddSuccess(false);
+    scrollUp(scrollToReviewOptions);
+  };
 
   return (
     <>
@@ -43,6 +67,9 @@ function ReviewsList(props: ReviewsListProps): JSX.Element {
           </button>
         </div>
       }
+      <Modal isModalOpen={isModalOpenRewiew} onCloseModal={handleCloseModalReview}>
+        {modalWindowRef.current}
+      </Modal>
     </>
   );
 }

@@ -7,8 +7,8 @@ import userEvent from '@testing-library/user-event';
 
 import { createMemoryHistory } from 'history';
 import { makeFakeReview } from '../../utils/mocks';
-import HistoryRouter from '../../components/history-route/history-route';
-import ReviewAddSuccess from './review-add-success';
+import HistoryRouter from '../history-route/history-route';
+import ReviewAddSuccess from './review-add-success-modal';
 
 
 const mockStore = configureMockStore([thunk]);
@@ -22,7 +22,7 @@ const store = mockStore({
 const { result } = renderHook(() => useState(true));
 const activeReviewAddSuccessState = result.current;
 
-describe('Component: ReviewAddSuccess', () => {
+describe('Component: ReviewAddSuccessModal', () => {
   it('1. should render correctly', () => {
     const history = createMemoryHistory();
 

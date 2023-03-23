@@ -1,7 +1,11 @@
-import axios, {AxiosInstance, AxiosResponse, AxiosError} from 'axios';
-import {toast} from 'react-toastify';
-import {StatusCodes} from 'http-status-codes';
+import axios, { AxiosInstance, AxiosResponse, AxiosError } from 'axios';
+import { toast } from 'react-toastify';
+import { StatusCodes } from 'http-status-codes';
+import { APIRoute } from '../consts';
 
+type Request = {
+  responseURL: string;
+}
 
 const ErrorStatusCodeMapping: Record<number, boolean> = {
   [StatusCodes.BAD_REQUEST]: true,
@@ -29,8 +33,11 @@ export const createAPI = (): AxiosInstance => {
 
   api.interceptors.response.use(
     (response) => response,
-    (error: AxiosError<{error: string}>) => {
-      if (error.response && shouldDisplayError(error.response)) {
+    (error: AxiosError<{ error: string }>) => {
+      if (
+        error.response && shouldDisplayError(error.response) &&
+        !(error.response.request as Request).responseURL.includes(APIRoute.Coupons)
+      ) {
         toast.error(`${error.response.status} - ${ERROR_RESPONSE_MESSAGES[error.response.status as keyof typeof ERROR_RESPONSE_MESSAGES]}`, {
           position: 'top-center',
           autoClose: 5000,

@@ -1,8 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import classnames from 'classnames';
 import { Helmet } from 'react-helmet-async';
-import FocusLock from 'react-focus-lock';
 
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { fetchCameraInfoWithReviewsAction, fetchSimilarCamerasAction } from '../../store/api-actions';
@@ -12,33 +11,45 @@ import SimilarList from '../../components/similar/similar-list';
 import Stars from '../../components/stars/stars';
 import ReviewsList from '../../components/reviews/reviews-list';
 import { getCameraTitle, scrollUp } from '../../utils/utils';
-import { ReviewListSetttings } from '../../consts';
-import ReviewAdd from '../../components/reviews/review-add';
+import { ReviewListSetttings, scrollToTopOptions } from '../../consts';
 import NotFound from '../../components/not-found/not-found';
 import Loading from '../../components/loading/loading';
+import BasketAddItemModal from '../../components/basket/basket-add-item-modal';
+import Modal from '../../components/modal/modal';
+import BasketAddItemModalSuccess from '../../components/basket/basket-add-item-modal-success';
+import { Camera } from '../../types/camera';
 
 const aboutCameraTabsTitle = {
   specifications: 'Характеристики',
   description: 'Описание',
 };
 
-const scrollToOptions: ScrollToOptions = {
-  top: 0,
-  behavior: 'smooth'
-};
-
-function Camera(): JSX.Element {
+function CameraInfo(): JSX.Element {
   const dispatch = useAppDispatch();
   const { id, about } = useParams();
   const cameraInfo = useAppSelector(getCameraInfo);
   const similarCameras = useAppSelector(getSimilarCameras);
   const visibleReviewsCountState = useState(ReviewListSetttings.VisibleCount);
   const [, setVisibleReviewsCount] = visibleReviewsCountState;
-  const activeReviewAddState = useState(false);
+
   const [specificationsTab, descriptionTab] = Object.keys(aboutCameraTabsTitle);
   const isAboutTitleFound = about as keyof typeof aboutCameraTabsTitle in aboutCameraTabsTitle;
   const isCameraInfoDataLoading = useAppSelector(getCameraInfoDataLoading);
   const isRequestFailed = useAppSelector(getResponseStatus);
+  const activeAddItemState = useState(false);
+  const activeAddItemSuccessState = useState(false);
+  const [isActiveAddItem, setIsActiveAddItem] = activeAddItemState;
+  const [isActiveAddItemSuccess, setIsActiveAddItemSuccess] = activeAddItemSuccessState;
+  const isModalOpenBuy = isActiveAddItem || isActiveAddItemSuccess;
+  const addToBasketCamera = useRef<Camera | null>(cameraInfo);
+  const modalWindowRef = useRef<JSX.Element | null>(null);
+
+  if (isActiveAddItem) {
+    modalWindowRef.current = <BasketAddItemModal addToBasketCamera={addToBasketCamera.current} activeAddItemState={activeAddItemState} activeAddItemSuccessState={activeAddItemSuccessState} />;
+  }
+  if (isActiveAddItemSuccess) {
+    modalWindowRef.current = <BasketAddItemModalSuccess setIsActiveAddItemSuccess={setIsActiveAddItemSuccess} />;
+  }
 
   useEffect(() => {
     let isMounted = true;
@@ -60,6 +71,17 @@ function Camera(): JSX.Element {
   if (!isAboutTitleFound || isRequestFailed) {
     return <NotFound />;
   }
+
+  const handleCloseModalBuy = () => {
+    setIsActiveAddItem(false);
+    setIsActiveAddItemSuccess(false);
+  };
+
+  const handleAddToBasket = () => {
+    addToBasketCamera.current = cameraInfo;
+    setIsActiveAddItem(true);
+  };
+
 
   const getProductTabsClassName = (aboutTabsTitle: string) => classnames(
     'tabs__element',
@@ -98,7 +120,7 @@ function Camera(): JSX.Element {
                     <p className="rate__count"><span className="visually-hidden">Всего оценок:</span>{cameraInfo?.reviewCount}</p>
                   </div>
                   <p className="product__price"><span className="visually-hidden">Цена:</span>{cameraInfo?.price.toLocaleString()} ₽</p>
-                  <button className="btn btn--purple" type="button">
+                  <button className="btn btn--purple" type="button" onClick={handleAddToBasket}>
                     <svg width="24" height="16" aria-hidden="true">
                       <use xlinkHref="#icon-add-basket"></use>
                     </svg>Добавить в корзину
@@ -157,7 +179,10 @@ function Camera(): JSX.Element {
             <div className="page-content__section">
               <section className="product-similar">
                 <div className="container">
-                  <SimilarList />
+                  <SimilarList
+                    setIsActiveAddItem={setIsActiveAddItem}
+                    addToBasketCamera={addToBasketCamera}
+                  />
                 </div>
               </section>
             </div>
@@ -167,23 +192,22 @@ function Camera(): JSX.Element {
               <div className="container">
                 <ReviewsList
                   visibleReviewsCountState={visibleReviewsCountState}
-                  activeReviewAddState={activeReviewAddState}
                 />
               </div>
             </section>
           </div>
         </div>
-        <button className="up-btn" onClick={() => scrollUp(scrollToOptions)}>
+        <button className="up-btn" onClick={() => scrollUp(scrollToTopOptions)}>
           <svg width="12" height="18" aria-hidden="true">
             <use xlinkHref="#icon-arrow2"></use>
           </svg>
         </button>
       </main>
-      <FocusLock>
-        <ReviewAdd activeReviewAddState={activeReviewAddState} />
-      </FocusLock>
+      <Modal isModalOpen={isModalOpenBuy} onCloseModal={handleCloseModalBuy}>
+        {modalWindowRef.current}
+      </Modal>
     </>
   );
 }
 
-export default Camera;
+export default CameraInfo;
