@@ -26,7 +26,7 @@ export const getBasketItemsIDs = (state: State): number[] => state[NameSpace.Dat
 export const getDiscount = (state: State): number | null => state[NameSpace.Data].discount;
 export const getValidCouponStatus = (state: State): boolean => state[NameSpace.Data].isValidCopupon;
 export const getCouponCkeckStatus = (state: State): boolean => state[NameSpace.Data].isCouponCheking;
-export const getCouponString = (state: State): string | null => state[NameSpace.Data].couponString;
+export const getCouponString = (state: State): string => state[NameSpace.Data].couponString;
 export const getOrderPostSuccessful = (state: State): boolean => state[NameSpace.Data].isOrderPostSuccessful;
 
 export const getBasketItemsCount = () => createSelector(

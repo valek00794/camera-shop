@@ -22,7 +22,7 @@ export type AppData = {
     discount: number | null;
     isValidCopupon: boolean;
     isCouponCheking: boolean;
-    couponString: string | null;
+    couponString: string;
     isOrderPostSuccessful: boolean;
 };
 

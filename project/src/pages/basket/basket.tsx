@@ -2,6 +2,7 @@ import classnames from 'classnames';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 
 import BasketListItem from '../../components/basket/basket-list-Item';
 import BasketOrderSuccessModal from '../../components/basket/basket-order-success-modal';
@@ -9,7 +10,7 @@ import BreadcrumbsList from '../../components/breadcrumbs-list/breadcrumbs-list'
 import Modal from '../../components/modal/modal';
 import { AppRoute } from '../../consts';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { clearBasketAction } from '../../store/action';
+import { clearBasketAction, clearCouponCheck } from '../../store/action';
 import { fetchPostCouponAction, fetchPostOrderAction } from '../../store/api-actions';
 import { getBasketItems, getBasketItemsDiscountSum, getBasketItemsIDs, getBasketItemsSum, getCouponCkeckStatus, getCouponString, getOrderPostSuccessful, getValidCouponStatus } from '../../store/app-data/selectors';
 
@@ -17,6 +18,7 @@ const DEFAULT_SUM = 0;
 
 function Basket(): JSX.Element {
   const dispatch = useAppDispatch();
+  const dispatchNotTypes = useDispatch();
   const basketItems = useAppSelector(getBasketItems);
   const basketItemsIDs = useAppSelector(getBasketItemsIDs);
   const isValidCopupon = useAppSelector(getValidCouponStatus);
@@ -46,6 +48,9 @@ function Basket(): JSX.Element {
 
   const handleChangeTypedCoupon = (evt: React.ChangeEvent<HTMLInputElement>) => {
     setTypedCoupon(evt.target.value.trim());
+    if (evt.target.value === '') {
+      dispatchNotTypes(clearCouponCheck());
+    }
   };
   const handleCouponString = (evt: React.ChangeEvent<HTMLInputElement>) => {
     setTypedCoupon(evt.target.value.replace(/\s/g, ''));
@@ -53,7 +58,7 @@ function Basket(): JSX.Element {
 
   const handleApplyCoupon = (evt: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     evt.preventDefault();
-    dispatch(fetchPostCouponAction(typedCoupon === '' && appliedCoupon !== null ? appliedCoupon : typedCoupon));
+    dispatch(fetchPostCouponAction(typedCoupon === null && appliedCoupon !== null ? appliedCoupon : typedCoupon));
   };
 
   const handlePostOrder = () => {

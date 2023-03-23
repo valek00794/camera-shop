@@ -15,3 +15,5 @@ export const removeFromBasketAction = createAction('DEL_FROM_BASKET', (camera : 
 }));
 
 export const clearBasketAction = createAction('CLEAR_BASKET');
+
+export const clearCouponCheck = createAction('CLEAR_COUPON_CKECK');

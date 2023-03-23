@@ -20,7 +20,7 @@ import {
   fetchPostCouponAction,
   fetchPostOrderAction,
 } from '../api-actions';
-import { addToBasketOrIncCountAction, clearBasketAction, decCountItemBasketAction, removeFromBasketAction } from '../action';
+import { addToBasketOrIncCountAction, clearBasketAction, clearCouponCheck, decCountItemBasketAction, removeFromBasketAction } from '../action';
 
 const fakeCameras = makeFakeCameras(20);
 const fakePromo = makeFakePromo();
@@ -49,7 +49,7 @@ const initialState = {
   isSearchDataLoading: false,
   basketItems: [],
   discount: null,
-  couponString: null,
+  couponString: '',
   isCouponCheking: false,
   isValidCopupon: false,
   isOrderPostSuccessful: false,
@@ -205,7 +205,26 @@ describe('Reducer: appData', () => {
         basketItems: [],
         isOrderPostSuccessful: false,
         discount: null,
-        couponString: null,
+        couponString: '',
+        isCouponCheking: false,
+        isValidCopupon: false,
+      });
+  });
+  it('15. should set isCouponCheking, isValidCopupon, discount,  couponString when clear copun', () => {
+    const state = {
+      ...initialState,
+      basketItems: [{ ...fakeBasketCamera, count: 2 }],
+      discount: fakeDiscount,
+      couponString: fakeCouponString,
+      isCouponCheking: true,
+      isValidCopupon: true,
+    };
+    expect(appData.reducer(state, { type: clearCouponCheck }))
+      .toEqual({
+        ...state,
+        basketItems: [{ ...fakeBasketCamera, count: 2 }],
+        discount: null,
+        couponString: '',
         isCouponCheking: false,
         isValidCopupon: false,
       });

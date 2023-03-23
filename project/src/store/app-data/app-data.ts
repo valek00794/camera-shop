@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { NameSpace } from '../../consts';
 import { AppData } from '../../types/state';
-import { addToBasketOrIncCountAction, clearBasketAction, decCountItemBasketAction, removeFromBasketAction } from '../action';
+import { addToBasketOrIncCountAction, clearBasketAction, clearCouponCheck, decCountItemBasketAction, removeFromBasketAction } from '../action';
 import {
   fetchCamerasAction,
   fetchPromoAction,
@@ -31,7 +31,7 @@ export const initialState: AppData = {
   isSearchDataLoading: false,
   basketItems: [],
   discount: null,
-  couponString: null,
+  couponString: '',
   isCouponCheking: false,
   isValidCopupon: false,
   isOrderPostSuccessful: false,
@@ -146,7 +146,13 @@ export const appData = createSlice({
         state.isOrderPostSuccessful = false;
         state.basketItems = [];
         state.discount = null;
-        state.couponString = null;
+        state.couponString = '';
+        state.isCouponCheking = false;
+        state.isValidCopupon = false;
+      })
+      .addCase(clearCouponCheck, (state) => {
+        state.couponString = '';
+        state.discount = null;
         state.isCouponCheking = false;
         state.isValidCopupon = false;
       });
