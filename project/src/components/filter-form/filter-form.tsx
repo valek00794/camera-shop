@@ -4,7 +4,6 @@ import { useSearchParams } from 'react-router-dom';
 import { FilterCategory, FilterLevel, FilterParams, FilterType, scrollToTopCatalogOptions } from '../../consts';
 import { removeValueByKeyFromSearchParams, scrollUp } from '../../utils/utils';
 import browserHistory from '../../browser-history';
-import { useAppDispatch } from '../../hooks';
 
 const exceptInputRangeThisSymbols = ['e', 'E', '+', '-', '.'];
 const DEFAULT_PRICE_VALUE = '';
@@ -17,7 +16,6 @@ type FilterFormProops = {
 }
 
 function FilterForm(props: FilterFormProops): JSX.Element {
-  const dispatch = useAppDispatch();
   const [searchParams, setSearchParams] = useSearchParams();
   const refPriceFrom = useRef(searchParams.get(FilterParams.PriceFrom) || DEFAULT_PRICE_VALUE);
   const refPriceTo = useRef(searchParams.get(FilterParams.PriceTo) || DEFAULT_PRICE_VALUE);
@@ -26,16 +24,10 @@ function FilterForm(props: FilterFormProops): JSX.Element {
 
 
   useEffect(() => {
-    let isMounted = true;
-    if (isMounted) {
-      const postUrl = new URL('/catalog/page_1/', window.location.origin);
-      postUrl.search = searchParams.toString();
-      browserHistory.push(postUrl.href);
-    }
-    return () => {
-      isMounted = false;
-    };
-  }, [dispatch, searchParams]);
+    const postUrl = new URL('/catalog/page_1/', window.location.origin);
+    postUrl.search = searchParams.toString();
+    browserHistory.push(postUrl.href);
+  }, [searchParams]);
 
   const setSingleParam = (param: string, paramValue: string) => {
     if (searchParams.get(param) !== paramValue) {

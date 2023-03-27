@@ -6,7 +6,6 @@ type ModalProps = {
   children: JSX.Element | null;
   isModalOpen: boolean;
   onCloseModal: () => void;
-
 }
 
 function Modal(props: ModalProps): JSX.Element {
@@ -15,16 +14,14 @@ function Modal(props: ModalProps): JSX.Element {
     let isMounted = true;
     const modalOverlay = modalElementRef.current;
     const onUpEsc = (evt: KeyboardEvent) => {
-      if (evt.key === 'Escape' && props.isModalOpen) {
+      if (isMounted && evt.key === 'Escape' && props.isModalOpen) {
         props.onCloseModal();
       }
     };
+    window.addEventListener('keyup', onUpEsc);
+    props.isModalOpen && document.body.classList.add('modal-open');
+    isMounted && props.isModalOpen && modalOverlay && modalOverlay.addEventListener('click', props.onCloseModal);
 
-    if (isMounted) {
-      window.addEventListener('keyup', onUpEsc);
-      props.isModalOpen && document.body.classList.add('modal-open');
-      props.isModalOpen && modalOverlay && modalOverlay.addEventListener('click', props.onCloseModal);
-    }
     return () => {
       isMounted = false;
       window.removeEventListener('keyup', onUpEsc);

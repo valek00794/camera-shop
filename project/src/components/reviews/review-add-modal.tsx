@@ -40,15 +40,12 @@ function ReviewAddModal(props: ReviewAddModalProps): JSX.Element {
   });
 
   useEffect(() => {
-
     let isMounted = true;
-    if (isMounted) {
-      if (isSubmitSuccessful && isReviewSubmitSuccessful) {
-        reset();
-        setIsActiveReviewAdd(false);
-        setIsActiveReviewAddSuccess(true);
-        setRatingValue(DEFAULT_RATING_VALUE);
-      }
+    if (isMounted && isSubmitSuccessful && isReviewSubmitSuccessful) {
+      reset();
+      setIsActiveReviewAdd(false);
+      setIsActiveReviewAddSuccess(true);
+      setRatingValue(DEFAULT_RATING_VALUE);
     }
     return () => {
       isMounted = false;

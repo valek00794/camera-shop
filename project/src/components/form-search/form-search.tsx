@@ -30,7 +30,7 @@ function FormSearch(): JSX.Element {
     const handleKeyPress = (evt: KeyboardEvent) => {
       const currntActiveElement = document.activeElement as HTMLAnchorElement | HTMLButtonElement;
 
-      if (evt.key === 'Escape') {
+      if (isMounted && evt.key === 'Escape') {
         handleResetSearch();
       }
 
@@ -73,7 +73,7 @@ function FormSearch(): JSX.Element {
     };
 
     const handleCloseSelectList = (evt: MouseEvent) => {
-      if (evt.target !== startActiveElementRef.current) {
+      if (isMounted && evt.target !== startActiveElementRef.current) {
         handleResetSearch();
       }
     };
@@ -90,7 +90,7 @@ function FormSearch(): JSX.Element {
       window.removeEventListener('keyup', handleKeyPress);
       window.removeEventListener('click', handleCloseSelectList);
     };
-  }, [dispatch, foundCameras?.length, isOpenSelectList, isSearchDataLoading, searchName]);
+  }, [foundCameras?.length, isOpenSelectList, isSearchDataLoading, searchName]);
 
   const handleInputSearch = (evt: ChangeEvent<HTMLInputElement>) => {
     setSearchName(evt.target.value);
