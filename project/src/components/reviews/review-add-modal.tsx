@@ -40,16 +40,12 @@ function ReviewAddModal(props: ReviewAddModalProps): JSX.Element {
   });
 
   useEffect(() => {
-    let isMounted = true;
-    if (isMounted && isSubmitSuccessful && isReviewSubmitSuccessful) {
+    if (isSubmitSuccessful && isReviewSubmitSuccessful) {
       reset();
       setIsActiveReviewAdd(false);
       setIsActiveReviewAddSuccess(true);
       setRatingValue(DEFAULT_RATING_VALUE);
     }
-    return () => {
-      isMounted = false;
-    };
   }, [isReviewSubmitSuccessful, isSubmitSuccessful, reset, setIsActiveReviewAdd, setIsActiveReviewAddSuccess, setRatingValue]);
 
   const onSubmit: SubmitHandler<ReviewPost> = (postData) => {

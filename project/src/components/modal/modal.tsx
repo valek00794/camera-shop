@@ -18,14 +18,19 @@ function Modal(props: ModalProps): JSX.Element {
         props.onCloseModal();
       }
     };
+    const handleCloseModal = () => {
+      if (isMounted) {
+        props.onCloseModal();
+      }
+    };
     window.addEventListener('keyup', onUpEsc);
     props.isModalOpen && document.body.classList.add('modal-open');
-    isMounted && props.isModalOpen && modalOverlay && modalOverlay.addEventListener('click', props.onCloseModal);
+    props.isModalOpen && modalOverlay && modalOverlay.addEventListener('click', handleCloseModal);
 
     return () => {
       isMounted = false;
       window.removeEventListener('keyup', onUpEsc);
-      props.isModalOpen && modalOverlay && modalOverlay.removeEventListener('click', props.onCloseModal);
+      props.isModalOpen && modalOverlay && modalOverlay.removeEventListener('click', handleCloseModal);
       props.isModalOpen && document.body.classList.remove('modal-open');
     };
   }, [props]);

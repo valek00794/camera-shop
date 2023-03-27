@@ -11,13 +11,7 @@ function Banner(): JSX.Element {
   const isPromoDataLoading = useAppSelector(getPromoDataLoading);
 
   useEffect(() => {
-    let isMounted = true;
-    if (isMounted) {
-      dispatch(fetchPromoAction());
-    }
-    return () => {
-      isMounted = false;
-    };
+    dispatch(fetchPromoAction());
   }, [dispatch]);
 
   return (

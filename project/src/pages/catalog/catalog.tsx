@@ -58,14 +58,8 @@ function Catalog(): JSX.Element {
   ];
 
   useEffect(() => {
-    let isMounted = true;
     const startItem = CAMERAS_AMOUNT_SHOW_BY_PAGE * Number(page) - CAMERAS_AMOUNT_SHOW_BY_PAGE;
-    if (isMounted) {
-      dispatch(fetchCamerasAction([startItem, searchParams]));
-    }
-    return () => {
-      isMounted = false;
-    };
+    dispatch(fetchCamerasAction([startItem, searchParams]));
   }, [dispatch, page, searchParams]);
 
 

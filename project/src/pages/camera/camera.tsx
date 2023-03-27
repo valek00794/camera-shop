@@ -52,16 +52,10 @@ function CameraInfo(): JSX.Element {
   }
 
   useEffect(() => {
-    let isMounted = true;
-    if (isMounted) {
-      dispatch(fetchCameraInfoWithReviewsAction(id));
-      dispatch(fetchSimilarCamerasAction(id));
-      setVisibleReviewsCount(ReviewListSetttings.VisibleCount);
-      window.scrollTo(0, 0);
-    }
-    return () => {
-      isMounted = false;
-    };
+    dispatch(fetchCameraInfoWithReviewsAction(id));
+    dispatch(fetchSimilarCamerasAction(id));
+    setVisibleReviewsCount(ReviewListSetttings.VisibleCount);
+    window.scrollTo(0, 0);
   }, [dispatch, id, setVisibleReviewsCount]);
 
   if (isCameraInfoDataLoading) {
