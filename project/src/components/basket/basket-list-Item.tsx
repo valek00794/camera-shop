@@ -44,7 +44,7 @@ function BasketListItem(props: BasketListItemProps): JSX.Element {
     }
   };
 
-  const handleCeckCount = (evt: React.ChangeEvent<HTMLInputElement>) => {
+  const handleCheckCount = (evt: React.ChangeEvent<HTMLInputElement>) => {
     const newCountItem = Number(evt.target.value);
     const defaultValue = 1;
     if (newCountItem === EMPTY_COUNT) {
@@ -90,7 +90,7 @@ function BasketListItem(props: BasketListItemProps): JSX.Element {
             </svg>
           </button>
           <label className="visually-hidden" htmlFor="counter1"></label>
-          <input type="number" id="counter1" min="1" max="99" aria-label="количество товара" value={isItemCount !== EMPTY_COUNT ? isItemCount : ''} onBlur={handleCeckCount} onChange={(evt) => handleChagneCount(evt)} />
+          <input type="number" id="counter1" min="1" max="99" aria-label="количество товара" value={isItemCount !== EMPTY_COUNT ? isItemCount : ''} onBlur={handleCheckCount} onChange={(evt) => handleChagneCount(evt)} />
           <button className="btn-icon btn-icon--next" aria-label="увеличить количество товара" onClick={handleIncCount} disabled={isItemCount === ItemsCount.Max}>
             <svg width="7" height="12" aria-hidden="true">
               <use xlinkHref="#icon-arrow"></use>
