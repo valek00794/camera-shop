@@ -17,6 +17,8 @@ enum ItemsCount {
   Max = 99
 }
 
+const EMPTY_COUNT = 0;
+
 function BasketListItem(props: BasketListItemProps): JSX.Element {
   const dispatch = useDispatch();
   const [isItemCount, setItemCount] = useState(props.item.count);
@@ -37,8 +39,19 @@ function BasketListItem(props: BasketListItemProps): JSX.Element {
       setItemCount(newCountItem);
       dispatch(addToBasketOrIncCountAction(props.item, newCountItem));
     }
+    if (newCountItem === EMPTY_COUNT) {
+      setItemCount(EMPTY_COUNT);
+    }
   };
 
+  const handleCeckCount = (evt: React.ChangeEvent<HTMLInputElement>) => {
+    const newCountItem = Number(evt.target.value);
+    const defaultValue = 1;
+    if (newCountItem === EMPTY_COUNT) {
+      setItemCount(defaultValue);
+      dispatch(addToBasketOrIncCountAction(props.item, defaultValue));
+    }
+  };
   const handleCloseModalRemove = () => {
     setModalDelOpen(false);
   };
@@ -77,7 +90,7 @@ function BasketListItem(props: BasketListItemProps): JSX.Element {
             </svg>
           </button>
           <label className="visually-hidden" htmlFor="counter1"></label>
-          <input type="number" id="counter1" min="1" max="99" aria-label="количество товара" value={isItemCount} onChange={(evt) => handleChagneCount(evt)} />
+          <input type="number" id="counter1" min="1" max="99" aria-label="количество товара" value={isItemCount !== EMPTY_COUNT ? isItemCount : ''} onBlur={handleCeckCount} onChange={(evt) => handleChagneCount(evt)} />
           <button className="btn-icon btn-icon--next" aria-label="увеличить количество товара" onClick={handleIncCount} disabled={isItemCount === ItemsCount.Max}>
             <svg width="7" height="12" aria-hidden="true">
               <use xlinkHref="#icon-arrow"></use>
